@@ -1,5 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination(req, file, cb){
+        cb(null, 'public/images');
+    },
+    filename(req,file,cb){
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+
+var upload = multer({storage: storage});
 
 var mysql = require('mysql');
 const { connect } = require('.');
@@ -32,20 +45,22 @@ router.get('/write', function(req,res,next){
     res.render('write', {title: "게시판 글 쓰기"});
 });
 
-router.post('/write', function(req,res,next){
+router.post('/write', upload.single('img'), function(req,res,next){
     var creator_id = req.body.creator_id;
     var title = req.body.title;
     var content = req.body.content;
     var passwd = req.body.passwd;
-    var datas = [creator_id, title, content, passwd];
+    var file = req.file.filename;
+    console.log(file);
+    var datas = [creator_id, title, content, file, passwd];
 
     pool.getConnection(function(err, connection){
-        var sqlForInsertBoard = "insert into Project1(creator_id, title, content, passwd) values(?,?,?,?)";
+        var sqlForInsertBoard = "insert into Project1(creator_id, title, content, image, passwd) values(?,?,?,?,?)";
         connection.query(sqlForInsertBoard, datas, function(err, rows){
             if(err) console.error("err: "+ err);
             console.log("rows : " + JSON.stringify(rows));
 
-            res.redirect('/board');
+            res.redirect('/prj1');
             connection.release();
         });
     });
@@ -54,10 +69,11 @@ router.post('/write', function(req,res,next){
 router.get('/read/:idx', function(req,res,next){
     var idx = req.params.idx;
     pool.getConnection(function(err, connection){
-        var sql = "select idx, creator_id, title, content, hit from Project1 where idx = ?";
+        var sql = "select idx, creator_id, title, content, image, hit from Project1 where idx = ?";
         connection.query(sql, [idx], function(err, row){
             if(err) console.error(err);
             console.log("1개 글 조회 결과 확인 : ", row);
+            console.log("img: ",row[0].image);
             res.render('read', {title: "글 조회", row:row[0]});
             connection.release();
         });
@@ -101,5 +117,6 @@ router.post('/update', function(req,res,next){
         });
     });
 });
+
 
 module.exports = router;
