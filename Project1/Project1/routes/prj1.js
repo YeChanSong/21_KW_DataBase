@@ -24,6 +24,15 @@ var pool = mysql.createPool({
     password: '1234'
 });
 
+router.get('/join', function(req, res, next){
+    res.render('joinform', {title: 'Join Form!'});
+});
+
+router.post('/join', function(req,res,next){
+    console.log('req.body: ' + JSON.stringify(req.body));
+    res.json(req.body);
+});
+
 router.get('/',function(req,res,next){
     res.redirect('/prj1/list/1');
 });
