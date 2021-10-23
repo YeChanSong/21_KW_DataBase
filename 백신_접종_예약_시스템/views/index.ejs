@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <% for(var i=0;i<rows.length;i++) {%>
+    <p><%= rows[i].idx%></p>
+    <p><%= rows[i].creator_id%></p>
+    <p><%= rows[i].title%></p>
+    <p><%= rows[i].content%></p>
+    <p><%= rows[i].regdate%></p>
+    <% } %>
+  </body>
+</html>
