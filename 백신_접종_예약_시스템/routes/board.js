@@ -20,7 +20,7 @@ var pool = mysql.createPool({
     connectionLimit: 5,
     host: 'localhost',
     user: 'root',
-    database: 'tutorial',
+    database: 'DBproject',
     password: '1234'
 });
 
@@ -34,7 +34,7 @@ router.post('/join', function(req,res,next){
 });
 
 router.get('/',function(req,res,next){
-    res.redirect('/prj1/list/1');
+    res.redirect('/board/list/1');
 });
 
 router.get('/list/:page', function(req,res,next){
@@ -69,7 +69,7 @@ router.post('/write', upload.single('img'), function(req,res,next){
             if(err) console.error("err: "+ err);
             console.log("rows : " + JSON.stringify(rows));
 
-            res.redirect('/prj1');
+            res.redirect('/board');
             connection.release();
         });
     });

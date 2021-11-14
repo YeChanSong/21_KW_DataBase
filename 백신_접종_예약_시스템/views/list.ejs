@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <a href="/prj1/write"> 글쓰기로 이동</a>
+        <a href="/board/write"> 글쓰기로 이동</a>
         <br><br>
         <table border="1">
             <tr>
@@ -22,7 +22,7 @@
             <tr>
                 <td><%=oneItem.idx%></td>
                 <td><%=oneItem.creator_id%></td>
-                <td><a href="/prj1/read/<%=oneItem.idx%>"><%=oneItem.title%></a></td>
+                <td><a href="/board/read/<%=oneItem.idx%>"><%=oneItem.title%></a></td>
                 <td><%=oneItem.hit%></td>
             </tr>
             <%
