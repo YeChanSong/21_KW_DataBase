@@ -1,0 +1,186 @@
+@charset "utf-8";
+/*@font-face{
+font-family:"Noto Sans KR";font-style:normal;font-weight:300;
+src:local("Noto Sans Light"),local("NotoSansKR-Light"),url(../fonts/woff/NotoSansKR-Light.woff) format("woff"),url(../fonts/woff/NotoSansKR-Light.woff2) format("woff2")}
+@font-face{
+font-family:"Noto Sans KR";font-style:normal;font-weight:400;
+src:local("Noto Sans Regular"),local("NotoSansKR-Regular"),url(../fonts/woff/NotoSansKR-Regular.woff) format("woff"),url(../fonts/woff/NotoSansKR-Regular.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans KR";font-style:normal;font-weight:500;
+src:local("Noto Sans Medium"),local("NotoSansKR-Medium"),url(../fonts/woff/NotoSansKR-Medium.woff) format("woff"),url(../fonts/woff/NotoSansKR-Medium.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans KR";font-style:normal;font-weight:700;
+src:local("Noto Sans Bold"),local("NotoSansKR-Bold"),url(../fonts/woff/NotoSansKR-Bold.woff) format("woff"),url(../fonts/woff/NotoSansKR-Bold.woff2) format("woff2")}*/
+/*211008 폰트 추가*/
+@font-face {
+	font-family: 'Noto Sans KR';
+	font-style: normal;
+	font-weight: 100;
+	src: local('Noto Sans Thin'), local('NotoSans-Thin'), url('font/NotoSans-Thin.eot');
+	src: url('font/NotoSans-Thin.eot?#iefix') format('embedded-opentype'),
+	url('font/NotoSans-Thin.woff2') format('woff2'),
+	url('font/NotoSans-Thin.woff') format('woff');;
+}
+@font-face {
+	font-family: 'Noto Sans KR';
+	font-style: normal;
+	font-weight: 300;
+	src: local('Noto Sans DemiLight'), local('NotoSans-DemiLight'), url('font/NotoSans-DemiLight.eot');
+	src: url('font/NotoSans-DemiLight.eot?#iefix') format('embedded-opentype'),
+	url('font/NotoSans-DemiLight.woff2') format('woff2'),
+	url('font/NotoSans-DemiLight.woff') format('woff');;
+}
+@font-face {
+	font-family: 'Noto Sans KR';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Noto Sans Regular'), local('NotoSans-Regular'), url('font/NotoSans-Regular.eot');
+	src: url('font/NotoSans-Regular.eot?#iefix') format('embedded-opentype'),
+	url('font/NotoSans-Regular.woff2') format('woff2'),
+	url('font/NotoSans-Regular.woff') format('woff');;
+}
+@font-face {
+	font-family: 'Noto Sans KR';
+	font-style: normal;
+	font-weight: 600;
+	src: local('Noto Sans Bold'), local('NotoSans-Bold'), url('font/NotoSans-Bold.eot');
+	src: url('font/NotoSans-Bold.eot?#iefix') format('embedded-opentype'),
+	url('font/NotoSans-Bold.woff2') format('woff2'),
+	url('font/NotoSans-Bold.woff') format('woff');;
+}
+
+/* 초기화 */
+html {}
+body {margin:0;padding:0;font-family: 'Noto Sans KR', sans-serif;min-width:280px;}
+html, h1, h2, h3, h4, h5, h6, form, fieldset, img {margin:0;padding:0;border:0}
+h1, h2, h3, h4, h5, h6 {font-family:'Noto Sans KR', sans-serif;}
+ul, ol, dl,dt,dd {margin:0;padding:0;list-style:none}
+p {margin:0;padding:0;word-break:break-all}
+a {color:#000;text-decoration:none;}
+*, :after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.clearfix:after{display:block;clear:both;content:".";visibility:hidden;height:0;}
+.clearfix{display:block;}
+
+/* main01*/
+.wrapper{background-color:#f0f2f4;padding-bottom:115px;min-height:calc(100vh - 160px);}
+header{width:100%;max-width:840px;height:170px;margin:0 auto;font-size:0;line-height:0;padding-top:65px;text-align:center;}
+header a{display:inline-block;vertical-align:top;width:142px;height:40px;background:url(../images/logo.png) no-repeat;margin-top:5px;margin-right:18px;}
+header a {background: url(../images/logo.png) no-repeat center center;background-size: 8.875rem 2.5rem;width: 8.875rem;height: 2.5rem;}
+header .title-logo{display:inline-block;vertical-align:top;font-size:15px;line-height:21px;font-weight:300;color:#57585a;letter-spacing:-0.075em;position:relative;padding-left:20px;text-align:left;}
+header .title-logo::before{content:'';width:1px;height:40px;background-color:#c2c4cc;position:absolute;left:0;top:5px;}
+header .title-logo p{font-size:24px;line-height:28px;font-weight:700;color:#57585a;letter-spacing:-0.075em;}
+
+.main-ready{width:100%;max-width:840px;margin:0 auto;}
+.main-ready .main-visual{background-color:#0076c0;border-radius:20px;}
+.main-visual .head-visual{padding:40px 30px 30px;text-align:center;}
+.main-ready .main-visual h2{font-family:'Noto Sans KR', sans-serif;font-size:30px;line-height:36px;font-weight:700;color:#fff;letter-spacing:-0.075em;margin-bottom:15px;word-break:keep-all;}
+.main-ready .main-visual h2 strong{font-weight:700;color:#fff102;}
+.main-ready .main-visual .sub-eng{font-size:16px;line-height:20px;color:#fff;font-weight:300;word-break:keep-all;}
+.main-ready .main-visual .visual-text{font-size:14px;line-height:25px;color:#fff;font-weight:300;text-align:center;padding:35px 30px 55px;}
+hr.visual-line{border-top:1px solid #308fca;border-bottom:none;}
+
+.btn-booking{margin:60px auto 0;width:286px;height:59px;background-color:#fff;border-radius:10px;border:1px solid #c8cfd7;text-align:center;font-family:'Noto Sans KR', sans-serif;font-size:26px;line-height:59px;font-weight:700;color:#565656;letter-spacing:-0.075em;box-shadow:0 1px 5px rgba(164 168 171 / 75%);}
+/*.btn-booking strong{color:#fbb003;}*/
+
+footer{height:160px;box-sizing:border-box;background-color:#fff;border-top:1px solid #e9ebf5;}
+footer .footer{width:100%;max-width:840px;margin:0 auto;padding-top:37px;padding-left:25px;position:relative;}
+.footer h5{float:left;font-size:18px;line-height:21px;font-weight:700;color:#003964;letter-spacing:-0.075em;padding:0 15px;}
+.footer .kdca-info{float:left;}
+.footer .kdca-info li{display:inline-block;vertical-align:top;position:relative;}
+.footer .kdca-info li::before{content:'';width:1px;height:15px;background-color:#c2c4cc;position:absolute;left:0;top:5px;}
+.footer .kdca-info li a{display:block;padding:0 15px;font-size:15px;line-height:21px;color:#57585a;letter-spacing:-0.075em;}
+.footer address{display:block;margin-top:20px;font-style:normal;font-size:15px;line-height:22px;color:#999;letter-spacing:-0.075em;padding-left:15px;}
+.footer .copyright{font-style:normal;font-size:15px;line-height:22px;color:#999;letter-spacing:0;padding-left:15px;}
+.footer .nuri{position:absolute;right:97px;top:67px;}
+
+@media screen and (max-width:870px) {
+    .main-ready{padding-right:15px;padding-left:15px;}
+    footer .footer{padding-left:0;}
+    .footer .nuri{right:15px;}
+}
+@media screen and (max-width:700px) {
+    footer .footer{padding-right:15px;}
+    .footer .nuri{position:relative;top:auto;right:auto;text-align:right;margin-top:20px;margin-bottom:20px;}
+}
+@media screen and (max-width:560px) {
+    .footer h5{float:none;}
+    .footer .kdca-info{float:none;margin-top:15px;}
+    .footer .kdca-info li:first-child::before{display:none;}
+    header{padding-right:15px;padding-left:15px;}
+}
+@media screen and (max-width:500px) {
+    header .title-logo p{font-size:20px;}
+}
+@media screen and (max-width:430px) {
+    header{height:auto;padding-top:40px;padding-bottom:40px;}
+    header .title-logo{margin-top:20px;}
+    header .title-logo::before{display:none;}
+}
+@media screen and (max-width:330px) {
+    .main-ready .main-visual h2{font-size:26px;}
+    .main-visual .head-visual{padding:40px 20px 20px;}
+    .main-ready .main-visual .visual-text{padding:25px 20px 40px;}
+    .footer h5{font-size:16px;}
+    .footer .kdca-info li a{font-size:13px;padding:0 10px;}
+    .footer address{margin-top:10px;}
+    .footer address, .footer .copyright{font-size:13px;}
+    .btn-booking{width:100%;font-size:22px;}
+}
+/* main02 */
+/* 2021-07-21 추가 팝업 */
+.view-how{text-align:center;margin-top:30px;text-decoration:underline;}
+.view-how a{color:#0076c0;}
+
+/* 2021-09-13 main01_ver02.html css 추가 */
+.main-ready.ver02{max-width:1200px;}
+.main-visual-wrap{display:flex;margin-bottom:30px;flex-wrap: wrap;}
+.visual-itembox{border-radius:20px;padding:60px 40px;margin:0 10px;flex: 1 1 40%;}
+.visual-itembox h2{font-family: 'Noto Sans KR';font-size:30px;color:#fff;font-weight:400;padding-bottom:20px;margin-bottom:30px;border-bottom:1px solid rgba(255,255,255,0.3);word-break:keep-all;}
+.visual-itembox h2 strong{color:#fff102;font-size:40px;}
+.visual-itembox .visual-text{font-size:15px;color:#fff;font-weight:300;}
+.visual-itembox.item-01{background:#0077bf;}
+.visual-itembox.item-02{background:#864000;}
+@media screen and (max-width:768px) {
+    .main-visual-wrap{display:block;}
+    .visual-itembox.item-01{margin-bottom:30px;}
+}
+@media screen and (max-width:640px) {
+    .visual-itembox.item-01{margin-bottom:30px;}
+}
+@media screen and (max-width:350px) {
+    .visual-itembox h2{font-size:25px;}
+    .visual-itembox h2 strong{font-size:30px;}
+}
+/* 2021-10-01 main_ver03.html css 추가*/
+.item-contents-info{}
+.item-contents-info .ic-top-section {margin-bottom:20px;}
+.item-contents-info .ic-top-section .ici-tit{background:none;color:#fff102;margin-top:5px;word-break:keep-all;letter-spacing:-1px;}
+/*.item-contents-info .ic-top-section .ici-tit.padding-b24{padding-bottom:24px;}*/
+.item-contents-info .ic-top-section .ici-tit-coment{position:relative;display:block;color:#fff;padding-left:13px;word-break:keep-all;letter-spacing:-1px;}
+.item-contents-info .ic-top-section .ici-tit-coment::before{position:absolute;content:'';width:7px;height:2px;left:0;top:12px;background:#fff;}
+header .title-logo p{line-height:45px;}
+.ici-table{width:100%;}
+.ici-table th{background:rgba(255,255,255,0.8);font-weight:400;}
+.ici-table td{background:rgba(255,255,255,1);}
+.ici-table th,
+.ici-table td{border-left:1px solid rgba(0,0,0,0.1);border-bottom:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,1);padding:5px 10px;font-size:14px;letter-spacing:-1px;word-break:keep-all;text-align:center;}
+.item-contents-info .bt-com-txt{display:block;color:#fff;margin-top:10px;letter-spacing:-1px;}
+@media screen and (max-width:768px) {
+    .item-contents-info .ic-top-section .ici-tit.padding-b24{padding-bottom:0;}
+}
+@media screen and (max-width:640px) {
+    .visual-itembox{padding-left:10px;padding-right:10px;}
+    .visual-itembox h2{text-align:center;}
+    .ici-table th,
+    .ici-table td{padding:5px 5px;word-break:break-all;line-height:1.4;font-size:13px;} 
+}
+@media screen and (max-width:430px) {
+    header .title-logo{margin-top:0;}
+}
+
+@media screen and (max-width:960px) {
+	.main-visual-wrap{display:block;}
+	.visual-itembox.item-01{margin-bottom:30px;}
+}

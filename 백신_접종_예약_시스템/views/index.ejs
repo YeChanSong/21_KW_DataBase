@@ -1,18 +1,192 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+<html lang="ko" xml:lang="ko">
+<head>
+    <title>예방접종 사전예약 시스템</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Xss-Protection" content="1; mode=block" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+    <meta name="title" content="예방접종 사전예약 시스템" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="예방접종 사전예약 시스템" />
+    <meta property="og:site_name" content="예방접종 사전예약 시스템" />
+    <meta property="og:description" content="예방접종 사전예약 시스템" />
+    <meta property="og:url" content="https://ncvr2.kdca.go.kr" />
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+
+    <!-- Style -->
+    <!--<link rel="stylesheet" href="./styles/ui_pack.min.css" />
+    <link rel="stylesheet" href="./styles/index.min.css" />-->
+    <link rel="stylesheet" href="/stylesheets/index_main.css" />
+
+    <script type="text/javascript" src="/js/common.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/jquery-3.5.1.min.js" charset="UTF-8"></script>
+    
+
+    <script type="text/javascript">
+        
+        function confirm() {
+            if(! $("#chk-confirm").is(":checked")) {
+                alert("접종자 본인임을 확인해주세요.");
+                return false;
+            } else {
+                sessionStorage.setItem("init.kdca", new Date().getTime());
+                window.location.assign(domain + "/landing.html");
+            }
+        }
+
+    </script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% for(var i=0;i<rows.length;i++) {%>
-    <p><%= rows[i].idx%></p>
-    <p><%= rows[i].creator_id%></p>
-    <p><%= rows[i].title%></p>
-    <p><%= rows[i].content%></p>
-    <p><%= rows[i].regdate%></p>
-    <% } %>
+    <div class="wrapper">
+      <header>
+        <a href="#">질병관리청</a>
+        <div class="title-logo">
+          <!--<span>코로나바이러스감염증-19 │ 인플루엔자</span>-->
+          <p>예방접종 사전예약 시스템</p>
+        </div>
+      </header>
+
+      <div class="main-ready ver02">
+        <div class="main-visual-wrap">
+            <div class="visual-itembox item-01">
+                <h2><strong>코로나 19</strong><br />예방접종 사전예약</h2>
+                <div class="item-contents-info">
+                    <div class="ic-top-section">
+                        <h3 class="ici-tit">4분기 예방접종 사전예약</h3>
+                        <!-- <span class="ici-tit-coment">코로나19 4분기 접종대상자 : 미접종자, 소아청소년, 임신부, 부스터샷</span> -->
+                        <!-- <span class="bt-com-txt" style="word-break:keep-all;">○ 소아청소년(화이자 백신) 사전예약기간
+                            <br/>&nbsp; - 12~15세(’06~’09년생) : 10.18(월) 20시 ~ 11.12(금) 18시
+                            <br/>&nbsp;&nbsp; * 1차 접종: 11.1.∼11.27.</span> -->
+	                    <span class="bt-com-txt" style="word-break:keep-all;">○ 임신부 사전예약기간 : 10.8(금) 20시 ~
+                            <br/>&nbsp;&nbsp; * 1차 접종: 10.18.∼</span>
+	                    <span class="bt-com-txt" style="word-break:keep-all;">○ 추가접종(부스터샷) 사전예약기간</span>
+                    </div><!--//ic-top-section-->
+                    <table class="ici-table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">구분</th>
+                                <th colspan="5">추가접종 대상자</th>
+                            </tr>
+                            <tr>
+                                <th>60세 이상 고령층 및 그 외 고위험군</th>
+                                <th>얀센백신 접종자</th>
+                                <th>50대 연령층</th>
+                                <th>우선접종 직업군</th>
+                                <th>기저질환자</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>백신<br />종류</td>
+                                <td>화이자 또는 모더나</td>
+                                <td>화이자 또는 모더나</td>
+                                <td colspan='3'>화이자 또는 모더나</td>
+                            </tr>
+                            <tr>
+                                <td>접종<br />장소</td>
+                                <td>위탁의료기관<br/>예방접종센터</td>
+                                <td>위탁의료기관<br/>예방접종센터</td>
+                                <td colspan='3'>위탁의료기관<br/>예방접종센터</td>
+                            </tr>
+                            <tr>
+                                <td>사전<br />예약기간</td>
+                                <td>10.5(화) 20시∼ </td>
+                                <td>10.28(목) 20시~</td>
+                                <td colspan='3'>11.1(월)~ </td>
+                            </tr>
+                            <tr>
+                                <td>접종<br />기간</td>
+                                <td>10.18(월)∼</td>
+                                <td>11.8(월)∼</td>
+                                <td colspan='3'>11.15(월)~</td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div><!--//item-contents-detail-->
+            </div><!--//visual-itembox-->
+
+            <div class="visual-itembox item-02">
+                <h2><strong>인플루엔자</strong><br />예방접종 사전예약은 종료되었습니다.</h2>
+                <div class="item-contents-info">
+                    <!--<div class="ic-top-section">
+                        <h3 class="ici-tit padding-b24">어르신 인플루엔자 접종 일정 안내</h3>
+                    </div>--><!--//ic-top-section-->
+                    <!--<table class="ici-table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>만75세 이상<br />(1946.12.31. 이전 출생)</th>
+                                <th>만70～74세<br />(1947.1.1.～1951.12.31.)</th>
+                                <th>만65～69세<br />(1952.1.1.～1956.12.31.)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>접종<br />장소</td>
+                                <td>보건소 및 위탁의료기관</td>
+                                <td>보건소 및 위탁의료기관</td>
+                                <td>보건소 및 위탁의료기관</td>
+                            </tr>
+                            <tr>
+                                <td>사전<br />예약기간</td>
+                                <td>10.5.(화) 20시 ～ 10.31.(일) 18시</td>
+                                <td>10.12.(화) 20시 ～ 10.31.(일) 18시</td>
+                                <td>10.14.(목) 20시 ～ 10.31.(일) 18시</td>
+                            </tr>
+                            <tr>
+                                <td>접종<br />기간</td>
+                                <td>10.12.(화) ～ 2022.2.28.(월)</td>
+                                <td>10.18.(월) ～ 2022.2.28.(월)</td>
+                                <td>10.21.(목) ～ 2022.2.28.(월)</td>
+                            </tr>
+                        </tbody>
+                    </table>-->
+                    <span class="bt-com-txt" style="word-break:keep-all; font-size:larger;">
+                           ○ 인플루엔자 예방접종률이 높아짐에 따라 만 65세 이상 어르신을 대상으로 시행하던 사전예약제가 종료되었습니다.(~10.31)</span>
+                    <span class="bt-com-txt" style="word-break:keep-all; font-size:larger;"> - 11월에 기 사전예약을 하신 분은 해당 접종일에 맞추어 접종 가능
+                        <br/>&nbsp; (예약일 전 현장 방문하여 접종하는 경우 기 사전예약은 자동 취소)
+                        <br/> - 예약 없이 방문하시는 경우 접종기관에 접종 가능 여부 반드시 확인 </span>
+
+                    <!--<span class="bt-com-txt" style="word-break:keep-all;">※ 만 65세 이상 접종대상자의 예방접종률이 높아짐에 따라 사전예약 없이 분산접종이 가능해져 10월 31일(일) 18시까지만 사전예약시스템을 운영합니다.</span>
+                    <span class="bt-com-txt" style="word-break:keep-all;"> - 11월에 기 사전예약을 하신 분은 해당 접종일에 맞추어 접종 가능
+                        <br/>&nbsp; (예약일 전 현장 방문하여 접종하는 경우 기 사전예약은 자동 취소)
+                        <br/> - 예약 없이 방문하시는 경우 접종기관에 접종 가능 여부 반드시 확인 </span>-->
+                </div><!--//item-contents-detail-->
+            </div><!--//visual-itembox-->
+        </div><!-- //main-visual-wrap-->
+
+        <div class="identification">
+           <p>
+              <input type="checkbox" class="-check" id="chk-confirm" />
+              <label for="chk-confirm">
+              <em class="-label">접종자 본인 또는 대리인임을 확인합니다.</em>
+              </label>
+           </p>
+        </div>
+
+        <div class="btn-booking" onclick="confirm()"><strong class="-color-secondary">확인</strong></div>
+
+        <p class="view-how"><a href="manual.html" target="_blank">대기창에서 접속안될 때 조치 방법</a></p>
+
+      </div><!-- //main-ready -->
+    </div><!-- //wrapper -->
+    <footer>
+      <div class="footer">
+        <div class="foot-info clearfix">
+          <h5>예방접종 사전예약 시스템</h5>
+        </div>
+        <address>(28159) 충북 청주시 흥덕구 오송읍 오송생명2로 187 오송보건의료행정타운내 질병관리청</address>
+        <p class="copyright">COPYRIGHT © 2021 질병관리청 ALL RIGHTS RESERVED.</p>
+        <div class="nuri"><img src="/images/nuri.png" alt="OPEN/출처표시/상업용금지/변경금지/공공누리 공공저작물 자유이용허락" /></div>
+      </div>
+    </footer><!-- //footer -->
   </body>
 </html>
