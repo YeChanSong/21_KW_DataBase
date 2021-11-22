@@ -9,9 +9,9 @@ if(typeof NetFunnel == "object"){
         htmlStr:
               '<div class="body-gray"> \
                 <div class="box-notice"> \
-                  <h2>�ъ쟾�덉빟 �덈궡</h2> \
-                  <p>20�쒕��� �묒닔媛� 媛��ν빀�덈떎.</p> \
-                  <a class="close-this" onclick="NetFunnel_sendStop(); window.location.assign(\'/\');">�リ린</a> \
+                  <h2>사전예약 안내</h2> \
+                  <p>20시부터 접수가 가능합니다.</p> \
+                  <a class="close-this" onclick="NetFunnel_sendStop(); window.location.assign(\'/\');">닫기</a> \
                 </div> \
               </div>'
     },'normal');
@@ -24,9 +24,9 @@ if(typeof NetFunnel == "object"){
         htmlStr:
               '<div class="body-gray"> \
                 <div class="box-notice"> \
-                  <h2>�ъ쟾�덉빟 �덈궡</h2> \
-                    <p>20�쒕��� �묒닔媛� 媛��ν빀�덈떎.</p> \
-                  <a class="close-this" onclick="NetFunnel_sendStop(); window.location.assign(\'/\');">�リ린</a> \
+                  <h2>사전예약 안내</h2> \
+                    <p>20시부터 접수가 가능합니다.</p> \
+                  <a class="close-this" onclick="NetFunnel_sendStop(); window.location.assign(\'/\');">닫기</a> \
                 </div> \
               </div>'
     },'mobile');
