@@ -1,0 +1,1 @@
+naver_status='{"status":"G"}'
