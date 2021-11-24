@@ -52,7 +52,7 @@ router.get('/data-source', function(req, res, next) {
                     draw: req.query.draw,
                     recordsTotal: rows[0]['FOUND_ROWS()'],
                     recordsFiltered: rows[0]['FOUND_ROWS()'],
-                    data: commentRows.map(row => Object.values(row))
+                    data: commentRows
                 });
                 connection.release();
             });
