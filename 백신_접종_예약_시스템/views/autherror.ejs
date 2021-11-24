@@ -1,10 +1,7 @@
-
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>코로나19 예방접종 사전예약 시스템</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -23,23 +20,22 @@
     <meta property="og:description" content="코로나19 예방접종 사전예약 시스템">
     <meta property="og:url" content="https://ncvr2.kdca.go.kr">
 
-	<!-- #FAVICONS -->
-	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <script src="/js/login/jquery-3.5.1.min.js"></script>
+    <script src="/js/login/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/stylesheets/login/ui_pack.css">
 
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-  <script src="/js/login/jquery-3.5.1.min.js"></script>
-  <script src="/js/login/common.js"></script>
-
-  <script src="/js/netfunnel.js?v=1"></script>
-  <link rel="stylesheet" href="/stylesheets/login/ui_pack.css" />
-
-</head>
+    <!--[if lt IE 9]> -->
+    
+    <!-- <![endif]-->
 
 <body>
-	<div class="wrapper">
-    <!-- header -->
-    
+<div class="wrapper">
+  <!-- header -->
+  
 
 <html>
   <header>
@@ -52,41 +48,27 @@
 </html>
 
 
-		<div class="main-ready auth2">
-		 <h2 class="auth-head">네이버 인증</h2>
-		 <section class="-bg-white -border-top auth-wrapper">
-		  <p class="auth-info"><em>네이버</em> 인증을 진행해 주세요.</p>
-		  <p class="auth-info">네이버 로그인 후 인증을 완료할 수 있습니다.</p>
+    <div class="main-ready">
+        <div class="main-visual">
+            <div class="head-visual">
+                <div>
+                    <h2>
+                       인증 서버 오류입니다.<br>다시 시도해 주세요.
+                    </h2>
+                </div>
+                <!-- pass customizing message end-->
+            </div><!-- //head-visual -->
+        </div><!-- //main-visual -->
 
-		  <div class="auth-step naver" style="text-align: center;">
-		    <ol>
-		      <li>
-                <img src="/images/kakao_auth02.png">
-
-		        <p class="step-text">STEP 01</p>
-		        <p class="step-info"><em>네이버</em> 로그인<br>(로그인 전인 경우)</p>
-		      </li>
-		      <li>
-            <img src="/images/naver_auth02.png">
-		        <p class="step-text">STEP 02</p>
-		        <p class="step-info"><em>네이버</em> 로그인<br>인증 요청 확인</p>
-		      </li>
-		    </ol>
-		  </div>
-      <div class="action-btn-wrapper">
-
-      <form action="/naverlogin" method="post" enctype="multipart/form-data">
-        <button type="submit" name="button" id="auth_req" class="-btn primary-">인증 요청</button>
-      </form>
+        <div class="btn-booking" id="btn_home" onclick="movePage()"><strong>본인인증<span>으로</span></strong>바로가기</div>
     </div>
-             <!--<div id="naverIdLogin" style="display:none;"><a id="naverIdLogin_loginButton" role="button"><img src="https://static.nid.naver.com/oauth/big_g.PNG" height=60></a></div>-->
-		 </section>
-		</div>
-
-
-	</div>
-  <!-- footer -->
   
+  
+</div>
+<!-- footer -->
+
+
+
 <html>
   <footer>
     <div class="footer">
@@ -98,12 +80,13 @@
   </footer>
 </html>
 
-
 </body>
+
 <script>
-    
+    function movePage(param) {
+      var domainUrl = "http://localhost:3000";
+      domainUrl = domainUrl + "/landing"
 
+      location.href = domainUrl;
+  }
 </script>
-
-</html>
-
