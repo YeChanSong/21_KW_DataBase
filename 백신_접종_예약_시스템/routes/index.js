@@ -102,14 +102,18 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         console.log(parsedData.response);
 
         /*
-        TODO:
-        parseData.response에 사용자의 정보가 담겨있다.
-        이 정보를 DB에 저장하는 부분만 진행하면 되는데
-        문제는 사용자의 주민등록번호 정보가 없기 때문에 DB 테이블을 수정해야 할 것 같다.
-
+        * parseData.response에 사용자의 정보가 담겨있다.
+        * 이 정보를 DB에 저장하는 부분만 진행하면 되는데
+        * 문제는 사용자의 주민등록번호 정보가 없기 때문에 DB 테이블을 수정해야 할 것 같다.
+        * 
+        * --> 11.25 수정사항
+        * 처음 landing페이지 SNS인증 => 예약자 인증
+        * 이후 페이지를 추가하여 접종자 정보를 입력받아 인증을 진행
+        * 접종자 정보를 USERS 테이블에 저장
+        * 예약자 정보는 이름, 이메일, 연령대, 성별만 제공받는다.
         */
 
-        // 인증 이후 병원 예약 페이지를 매핑해서 연결.
+        // 접종자 정보를 입력받는 페이지로 연결
         res.redirect('/landing');
        } else {
         res.redirect('/autherror');
