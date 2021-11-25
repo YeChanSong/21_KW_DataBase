@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var app = express();
+
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -95,6 +96,20 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         console.log("logout url: "+disconnect_api_url); 
         // res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
         // res.end("<a href='"+ disconnect_api_url + "'><img height='50' src='http://static.nid.naver.com/oauth/small_g_in.PNG'/></a>");
+        
+        var parsedData = JSON.parse(body.split(","));
+        
+        console.log(parsedData.response);
+
+        /*
+        TODO:
+        parseData.response에 사용자의 정보가 담겨있다.
+        이 정보를 DB에 저장하는 부분만 진행하면 되는데
+        문제는 사용자의 주민등록번호 정보가 없기 때문에 DB 테이블을 수정해야 할 것 같다.
+
+        */
+
+        // 인증 이후 병원 예약 페이지를 매핑해서 연결.
         res.redirect('/landing');
        } else {
         res.redirect('/autherror');
