@@ -10,11 +10,12 @@ var pool = mysql.createPool({
 });
 
 router.get('/', function(req, res, next) {
-  res.render('reviews', {title: '예방접종 사전예약 시스템'});
+    res.render('reviews', {title: '예방접종 사전예약 시스템'});
 });
 
-router.get('/data-source', function(req, res, next) {
-    pool.getConnection(function(err, connection){
+/* 접종 후기 목록 dataTables 에 대한 server side processing */
+router.get('/data-tables-source', function(req, res, next) {
+    pool.getConnection(function(err, connection) {
         // case ~ end: 이름 마스킹 (https://linked2ev.github.io/database/2019/05/11/DEV-SQL-1.-sql-masking-name-id/)
         let query = 
         `
@@ -36,20 +37,20 @@ router.get('/data-source', function(req, res, next) {
                 natural join users u
                 natural join vaccine v
                 natural join hospitals h
-            order by vc.comment_id desc 
-            ${req.query.length != -1 && 'limit ' + req.query.length + ' offset ' + req.query.start}
+            ORDER BY vc.comment_id desc 
+            ${req.query.length != -1 && 'LIMIT ' + Number(req.query.length) + ' OFFSET ' + Number(req.query.start)}
         `;
 
-        connection.query(query, function(err, rows){
+        connection.query(query, function(err, rows) {
             if(err) console.error("err: "+err);
             let commentRows = rows
 
-            connection.query('select FOUND_ROWS();', function(err, rows){ // 전체 comment 개수 쿼리
+            connection.query('SELECT FOUND_ROWS()', function(err, rows) { // 전체 comment 개수 쿼리
                 if(err) console.error("err: "+err);
 
                 // https://datatables.net/manual/server-side
                 res.json({
-                    draw: req.query.draw,
+                    draw: Number(req.query.draw),
                     recordsTotal: rows[0]['FOUND_ROWS()'],
                     recordsFiltered: rows[0]['FOUND_ROWS()'],
                     data: commentRows

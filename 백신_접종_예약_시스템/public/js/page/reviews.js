@@ -24,7 +24,7 @@ function renderStarRating(data, type) {
 
 /* 백신 접종 후기 테이블 DataTable 옵션 설정 */
 $(document).ready(function() {
-    $('#reviewTable').DataTable({
+    $('#reviewsTable').DataTable({
         columns: [
             { 
                 data: "user_name" 
@@ -49,7 +49,7 @@ $(document).ready(function() {
         ],
 
         serverSide: true,
-        ajax: 'reviews/data-source',
+        ajax: '/reviews/data-tables-source',
         
         searching: false,
         ordering:  false,
