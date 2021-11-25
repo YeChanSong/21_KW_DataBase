@@ -49,13 +49,13 @@ router.get('/hospital-management/hospitals-data-tables-source', function(req, re
 
         let where_clause = '';
         if (location_filter) {
-            where_clause += 'WHERE l.location_name = "' + location_filter + '"';
+            where_clause += 'WHERE l.location_name = ' + connection.escape(location_filter);
             if (sublocation_filter) {
-                where_clause += ' and sl.sublocation_name = "' + sublocation_filter + '"';
+                where_clause += ' and sl.sublocation_name = ' + connection.escape(sublocation_filter);
             }
         }
         
-        let query = 
+        let query =
         `
             SELECT SQL_CALC_FOUND_ROWS 
                 h.hospital_name, h.hospital_location, l.location_name, sl.sublocation_name
@@ -66,7 +66,7 @@ router.get('/hospital-management/hospitals-data-tables-source', function(req, re
                     on l.location_id = sl.L_id
             ${where_clause}
             ORDER BY l.location_name, sl.sublocation_name, h.hospital_name
-            ${req.query.length != -1 && 'LIMIT ' + Number(req.query.length) + ' OFFSET ' + Number(req.query.start)}
+            ${req.query.length != -1 && 'LIMIT ' + connection.escape(Number(req.query.length)) + ' OFFSET ' + connection.escape(Number(req.query.start))}
         `;
 
         connection.query(query, function(err, rows) {

@@ -38,7 +38,7 @@ router.get('/data-tables-source', function(req, res, next) {
                 natural join vaccine v
                 natural join hospitals h
             ORDER BY vc.comment_id desc 
-            ${req.query.length != -1 && 'LIMIT ' + Number(req.query.length) + ' OFFSET ' + Number(req.query.start)}
+            ${req.query.length != -1 && 'LIMIT ' + connection.escape(Number(req.query.length)) + ' OFFSET ' + connection.escape(Number(req.query.start))}
         `;
 
         connection.query(query, function(err, rows) {
