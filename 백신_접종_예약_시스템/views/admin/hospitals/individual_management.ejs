@@ -366,32 +366,71 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">병원 관리</h1>
 
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">병원 목록</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-group mb-1">
-                                <select class="custom-select" id ="guSelect">
-                                    <option value="">구 선택</option>
-                                </select>
-                                <select class="custom-select" id ="dongSelect">
-                                    <option value="">동 선택</option>
-                                </select>
+                    <div class="row">
+                        <div class="col-xl-5">
+                            <div class="card shadow mb-4" >
+                                <div class="card-header py-3" >
+                                    <h6 class="m-0 font-weight-bold text-primary">병원 목록</h6>
+                                </div>
+                                <div class="card-body"> 
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered table-hover" id="hospitalsTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>병원 이름</th>
+                                                    <th>주소</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered table-hover" id="hospitalsTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>병원 이름</th>
-                                            <th>주소</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                        </div>
+                        <div class="col-xl-7">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary" id="vaccineCardHeader">백신 보유량 관리</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="vaccinesTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>백신 이름</th>
+                                                    <th>백신 제조사</th>
+                                                    <th>보유량</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary float-right" id="saveVaccineQuantity" disabled>저장</button>
+                                </div>
+                            </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary" id="reservationCardHeader">예약 정보</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="reservationsTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>날짜</th>
+                                                    <th>백신</th>
+                                                    <th>차수</th>
+                                                    <th>예약자명</th>
+                                                    <th>나이</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    
 
                 </div>
                 <!-- /.container-fluid -->
@@ -458,7 +497,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- Page level script -->
-    <script src="/js/page/admin/hospital_management.js"></script>
+    <script src="/js/page/admin/hospitals/individual_management.js"></script>
 
 </body>
 

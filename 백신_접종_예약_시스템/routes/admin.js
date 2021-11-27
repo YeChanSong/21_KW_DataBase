@@ -9,12 +9,13 @@ var pool = mysql.createPool({
   database: 'dbproject'
 });
 
-router.get('/hospital-management', function(req, res, next) {
-    res.render('admin/hospital_management', {title: '예방접종 사전예약 시스템'});
+/* 병원 1곳 단위의 백신 수량 관리 페이지 */
+router.get('/hospitals/individual-management', function(req, res, next) {
+    res.render('admin/hospitals/individual_management', {title: '예방접종 사전예약 시스템'});
 });
 
 /* 모든 구, 동 목록 조회 */
-router.get('/hospital-management/location-data', function(req, res, next) {
+router.get('/location-data', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         let query = 
         `
@@ -42,8 +43,10 @@ router.get('/hospital-management/location-data', function(req, res, next) {
 });
 
 /* 병원 목록 dataTables 에 대한 server side processing */
-router.get('/hospital-management/hospitals-data-tables-source', function(req, res, next) {
+router.get('/hospitals/data-tables-source', function(req, res, next) {
     pool.getConnection(function(err, connection) {
+        if(err) next(err);
+
         let location_filter = req.query.columns[2].search.value;
         let sublocation_filter = req.query.columns[3].search.value;
 
@@ -58,7 +61,7 @@ router.get('/hospital-management/hospitals-data-tables-source', function(req, re
         let query =
         `
             SELECT SQL_CALC_FOUND_ROWS 
-                h.hospital_name, h.hospital_location, l.location_name, sl.sublocation_name
+                h.hospital_name, h.hospital_location, l.location_name, sl.sublocation_name, h.hospital_id
             FROM hospitals h
                 inner join sublocation sl
                     on sl.sublocation_id = h.SL_id
@@ -70,11 +73,11 @@ router.get('/hospital-management/hospitals-data-tables-source', function(req, re
         `;
 
         connection.query(query, function(err, rows) {
-            if(err) console.error("err: "+err);
+            if(err) next(err);
             let hospitalRows = rows
 
             connection.query('SELECT FOUND_ROWS()', function(err, rows) {
-                if(err) console.error("err: "+err);
+                if(err) next(err);
 
                 res.json({
                     draw: Number(req.query.draw),
@@ -87,5 +90,87 @@ router.get('/hospital-management/hospitals-data-tables-source', function(req, re
         });
     });
 });
+
+/* 특정 병원의 백신 보유량 조회 */
+router.get('/hospitals/:id/vaccine-quantities', function(req, res, next) {    
+    pool.getConnection(function(err, connection) {
+        if(err) next(err);
+        
+        let query =
+        `
+            SELECT v.vaccine_name, v.vaccine_manufacturer, hv.vaccine_quantity, v.vaccine_id
+            FROM hospital_vaccine hv
+                natural join vaccine v
+            WHERE hv.hospital_id = ?
+        `;
+
+        connection.query(query, [req.params.id], function(err, rows) {
+            if(err) next(err);
+
+            res.json({
+                data: rows // dataTables 호환 format
+            });
+            connection.release();
+        });
+    });
+});
+
+/* 특정 병원의 백신 보유량 수정 */
+router.put('/hospitals/:id/vaccine-quantities', function(req, res, next) {    
+    if (!req.body.length) throw new Error('body empty');
+    
+    pool.getConnection(function(err, connection) {
+        if(err) next(err);
+
+        let query =
+        `
+            UPDATE hospital_vaccine
+            SET vaccine_quantity = (
+                case
+                ${'when vaccine_id = ? then ? '.repeat(req.body.length)} 
+                end
+            )
+            WHERE hospital_id = ?
+        `;
+
+        connection.query(query, [req.body.map((el) => Object.values(el)).flat(), req.params.id].flat(), function(err, rows) {
+            if(err) next(err);
+
+            res.status(200).json({
+                message: '백신 보유량 저장 성공'
+            });
+            connection.release();
+        });
+    });
+});
+
+/* 특정 병원의 모든 접종 예약 조회 */
+router.get('/hospitals/:id/vaccine-reservations', function(req, res, next) {    
+    pool.getConnection(function(err, connection) {
+        if(err) next(err);
+        
+        let query =
+        `
+            SELECT r.reservation_date, v.vaccine_name, r.inoculation_number, u.user_name, u.age
+            FROM vaccine_reservation r
+                inner join users u
+                    on u.User_number = r.user_number
+                natural join vaccine v
+            WHERE r.hospital_id = ?
+            ORDER BY r.reservation_date asc
+        `;
+
+        connection.query(query, [req.params.id], function(err, rows) {
+            if(err) next(err);
+
+            res.json({
+                data: rows // dataTables 호환 format
+            });
+            connection.release();
+        });
+    });
+});
+
+
 
 module.exports = router; 
