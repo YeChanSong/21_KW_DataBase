@@ -12,16 +12,17 @@
     <title><%= title %></title>
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -272,7 +273,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                        <img class="rounded-circle" src="/img/undraw_profile_1.svg"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -284,7 +285,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="/img/undraw_profile_2.svg"
                                             alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -296,7 +297,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="/img/undraw_profile_3.svg"
                                             alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -330,7 +331,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -364,32 +365,48 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">백신 접종 후기</h1>
-                    <p class="mb-4">백신 접종자들이 남긴 후기와 백신, 병원에 대한 평점을 볼 수 있습니다.</p>
+                    <h1 class="h3 mb-2 text-gray-800">후기 수정</h1>
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">접종 후기 목록</h6>
+                    <div class="card shadow mb-4" >
+                        <div class="card-header py-3" >
+                            <h6 class="m-0 font-weight-bold text-primary">후기 수정</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="reviewsTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>작성자</th>
-                                            <th>내용</th>
-                                            <th>백신</th>
-                                            <th>백신 평점</th>
-                                            <th>병원</th>
-                                            <th>병원 평점</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
+                            <form method="post">
+                                <div class="form-group row">
+                                    <label for="vaccine_name" class="col-sm-2 col-form-label">백신 이름</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" id="vaccine_name" name="vaccine_name" value="<%=data.vaccine_name%>">
+                                    </div>
+    
+                                    <label for="hospital_name" class="col-sm-2 col-form-label">병원 이름</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" id="hospital_name" name="hospital_name" value="<%=data.hospital_name%>">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="vaccine_rating" class="col-sm-2 col-form-label">백신 평점</label>
+                                    <div class="col-sm-4">
+                                        <input id="vaccine_rating" name="vaccine_rating" value="<%=data.vaccine_rating%>" required>
+                                    </div>
+    
+                                    <label for="hospital_rating" class="col-sm-2 col-form-label">병원 평점</label>
+                                    <div class="col-sm-4">
+                                        <input id="hospital_rating" name="hospital_rating" value="<%=data.hospital_rating%>" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="review_content" class="col-sm-2 col-form-label">후기 내용</label>
+                                    <textarea class="col-sm-10 form-control" id="review_content" name="review_content" rows="5" required><%=data.content%></textarea>
+                                </div>
+                                
+                                <button type="submit" formaction="/reviews/<%=comment_id%>?_method=PUT" class="btn btn-primary">수정</button>
+                                <button type="submit" formaction="/reviews/<%=comment_id%>?_method=DELETE" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+                            </form>
+                            
+                            
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -438,21 +455,24 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/js/star-rating.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/themes/krajee-svg/theme.js"></script>
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- Page level script -->
-    <script src="js/page/reviews.js"></script>
+    <script src="/js/page/read_review.js"></script>
 
 </body>
 

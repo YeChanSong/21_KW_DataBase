@@ -9,7 +9,7 @@ function renderStarRating(data, type) {
         let starEl = '';
         for (let i = 1; i <= 5; ++i) {
             if (i <= rating) {
-                starEl += '<span class="fas fa-star" style="color: orange;"></span>'
+                starEl += '<span class="fas fa-star" style="color: #fde16d;"></span>'
             }
             else {
                 starEl += '<span class="far fa-star"></span>'

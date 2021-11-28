@@ -1,3 +1,4 @@
+const e = require('express');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
@@ -26,17 +27,21 @@ router.get('/location-data', function(req, res, next) {
             ORDER BY l.location_name, sl.sublocation_name 
         `;
         connection.query(query, function(err, rows) {
-            if(err) console.error("err: "+err);
-
-            let location_data = {};
-            for (const row of rows) {
-                if (location_data[row['location_name']] === undefined) {
-                    location_data[row['location_name']] = [];
-                }
-                location_data[row['location_name']].push(row['sublocation_name']);
+            if(err) {
+                next(err);
             }
+            else {
+                let location_data = {};
+                for (const row of rows) {
+                    if (location_data[row['location_name']] === undefined) {
+                        location_data[row['location_name']] = [];
+                    }
+                    location_data[row['location_name']].push(row['sublocation_name']);
+                }
 
-            res.json(location_data);
+                res.json(location_data);
+            }
+            
             connection.release();
         });
     });
@@ -73,20 +78,29 @@ router.get('/hospitals/data-tables-source', function(req, res, next) {
         `;
 
         connection.query(query, function(err, rows) {
-            if(err) next(err);
-            let hospitalRows = rows
-
-            connection.query('SELECT FOUND_ROWS()', function(err, rows) {
-                if(err) next(err);
-
-                res.json({
-                    draw: Number(req.query.draw),
-                    recordsTotal: rows[0]['FOUND_ROWS()'],
-                    recordsFiltered: rows[0]['FOUND_ROWS()'],
-                    data: hospitalRows
-                });
+            if(err) {
+                next(err);
                 connection.release();
-            });
+            }
+            else {
+                let hospitalRows = rows
+
+                connection.query('SELECT FOUND_ROWS()', function(err, rows) {
+                    if(err) {
+                        next(err);
+                    }
+                    else {
+                        res.json({
+                            draw: Number(req.query.draw),
+                            recordsTotal: rows[0]['FOUND_ROWS()'],
+                            recordsFiltered: rows[0]['FOUND_ROWS()'],
+                            data: hospitalRows
+                        });
+                    }
+
+                    connection.release();
+                });
+            }
         });
     });
 });
@@ -105,11 +119,15 @@ router.get('/hospitals/:id/vaccine-quantities', function(req, res, next) {
         `;
 
         connection.query(query, [req.params.id], function(err, rows) {
-            if(err) next(err);
+            if (err)  {
+                next(err);
+            }
+            else {
+                res.json({
+                    data: rows // dataTables 호환 format
+                });
+            }
 
-            res.json({
-                data: rows // dataTables 호환 format
-            });
             connection.release();
         });
     });
@@ -117,8 +135,6 @@ router.get('/hospitals/:id/vaccine-quantities', function(req, res, next) {
 
 /* 특정 병원의 백신 보유량 수정 */
 router.put('/hospitals/:id/vaccine-quantities', function(req, res, next) {    
-    if (!req.body.length) throw new Error('body empty');
-    
     pool.getConnection(function(err, connection) {
         if(err) next(err);
 
@@ -134,11 +150,15 @@ router.put('/hospitals/:id/vaccine-quantities', function(req, res, next) {
         `;
 
         connection.query(query, [req.body.map((el) => Object.values(el)).flat(), req.params.id].flat(), function(err, rows) {
-            if(err) next(err);
-
-            res.status(200).json({
-                message: '백신 보유량 저장 성공'
-            });
+            if (err) {
+                next(err);
+            } 
+            else {
+                res.status(200).json({
+                    message: '백신 보유량 저장 성공'
+                });
+            }
+            
             connection.release();
         });
     });
@@ -161,11 +181,15 @@ router.get('/hospitals/:id/vaccine-reservations', function(req, res, next) {
         `;
 
         connection.query(query, [req.params.id], function(err, rows) {
-            if(err) next(err);
+            if(err)  {
+                next(err);
+            }
+            else {
+                res.json({
+                    data: rows // dataTables 호환 format
+                });
+            }
 
-            res.json({
-                data: rows // dataTables 호환 format
-            });
             connection.release();
         });
     });

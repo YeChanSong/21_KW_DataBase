@@ -1,10 +1,10 @@
 $(document).ready(function() {
     /* 병원 목록 DataTables 옵션 설정 */
     var hospitalsTable = $('#hospitalsTable').DataTable({
-        dom: 
+        dom: // searching: true를 유지하면서 검색창은 안보이게 하기 위함 (검색창 대신 구/동 필터 표시)
             "<'row'<'col-sm-12 col-md-6'l><'#location_filter.col-sm-12 col-md-6 input-group input-group-sm'>>" +
             "<'row'<'col-sm-12'tr>>" + 
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>", // searching: true를 유지하면서 검색창은 안보이게 하기 위함
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>", 
 
         columns: [
             {
@@ -44,7 +44,7 @@ $(document).ready(function() {
             decimal : "",
             emptyTable : "병원이 없습니다.",
             info : "_START_ - _END_ (총 _TOTAL_ 곳)",
-            infoEmpty : "0개 항목",
+            infoEmpty : "0곳",
             infoFiltered : "(전체 _MAX_ 곳 중 검색결과)",
             infoPostFix : "",
             thousands : ",",
@@ -190,7 +190,6 @@ $(document).ready(function() {
                 data: "reservation_date",
                 render: function(data, type) {
                     if (type === 'display') {
-                        console.log(data);
                         return new Date(data).toLocaleString();
                     }
 
@@ -217,12 +216,12 @@ $(document).ready(function() {
         language: {
             decimal : "",
             emptyTable : "해당 병원의 접종 예약이 없습니다.",
-            info : "_START_ - _END_ (총 _TOTAL_ 개)",
-            infoEmpty : "0개 항목",
-            infoFiltered : "(전체 _MAX_ 개 중 검색결과)",
+            info : "_START_ - _END_ (총 _TOTAL_ 건)",
+            infoEmpty : "0건",
+            infoFiltered : "(전체 _MAX_ 건 중 검색결과)",
             infoPostFix : "",
             thousands : ",",
-            lengthMenu : "_MENU_ 개씩 보기",
+            lengthMenu : "_MENU_ 건씩 보기",
             loadingRecords : "로딩중...",
             processing : "처리중...",
             search : "검색 : ",
@@ -242,24 +241,22 @@ $(document).ready(function() {
 
     /* 병원 목록 테이블의 각 행 클릭 이벤트 처리*/
     $('#hospitalsTable tbody').on('click', 'tr', function () {
+        let selectedRowData = hospitalsTable.row(this).data();
+
         /* 클릭한 행 색깔 변경 */
         hospitalsTable.$('tr.table-primary').removeClass('table-primary');
         $(this).addClass('table-primary');
 
         /* 백신 보유량 테이블과 예약 테이블 카드 제목에 병원 이름 표시 */
-        document.getElementById("vaccineCardHeader").textContent = "백신 보유량 관리 - [" + hospitalsTable.row(this).data().hospital_name + "]";
-        document.getElementById("reservationCardHeader").textContent = "예약 정보 - [" + hospitalsTable.row(this).data().hospital_name + "]";
+        document.getElementById("vaccineCardHeader").textContent = "백신 보유량 관리 - [" + selectedRowData.hospital_name + "]";
+        document.getElementById("reservationCardHeader").textContent = "예약 정보 - [" + selectedRowData.hospital_name + "]";
 
         /* 클릭한 행에 해당하는 병원의 백신 보유량 테이블과 예약 테이블 채우기 */
-        let hospital_id =  hospitalsTable.row(this).data().hospital_id;
-
-        document.getElementById("saveVaccineQuantity").setAttribute("data-hospitalId", hospital_id);
+        document.getElementById("saveVaccineQuantity").setAttribute("data-hospitalId", selectedRowData.hospital_id);
         document.getElementById("saveVaccineQuantity").disabled = false;
-        vaccinesTable.ajax.url(hospital_id + '/vaccine-quantities').load();
+        vaccinesTable.ajax.url(selectedRowData.hospital_id + '/vaccine-quantities').load();
 
-        reservationsTable.ajax.url(hospital_id + '/vaccine-reservations').load();
-
+        reservationsTable.ajax.url(selectedRowData.hospital_id + '/vaccine-reservations').load();
     });
-
     
 });
