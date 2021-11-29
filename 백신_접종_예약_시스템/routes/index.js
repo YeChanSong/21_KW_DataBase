@@ -57,7 +57,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         tokenparser = JSON.parse(body);
         token = tokenparser.access_token;
         console.log("login access_token: "+token);
-        
+        console.log("timeout: "+tokenparser.expires_in);
         res.redirect('/member');
       } else {
         res.redirect('/autherror');
@@ -113,8 +113,11 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         * 예약자 정보는 이름, 이메일, 연령대, 성별만 제공받는다.
         */
 
+        
         // 접종자 정보를 입력받는 페이지로 연결
-        res.redirect('/landing');
+        res.redirect('/inoculatorinput');
+
+
        } else {
         res.redirect('/autherror');
          console.log('error');
@@ -141,5 +144,14 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
 
     res.render('in_out_testpage', {login: api_url, logout: disconnect_api_url});
    });
-   
+
+   // 접종자 정보 입력 페이지
+   router.get('/inoculatorinput', function(req,res){
+    
+
+    res.render('inoculatorinput');
+   });
+
+
+
 module.exports = router;

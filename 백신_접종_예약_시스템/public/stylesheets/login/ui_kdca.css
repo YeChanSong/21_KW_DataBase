@@ -1,0 +1,63 @@
+@charset "UTF-8";
+/*common*/
+.auth-input-wrapper .auth-input>* .-input:not(select){
+    border: 1px solid #c2c4cc;
+}
+
+
+/*request*/
+.auth-input-wrapper .auth-input04{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.auth-input-wrapper .auth-input04{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.auth-input-wrapper .auth-input04 .row-input00{
+    width: 25%;
+    display: flex;
+}
+.auth-input-wrapper .auth-input04 .row-input01{
+    width: 75%;
+    display: flex;
+}
+.auth-input-wrapper .auth-input05{
+    display: flex;
+    align-items: center;
+}
+.auth-input05 .row-input{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.auth-input-wrapper .auth-input05>* select.-input.carrier02{
+    width: 24%;
+}
+.auth-input-wrapper .auth-input05>* select.-input.carrier02~.-input:not(select){
+    width: 60%;
+}
+/*ie*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    /*request*/
+    .auth-input-wrapper .auth-input04{
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .auth-input-wrapper .auth-input04 .row-input01 .-input{
+        width: 22%;
+    }
+    .auth-input-wrapper .auth-input04 .row-input01 .phone{
+        width: 50%;
+    }
+    .auth-input-wrapper .auth-input05 .row-input00{
+        display: flex;
+    }
+    .auth-input-wrapper .auth-input>* .-input:not(select){
+        border: 1px solid #c2c4cc;
+        border-color: #c2c4cc !important;
+    }
+}
