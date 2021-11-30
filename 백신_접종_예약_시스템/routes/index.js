@@ -115,7 +115,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
 
         
         // 접종자 정보를 입력받는 페이지로 연결
-        res.redirect('/inoculatorinput');
+        res.redirect('/userdatainput');
 
 
        } else {
@@ -146,10 +146,10 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
    });
 
    // 접종자 정보 입력 페이지
-   router.get('/inoculatorinput', function(req,res){
-    
+   router.get('/userdatainput', function(req,res){
+    console.log("logout url: "+disconnect_api_url); 
 
-    res.render('inoculatorinput');
+    res.render('userdatainput', {logout: disconnect_api_url});
    });
 
 
