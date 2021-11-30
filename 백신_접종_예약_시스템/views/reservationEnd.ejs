@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Xss-Protection" content="1; mode=block" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+
+    <title>코로나19 예방접종 사전예약 시스템</title>
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/com/font.css" />
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/rsrv/mbl/mobile.css?version=21080912" />
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/com/jquery-ui.css" />
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/mbl/jquery-1.12.4.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/mbl/mobile.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/common.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/kdca.js?version=21080912"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/URLInfo.js"></script>
+    
+    <script type="text/javascript">
+    
+	    var url = window.location.href;
+		 
+//		if("" == document.referrer){
+//		    if(url.indexOf("getVcnRsrvMdinLst") < 0){
+//		    	window.location.replace("/cobk/index.html");
+//		    }
+//		}
+	 
+//		if (url.indexOf("/getVcnRsrvMain.do", 0) > -1) { // 현 페이지 : 예약
+//		 	if (referrer.indexOf("/index.jsp", 0) == -1) { // 이전 페이지
+//		 		window.location.replace("/cobk/index.html");
+//		 	}
+//		}
+		
+//		if(url.indexOf("getVcnRsrvMdinLst") < 0){
+//			if(document.cookie.indexOf('ncvr=on') < 0){
+//				window.location.replace("/cobk/index.html");
+//			}
+//		}
+    	
+//		window.onload = function(){
+			
+// 			var date = new Date();
+// 			var month = date.getMonth() + 1;
+// 			var day = date.getDate();
+// 			var year = date.getFullYear();
+			
+// 			var stdDate = new Date("2021-08-06");
+// 			var stdMonth = stdDate.getMonth() + 1;
+// 			var stdDay = stdDate.getDate();
+// 			var stdYear = stdDate.getFullYear();
+			
+// 			var dayTxt = year + "" + month + "" + day;
+// 			var stdDayTxt = stdYear + "" + stdMonth + "" + stdDay; 
+			
+// 			if(dayTxt < stdDayTxt){
+// 				document.getElementById("rmdli").style.display = '';
+// 			}
+			
+//		};
+
+		if('0' > 0){
+            if('' == 'ERR01'){
+                customAlert("사전예약 세션이 종료되었거나 잘못된 경로로 시도하였습니다.");
+                setTimeout(function(){
+	                window.top.location.replace("https://ncvr.kdca.go.kr/");
+                }, 500);
+            }else if('' == 'ERR98'){
+            	var message = "예약 등록할 수 있는 인원수는 " + "1"+"명으로 초과하였습니다.\n인증 및 대기열 화면으로 이동하시겠습니까?";
+                if( confirm(message) ){
+                    window.top.location.replace("https://ncvr.kdca.go.kr/");
+                }
+//             }else if('' == 'ERR99'){
+
+// 				if( confirm(message) ){
+// 				    window.top.location.replace("https://ncvr.kdca.go.kr/");
+// 				}
+            }
+		}
+		function cnfmRdrct() {
+            if( confirm("예약하기 화면으로 이동하면 인증 및 대기열을 다시 진행하셔야 합니다. 이동하시겠습니까?"))
+                window.top.location.replace("https://ncvr.kdca.go.kr/");
+            else return;
+        }
+     </script>
+
+
+</head>
+<body>
+
+<div id="wrap"> 
+<!-- Header -->
+	<div class="wrapper">
+		<header id="header">
+	      <h1><a href="javascript:window.top.location.replace('https://ncvr.kdca.go.kr/');">질병관리청</a></h1>
+	      <nav class="top-menu">
+	        <ul>
+<!-- 	          <li><a href="javascript:customAlert('지금은 사전예약기간이 아닙니다.');">예약하기</a></li> -->
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvRgst2.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">예약하기</a></li>
+<!--                     <li><a href="javascript:cnfmRdrct();">예약하기</a></li> -->
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvCnfm.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">예약 조회/변경/취소</a></li>
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvMdinLst.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">의료기관 찾기</a></li>
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvOnlineCtnt.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">알림마당</a></li>
+	        </ul>
+	      </nav>
+	      <div class="open-menu">
+	        <a href="#menu">menu</a>
+	      </div>
+	    </header>
+    </div><!-- //wrapper -->
+	
+	<div id="container">
+		<div id="contents_wrap">
+			<meta name="decorator" content="rsrvMbl.layout">
+
+
+
+
+<script>
+
+	if("" != ""){
+		customAlert("");
+		window.location.href="/cobk/rsrv/mbl/getVcnRsrvCnfm.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62";	
+	}
+	
+	$(document).ready(function() {
+		$("#ipsBtn").on("click", function(){
+			window.open("https://www.ips.go.kr/pot/mainDc.do");
+// 			var pop_title = "popupOpener" ;
+// 			$.ajax({
+// 				url : "/cobk/rsrv/web/getIpsEncAjax.do",
+// 				type : "POST",
+// 				dataType : "json",
+// 				async : true,
+// 				success : function(data) {
+					
+// 			        window.open("", pop_title) ;
+// 					// 새창으로 국민비서를 호출해주세요.
+// 					var frmPop = document.ipsForm; 
+// 					var url ="https://www.ips.go.kr/pot/mainDc.do"; // 국민비서 url
+// 					if(null != data && null != data[0] && data.length > 0){
+// 						frmPop.jsonParam.value = data[0].loginInfo; 
+// 					}
+// 					frmPop.target = pop_title ;
+// 					frmPop.action = url;
+// 					frmPop.submit();
+					
+// 				}, error : function(){
+					
+// 					window.open("https://www.ips.go.kr/pot/mainDc.do", pop_title) ;
+// // 					customAlert("국민비서 서비스 신청 중 오류가 발생하였습니다.");
+// 					return;
+// 				}
+// 			});
+		});
+		
+		$(".homeBtn").on("click", function(){
+            /* 20210809_parkjh */
+            
+            window.top.location.replace("https://ncvr.kdca.go.kr/");
+		});
+		
+		$('#mdinBtn1, #mdinBtn2').click(function(e){
+			
+			e.preventDefault();
+			$("#layerMdinViewDiv").html("");
+			
+			if($(this).attr("id") == "mdinBtn1"){
+				
+				if('1'>= 1){
+					var layerAddrHtml = "";
+					layerAddrHtml += '<a href="https://m.map.naver.com/search2/search.naver?query=' + '경기도 부천시 장말로 102, (상동, 반달마을) 207호' + '" target="_blank" title="새창열기">경기도 부천시 장말로 102, (상동, 반달마을) 207호</a>';
+					layerAddrHtml += '<a href="javascript:fnc_addrCopy(\'경기도 부천시 장말로 102, (상동, 반달마을) 207호\');"><span class="copy-addr">복사</span></a>';
+					
+					$("#layerOrgnm").html('김가정의학과의원');
+					$("#layerAddr").html(layerAddrHtml);
+
+					var layerMdinViewDivHtml = '';
+					layerMdinViewDivHtml += '<table class="tbl-address">';
+					layerMdinViewDivHtml += '	<tbody>';
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th scope="row">전화번호</th>';
+					layerMdinViewDivHtml += '			<td><span class="tel">' + '032-323-5525' + '</span></td>';
+					layerMdinViewDivHtml += '		</tr>';
+					
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th scope="row">진료시간</th>';
+					layerMdinViewDivHtml += '			<td>';
+					
+					if("RSRV" == 'APNM'){
+						
+						var monAmSttTm   = '';
+						var monAmEndTm   = '';
+						var monPmSttTm   = '';
+						var monPmEndTm   = '';
+						var monNtSttTm   = '';
+						var monNtEndTm   = '';
+						
+						var tueAmSttTm   = '';
+						var tueAmEndTm   = '';
+						var tuePmSttTm   = '';
+						var tuePmEndTm   = '';
+						var tueNtSttTm   = '';
+						var tueNtEndTm   = '';
+						
+						var wedAmSttTm   = '';
+						var wedAmEndTm   = '';
+						var wedPmSttTm   = '';
+						var wedPmEndTm   = '';
+						var wedNtSttTm   = '';
+						var wedNtEndTm   = '';
+						
+						var thuAmSttTm   = '';
+						var thuAmEndTm   = '';
+						var thuPmSttTm   = '';
+						var thuPmEndTm   = '';
+						var thuNtSttTm   = '';
+						var thuNtEndTm   = '';
+						
+						var friAmSttTm   = '';
+						var friAmEndTm   = '';
+						var friPmSttTm   = '';
+						var friPmEndTm   = '';
+						var friNtSttTm   = '';
+						var friNtEndTm   = '';
+						
+						var satAmSttTm   = '';
+						var satAmEndTm   = '';
+						var satPmSttTm   = '';
+						var satPmEndTm   = '';
+						var satNtSttTm   = '';
+						var satNtEndTm   = '';
+						
+						var sunAmSttTm   = '';
+						var sunAmEndTm   = '';
+						var sunPmSttTm   = '';
+						var sunPmEndTm   = '';
+						var sunNtSttTm   = '';
+						var sunNtEndTm   = '';
+						
+						layerMdinViewDivHtml += "<ul>";
+						if(("" != monAmSttTm && "" !=  monAmEndTm) || ("" != monPmSttTm && "" !=  monPmEndTm) || ("" != monNtSttTm && "" !=  monNtEndTm)){
+							layerMdinViewDivHtml += '					<li>월요일<br>';
+							if("" != monAmSttTm && "" !=  monAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + monAmSttTm.substring(0,2)+":" + monAmSttTm.substring(2,4) + " ~ " + monAmEndTm.substring(0,2)+":" + monAmEndTm.substring(2,4);
+								if(("" != monPmSttTm && "" !=  monPmEndTm) || ("" != monNtSttTm && "" !=  monNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != monPmSttTm && "" !=  monPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + monPmSttTm.substring(0,2)+":" + monPmSttTm.substring(2,4) + " ~ " + monPmEndTm.substring(0,2)+":" + monPmEndTm.substring(2,4);
+								if("" != monNtSttTm && "" !=  monNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != monNtSttTm && "" !=  monNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + monNtSttTm.substring(0,2)+":" + monNtSttTm.substring(2,4) + " ~ " + monNtEndTm.substring(0,2)+":" + monNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>월요일 : 휴진</li>';
+						}
+						
+						if(("" != tueAmSttTm && "" !=  tueAmEndTm) || ("" != tuePmSttTm && "" !=  tuePmEndTm) || ("" != tueNtSttTm && "" !=  tueNtEndTm)){
+							layerMdinViewDivHtml += '					<li>화요일<br>';
+							if("" != tueAmSttTm && "" !=  tueAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + tueAmSttTm.substring(0,2)+":" + tueAmSttTm.substring(2,4) + " ~ " + tueAmEndTm.substring(0,2)+":" + tueAmEndTm.substring(2,4);
+								if(("" != tuePmSttTm && "" !=  tuePmEndTm) || ("" != tueNtSttTm && "" !=  tueNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != tuePmSttTm && "" !=  tuePmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + tuePmSttTm.substring(0,2)+":" + tuePmSttTm.substring(2,4) + " ~ " + tuePmEndTm.substring(0,2)+":" + tuePmEndTm.substring(2,4);
+								if("" != tueNtSttTm && "" !=  tueNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != tueNtSttTm && "" !=  tueNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + tueNtSttTm.substring(0,2)+":" + tueNtSttTm.substring(2,4) + " ~ " + tueNtEndTm.substring(0,2)+":" + tueNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>화요일 : 휴진</li>';
+						}
+						
+						if(("" != wedAmSttTm && "" !=  wedAmEndTm) || ("" != wedPmSttTm && "" !=  wedPmEndTm) || ("" != wedNtSttTm && "" !=  wedNtEndTm)){
+							layerMdinViewDivHtml += '					<li>수요일<br>';
+							if("" != wedAmSttTm && "" !=  wedAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + wedAmSttTm.substring(0,2)+":" + wedAmSttTm.substring(2,4) + " ~ " + wedAmEndTm.substring(0,2)+":" + wedAmEndTm.substring(2,4);
+								if(("" != wedPmSttTm && "" !=  wedPmEndTm) || ("" != wedNtSttTm && "" !=  wedNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != wedPmSttTm && "" !=  wedPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + wedPmSttTm.substring(0,2)+":" + wedPmSttTm.substring(2,4) + " ~ " + wedPmEndTm.substring(0,2)+":" + wedPmEndTm.substring(2,4);
+								if("" != wedNtSttTm && "" !=  wedNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != wedNtSttTm && "" !=  wedNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + wedNtSttTm.substring(0,2)+":" + wedNtSttTm.substring(2,4) + " ~ " + wedNtEndTm.substring(0,2)+":" + wedNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>수요일 : 휴진</li>';
+						}
+						
+						if(("" != thuAmSttTm && "" !=  thuAmEndTm) || ("" != thuPmSttTm && "" !=  thuPmEndTm) || ("" != thuNtSttTm && "" !=  thuNtEndTm)){
+							layerMdinViewDivHtml += '					<li>목요일<br>';
+							if("" != thuAmSttTm && "" !=  thuAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + thuAmSttTm.substring(0,2)+":" + thuAmSttTm.substring(2,4) + " ~ " + thuAmEndTm.substring(0,2)+":" + thuAmEndTm.substring(2,4);
+								if(("" != thuPmSttTm && "" !=  thuPmEndTm) || ("" != thuNtSttTm && "" !=  thuNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != thuPmSttTm && "" !=  thuPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + thuPmSttTm.substring(0,2)+":" + thuPmSttTm.substring(2,4) + " ~ " + thuPmEndTm.substring(0,2)+":" + thuPmEndTm.substring(2,4);
+								if("" != thuNtSttTm && "" !=  thuNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != thuNtSttTm && "" !=  thuNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + thuNtSttTm.substring(0,2)+":" + thuNtSttTm.substring(2,4) + " ~ " + thuNtEndTm.substring(0,2)+":" + thuNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>목요일 : 휴진</li>';
+						}
+						
+						if(("" != friAmSttTm && "" !=  friAmEndTm) || ("" != friPmSttTm && "" !=  friPmEndTm) || ("" != friNtSttTm && "" !=  friNtEndTm)){
+							layerMdinViewDivHtml += '					<li>금요일<br>';
+							if("" != friAmSttTm && "" !=  friAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + friAmSttTm.substring(0,2)+":" + friAmSttTm.substring(2,4) + " ~ " + friAmEndTm.substring(0,2)+":" + friAmEndTm.substring(2,4);
+								if(("" != friPmSttTm && "" !=  friPmEndTm) || ("" != friNtSttTm && "" !=  friNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != friPmSttTm && "" !=  friPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + friPmSttTm.substring(0,2)+":" + friPmSttTm.substring(2,4) + " ~ " + friPmEndTm.substring(0,2)+":" + friPmEndTm.substring(2,4);
+								if("" != friNtSttTm && "" !=  friNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != friNtSttTm && "" !=  friNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + friNtSttTm.substring(0,2)+":" + friNtSttTm.substring(2,4) + " ~ " + friNtEndTm.substring(0,2)+":" + friNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>금요일 : 휴진</li>';
+						}
+						
+						if(("" != satAmSttTm && "" !=  satAmEndTm) || ("" != satPmSttTm && "" !=  satPmEndTm) || ("" != satNtSttTm && "" !=  satNtEndTm)){
+							layerMdinViewDivHtml += '					<li>토요일<br>';
+							if("" != satAmSttTm && "" !=  satAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + satAmSttTm.substring(0,2)+":" + satAmSttTm.substring(2,4) + " ~ " + satAmEndTm.substring(0,2)+":" + satAmEndTm.substring(2,4);
+								if(("" != satPmSttTm && "" !=  satPmEndTm) || ("" != satNtSttTm && "" !=  satNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != satPmSttTm && "" !=  satPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + satPmSttTm.substring(0,2)+":" + satPmSttTm.substring(2,4) + " ~ " + satPmEndTm.substring(0,2)+":" + satPmEndTm.substring(2,4);
+								if("" != satNtSttTm && "" !=  satNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != satNtSttTm && "" !=  satNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + satNtSttTm.substring(0,2)+":" + satNtSttTm.substring(2,4) + " ~ " + satNtEndTm.substring(0,2)+":" + satNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>토요일 : 휴진</li>';
+						}
+						
+						if(("" != sunAmSttTm && "" !=  sunAmEndTm) || ("" != sunPmSttTm && "" !=  sunPmEndTm) || ("" != sunNtSttTm && "" !=  sunNtEndTm)){
+							layerMdinViewDivHtml += '					<li>일요일<br>';
+							if("" != sunAmSttTm && "" !=  sunAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + sunAmSttTm.substring(0,2)+":" + sunAmSttTm.substring(2,4) + " ~ " + sunAmEndTm.substring(0,2)+":" + sunAmEndTm.substring(2,4);
+								if(("" != sunPmSttTm && "" !=  sunPmEndTm) || ("" != sunNtSttTm && "" !=  sunNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != sunPmSttTm && "" !=  sunPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + sunPmSttTm.substring(0,2)+":" + sunPmSttTm.substring(2,4) + " ~ " + sunPmEndTm.substring(0,2)+":" + sunPmEndTm.substring(2,4);
+								if("" != sunNtSttTm && "" !=  sunNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != sunNtSttTm && "" !=  sunNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + sunNtSttTm.substring(0,2)+":" + sunNtSttTm.substring(2,4) + " ~ " + sunNtEndTm.substring(0,2)+":" + sunNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>일요일 : 휴진</li>';
+						}
+						
+						layerMdinViewDivHtml += "</ul>";
+						
+					}else{
+						var monSttTm   = '0900';
+						var monEndTm   = '1800';
+						var tueSttTm   = '0900';
+						var tueEndTm   = '1800';
+						var wedSttTm   = '0900';
+						var wedEndTm   = '1800';
+						var thuSttTm   = '0900';
+						var thuEndTm   = '1800';
+						var friSttTm   = '0900';
+						var friEndTm   = '1800';
+						var satSttTm   = '0900';
+						var satEndTm   = '1400';
+						var sunSttTm   = '';
+						var sunEndTm   = '';
+						var lunchSttTm = '';
+						var lunchEndTm = '';
+						
+						var monLunchSttTm  = '1300';
+						var monLunchEndTm  = '1400';
+						var monDinnerSttTm = '';
+						var monDinnerEndTm = '';
+						var tueLunchSttTm  = '1300';
+						var tueLunchEndTm  = '1400';
+						var tueDinnerSttTm = '';
+						var tueDinnerEndTm = '';
+						var wedLunchSttTm  = '1300';
+						var wedLunchEndTm  = '1400';
+						var wedDinnerSttTm = '';
+						var wedDinnerEndTm = '';
+						var thuLunchSttTm  = '1300';
+						var thuLunchEndTm  = '1400';
+						var thuDinnerSttTm = '';
+						var thuDinnerEndTm = '';
+						var friLunchSttTm  = '1300';
+						var friLunchEndTm  = '1400';
+						var friDinnerSttTm = '';
+						var friDinnerEndTm = '';
+						var satLunchSttTm  = '1300';
+						var satLunchEndTm  = '1400';
+						var satDinnerSttTm = '';
+						var satDinnerEndTm = '';
+						var sunLunchSttTm  = '1300';
+						var sunLunchEndTm  = '1400';
+						var sunDinnerSttTm = '';
+						var sunDinnerEndTm = '';
+						
+						layerMdinViewDivHtml += "<ul>";
+						if("" != monSttTm && "" !=  monEndTm){
+							layerMdinViewDivHtml += '<li>월요일 : ' + monSttTm.substring(0,2)+":" + monSttTm.substring(2,4) + " ~ " + monEndTm.substring(0,2)+":" + monEndTm.substring(2,4);
+							if("" != monLunchSttTm && "" !=  monLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ monLunchSttTm.substring(0,2)+":" + monLunchSttTm.substring(2,4) + " ~ " + monLunchEndTm.substring(0,2)+":" + monLunchEndTm.substring(2,4);
+							}
+							if("" != monDinnerSttTm && "" !=  monDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ monDinnerSttTm.substring(0,2)+":" + monDinnerSttTm.substring(2,4) + " ~ " + monDinnerEndTm.substring(0,2)+":" + monDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>월요일 : 휴진</li>';
+						}
+						if("" != tueSttTm && "" !=  tueEndTm){
+							layerMdinViewDivHtml += '<li>화요일 : ' + tueSttTm.substring(0,2)+":" + tueSttTm.substring(2,4) + " ~ " + tueEndTm.substring(0,2)+":" + tueEndTm.substring(2,4);
+							if("" != tueLunchSttTm && "" !=  tueLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ tueLunchSttTm.substring(0,2)+":" + tueLunchSttTm.substring(2,4) + " ~ " + tueLunchEndTm.substring(0,2)+":" + tueLunchEndTm.substring(2,4);
+							}
+							if("" != tueDinnerSttTm && "" !=  tueDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ tueDinnerSttTm.substring(0,2)+":" + tueDinnerSttTm.substring(2,4) + " ~ " + tueDinnerEndTm.substring(0,2)+":" + tueDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>화요일 : 휴진</li>';
+						}
+						if("" != wedSttTm && "" !=  wedEndTm){
+							layerMdinViewDivHtml += '<li>수요일 : ' + wedSttTm.substring(0,2)+":" + wedSttTm.substring(2,4) + " ~ " + wedEndTm.substring(0,2)+":" + wedEndTm.substring(2,4);
+							if("" != wedLunchSttTm && "" !=  wedLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ wedLunchSttTm.substring(0,2)+":" + wedLunchSttTm.substring(2,4) + " ~ " + wedLunchEndTm.substring(0,2)+":" + wedLunchEndTm.substring(2,4);
+							}
+							if("" != wedDinnerSttTm && "" !=  wedDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ wedDinnerSttTm.substring(0,2)+":" + wedDinnerSttTm.substring(2,4) + " ~ " + wedDinnerEndTm.substring(0,2)+":" + wedDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>수요일 : 휴진</li>';
+						}
+						if("" != thuSttTm && "" !=  thuEndTm){
+							layerMdinViewDivHtml += '<li>목요일 : ' + thuSttTm.substring(0,2)+":" + thuSttTm.substring(2,4) + " ~ " + thuEndTm.substring(0,2)+":" + thuEndTm.substring(2,4);
+							if("" != thuLunchSttTm && "" !=  thuLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ thuLunchSttTm.substring(0,2)+":" + thuLunchSttTm.substring(2,4) + " ~ " + thuLunchEndTm.substring(0,2)+":" + thuLunchEndTm.substring(2,4);
+							}
+							if("" != thuDinnerSttTm && "" !=  thuDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ thuDinnerSttTm.substring(0,2)+":" + thuDinnerSttTm.substring(2,4) + " ~ " + thuDinnerEndTm.substring(0,2)+":" + thuDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>목요일 : 휴진</li>';
+						}
+						if("" != friSttTm && "" !=  friEndTm){
+							layerMdinViewDivHtml += '<li>금요일 : ' + friSttTm.substring(0,2)+":" + friSttTm.substring(2,4) + " ~ " + friEndTm.substring(0,2)+":" + friEndTm.substring(2,4);
+							if("" != friLunchSttTm && "" !=  friLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ friLunchSttTm.substring(0,2)+":" + friLunchSttTm.substring(2,4) + " ~ " + friLunchEndTm.substring(0,2)+":" + friLunchEndTm.substring(2,4);
+							}
+							if("" != friDinnerSttTm && "" !=  friDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ friDinnerSttTm.substring(0,2)+":" + friDinnerSttTm.substring(2,4) + " ~ " + friDinnerEndTm.substring(0,2)+":" + friDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>금요일 : 휴진</li>';
+						}
+						if("" != satSttTm && "" !=  satEndTm){
+							layerMdinViewDivHtml += '<li>토요일 : ' + satSttTm.substring(0,2)+":" + satSttTm.substring(2,4) + " ~ " + satEndTm.substring(0,2)+":" + satEndTm.substring(2,4);
+							if("" != satLunchSttTm && "" !=  satLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ satLunchSttTm.substring(0,2)+":" + satLunchSttTm.substring(2,4) + " ~ " + satLunchEndTm.substring(0,2)+":" + satLunchEndTm.substring(2,4);
+							}
+							if("" != satDinnerSttTm && "" !=  satDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ satDinnerSttTm.substring(0,2)+":" + satDinnerSttTm.substring(2,4) + " ~ " + satDinnerEndTm.substring(0,2)+":" + satDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>토요일 : 휴진</li>';
+						}
+						if("" != sunSttTm && "" !=  sunEndTm){
+							layerMdinViewDivHtml += '<li>일요일 : ' + sunSttTm.substring(0,2)+":" + sunSttTm.substring(2,4) + " ~ " + sunEndTm.substring(0,2)+":" + sunEndTm.substring(2,4);
+							if("" != sunLunchSttTm && "" !=  sunLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ sunLunchSttTm.substring(0,2)+":" + sunLunchSttTm.substring(2,4) + " ~ " + sunLunchEndTm.substring(0,2)+":" + sunLunchEndTm.substring(2,4);
+							}
+							if("" != sunDinnerSttTm && "" !=  sunDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ sunDinnerSttTm.substring(0,2)+":" + sunDinnerSttTm.substring(2,4) + " ~ " + sunDinnerEndTm.substring(0,2)+":" + sunDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>일요일 : 휴진</li>';
+						}
+						
+						layerMdinViewDivHtml += '</ul>';
+					}
+					
+					layerMdinViewDivHtml += '			</td>';
+					layerMdinViewDivHtml += '		</tr>';
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th>장애인<br/>편의시설</th>';
+					layerMdinViewDivHtml += '			<td>';
+					
+					var cvntl001Yn = "X";
+	                var cvntl002Yn = "X";
+	                var cvntl003Yn = "X";
+	                var cvntl004Yn = "X";
+	                var cvntl005Yn = "X";
+	                var cvntl006Yn = "X";
+	                var cvntl007Yn = "X";
+	                var cvntl008Yn = "X";
+	                var cvntl009Yn = "X";
+	                var cvntl010Yn = "X";
+	                var cvntl011Yn = "X";
+	                
+	                if(null != ''){
+	                	cvntl001Yn = (''=="Y"?"O":"X");
+	                    cvntl002Yn = (''=="Y"?"O":"X");
+	                    cvntl003Yn = (''=="Y"?"O":"X");
+	                    cvntl004Yn = (''=="Y"?"O":"X");
+	                    cvntl005Yn = (''=="Y"?"O":"X");
+	                    cvntl006Yn = (''=="Y"?"O":"X");
+	                    cvntl007Yn = (''=="Y"?"O":"X");
+	                    cvntl008Yn = (''=="Y"?"O":"X");
+	                    cvntl009Yn = (''=="Y"?"O":"X");
+	                    cvntl010Yn = (''=="Y"?"O":"X");
+	                    cvntl011Yn = (''=="Y"?"O":"X");
+	           		}
+	                
+	     			layerMdinViewDivHtml += '            	<ul>';
+	     			layerMdinViewDivHtml += '                	<li>장애인 특별 교통수단·이송 지원체계 <span style="color:red;">(' + cvntl001Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인전용 주차구역 <span style="color:red;">(' + cvntl002Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>휠체어 이동가능 통로 폭(1.2m 이상) <span style="color:red;">(' + cvntl003Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인용승강기, 경사로, 휠체어 리프트 <span style="color:red;">(' + cvntl004Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인 등의 이용이 가능한 화장실 <span style="color:red;">(' + cvntl005Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>QR코드 삽입된 서식 활용 <span style="color:red;">(' + cvntl006Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>시각 및 청각장애인 유도 안내 설비 <span style="color:red;">(' + cvntl007Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>의사소통 도움판 활용 <span style="color:red;">(' + cvntl008Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>수어통역사 배치 (또는 수어통역센터 안내) <span style="color:red;">(' + cvntl009Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>이상반응 등 관련 정보 제공 안내(1339 또는 손말이음센터 안내문 게시) <span style="color:red;">(' + cvntl010Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>유도선 및 점자유도블록 설치 <span style="color:red;">(' + cvntl011Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '            	</ul>';
+					layerMdinViewDivHtml += '			</td>';
+					layerMdinViewDivHtml += '		</tr>';
+					layerMdinViewDivHtml += '	</tbody>';
+					layerMdinViewDivHtml += '</table>';
+					
+					$("#layerMdinViewDiv").html(layerMdinViewDivHtml);
+					
+				}else{
+					customAlert("의료기관정보가 없습니다.");
+				}
+				
+			}else{
+				if('1' == 2){
+					var layerAddrHtml = "";
+					layerAddrHtml += '<a href="https://m.map.naver.com/search2/search.naver?query=' + '' + '" target="_blank" title="새창열기"></a>';
+					layerAddrHtml += '<a href="javascript:fnc_addrCopy(\'\');"><span class="copy-addr">복사</span></a>';
+					
+					$("#layerOrgnm").html('');
+					$("#layerAddr").html(layerAddrHtml);
+					
+					var layerMdinViewDivHtml = '';
+					layerMdinViewDivHtml += '<table class="tbl-address">';
+					layerMdinViewDivHtml += '	<tbody>';
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th scope="row">전화번호</th>';
+					layerMdinViewDivHtml += '			<td><span class="tel">' + '' + '</span></td>';
+					layerMdinViewDivHtml += '		</tr>';
+					
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th scope="row">진료시간</th>';
+					layerMdinViewDivHtml += '			<td>';
+					
+					if("RSRV" == ''){
+						
+						var monAmSttTm   = '';
+						var monAmEndTm   = '';
+						var monPmSttTm   = '';
+						var monPmEndTm   = '';
+						var monNtSttTm   = '';
+						var monNtEndTm   = '';
+						
+						var tueAmSttTm   = '';
+						var tueAmEndTm   = '';
+						var tuePmSttTm   = '';
+						var tuePmEndTm   = '';
+						var tueNtSttTm   = '';
+						var tueNtEndTm   = '';
+						
+						var wedAmSttTm   = '';
+						var wedAmEndTm   = '';
+						var wedPmSttTm   = '';
+						var wedPmEndTm   = '';
+						var wedNtSttTm   = '';
+						var wedNtEndTm   = '';
+						
+						var thuAmSttTm   = '';
+						var thuAmEndTm   = '';
+						var thuPmSttTm   = '';
+						var thuPmEndTm   = '';
+						var thuNtSttTm   = '';
+						var thuNtEndTm   = '';
+						
+						var friAmSttTm   = '';
+						var friAmEndTm   = '';
+						var friPmSttTm   = '';
+						var friPmEndTm   = '';
+						var friNtSttTm   = '';
+						var friNtEndTm   = '';
+						
+						var satAmSttTm   = '';
+						var satAmEndTm   = '';
+						var satPmSttTm   = '';
+						var satPmEndTm   = '';
+						var satNtSttTm   = '';
+						var satNtEndTm   = '';
+						
+						var sunAmSttTm   = '';
+						var sunAmEndTm   = '';
+						var sunPmSttTm   = '';
+						var sunPmEndTm   = '';
+						var sunNtSttTm   = '';
+						var sunNtEndTm   = '';
+						
+						layerMdinViewDivHtml += "<ul>";
+						if(("" != monAmSttTm && "" !=  monAmEndTm) || ("" != monPmSttTm && "" !=  monPmEndTm) || ("" != monNtSttTm && "" !=  monNtEndTm)){
+							layerMdinViewDivHtml += '					<li>월요일<br>';
+							if("" != monAmSttTm && "" !=  monAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + monAmSttTm.substring(0,2)+":" + monAmSttTm.substring(2,4) + " ~ " + monAmEndTm.substring(0,2)+":" + monAmEndTm.substring(2,4);
+								if(("" != monPmSttTm && "" !=  monPmEndTm) || ("" != monNtSttTm && "" !=  monNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != monPmSttTm && "" !=  monPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + monPmSttTm.substring(0,2)+":" + monPmSttTm.substring(2,4) + " ~ " + monPmEndTm.substring(0,2)+":" + monPmEndTm.substring(2,4);
+								if("" != monNtSttTm && "" !=  monNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != monNtSttTm && "" !=  monNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + monNtSttTm.substring(0,2)+":" + monNtSttTm.substring(2,4) + " ~ " + monNtEndTm.substring(0,2)+":" + monNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>월요일 : 휴진</li>';
+						}
+						
+						if(("" != tueAmSttTm && "" !=  tueAmEndTm) || ("" != tuePmSttTm && "" !=  tuePmEndTm) || ("" != tueNtSttTm && "" !=  tueNtEndTm)){
+							layerMdinViewDivHtml += '					<li>화요일<br>';
+							if("" != tueAmSttTm && "" !=  tueAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + tueAmSttTm.substring(0,2)+":" + tueAmSttTm.substring(2,4) + " ~ " + tueAmEndTm.substring(0,2)+":" + tueAmEndTm.substring(2,4);
+								if(("" != tuePmSttTm && "" !=  tuePmEndTm) || ("" != tueNtSttTm && "" !=  tueNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != tuePmSttTm && "" !=  tuePmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + tuePmSttTm.substring(0,2)+":" + tuePmSttTm.substring(2,4) + " ~ " + tuePmEndTm.substring(0,2)+":" + tuePmEndTm.substring(2,4);
+								if("" != tueNtSttTm && "" !=  tueNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != tueNtSttTm && "" !=  tueNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + tueNtSttTm.substring(0,2)+":" + tueNtSttTm.substring(2,4) + " ~ " + tueNtEndTm.substring(0,2)+":" + tueNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>화요일 : 휴진</li>';
+						}
+						
+						if(("" != wedAmSttTm && "" !=  wedAmEndTm) || ("" != wedPmSttTm && "" !=  wedPmEndTm) || ("" != wedNtSttTm && "" !=  wedNtEndTm)){
+							layerMdinViewDivHtml += '					<li>수요일<br>';
+							if("" != wedAmSttTm && "" !=  wedAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + wedAmSttTm.substring(0,2)+":" + wedAmSttTm.substring(2,4) + " ~ " + wedAmEndTm.substring(0,2)+":" + wedAmEndTm.substring(2,4);
+								if(("" != wedPmSttTm && "" !=  wedPmEndTm) || ("" != wedNtSttTm && "" !=  wedNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != wedPmSttTm && "" !=  wedPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + wedPmSttTm.substring(0,2)+":" + wedPmSttTm.substring(2,4) + " ~ " + wedPmEndTm.substring(0,2)+":" + wedPmEndTm.substring(2,4);
+								if("" != wedNtSttTm && "" !=  wedNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != wedNtSttTm && "" !=  wedNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + wedNtSttTm.substring(0,2)+":" + wedNtSttTm.substring(2,4) + " ~ " + wedNtEndTm.substring(0,2)+":" + wedNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>수요일 : 휴진</li>';
+						}
+						
+						if(("" != thuAmSttTm && "" !=  thuAmEndTm) || ("" != thuPmSttTm && "" !=  thuPmEndTm) || ("" != thuNtSttTm && "" !=  thuNtEndTm)){
+							layerMdinViewDivHtml += '					<li>목요일<br>';
+							if("" != thuAmSttTm && "" !=  thuAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + thuAmSttTm.substring(0,2)+":" + thuAmSttTm.substring(2,4) + " ~ " + thuAmEndTm.substring(0,2)+":" + thuAmEndTm.substring(2,4);
+								if(("" != thuPmSttTm && "" !=  thuPmEndTm) || ("" != thuNtSttTm && "" !=  thuNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != thuPmSttTm && "" !=  thuPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + thuPmSttTm.substring(0,2)+":" + thuPmSttTm.substring(2,4) + " ~ " + thuPmEndTm.substring(0,2)+":" + thuPmEndTm.substring(2,4);
+								if("" != thuNtSttTm && "" !=  thuNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != thuNtSttTm && "" !=  thuNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + thuNtSttTm.substring(0,2)+":" + thuNtSttTm.substring(2,4) + " ~ " + thuNtEndTm.substring(0,2)+":" + thuNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>목요일 : 휴진</li>';
+						}
+						
+						if(("" != friAmSttTm && "" !=  friAmEndTm) || ("" != friPmSttTm && "" !=  friPmEndTm) || ("" != friNtSttTm && "" !=  friNtEndTm)){
+							layerMdinViewDivHtml += '					<li>금요일<br>';
+							if("" != friAmSttTm && "" !=  friAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + friAmSttTm.substring(0,2)+":" + friAmSttTm.substring(2,4) + " ~ " + friAmEndTm.substring(0,2)+":" + friAmEndTm.substring(2,4);
+								if(("" != friPmSttTm && "" !=  friPmEndTm) || ("" != friNtSttTm && "" !=  friNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != friPmSttTm && "" !=  friPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + friPmSttTm.substring(0,2)+":" + friPmSttTm.substring(2,4) + " ~ " + friPmEndTm.substring(0,2)+":" + friPmEndTm.substring(2,4);
+								if("" != friNtSttTm && "" !=  friNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != friNtSttTm && "" !=  friNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + friNtSttTm.substring(0,2)+":" + friNtSttTm.substring(2,4) + " ~ " + friNtEndTm.substring(0,2)+":" + friNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>금요일 : 휴진</li>';
+						}
+						
+						if(("" != satAmSttTm && "" !=  satAmEndTm) || ("" != satPmSttTm && "" !=  satPmEndTm) || ("" != satNtSttTm && "" !=  satNtEndTm)){
+							layerMdinViewDivHtml += '					<li>토요일<br>';
+							if("" != satAmSttTm && "" !=  satAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + satAmSttTm.substring(0,2)+":" + satAmSttTm.substring(2,4) + " ~ " + satAmEndTm.substring(0,2)+":" + satAmEndTm.substring(2,4);
+								if(("" != satPmSttTm && "" !=  satPmEndTm) || ("" != satNtSttTm && "" !=  satNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != satPmSttTm && "" !=  satPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + satPmSttTm.substring(0,2)+":" + satPmSttTm.substring(2,4) + " ~ " + satPmEndTm.substring(0,2)+":" + satPmEndTm.substring(2,4);
+								if("" != satNtSttTm && "" !=  satNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != satNtSttTm && "" !=  satNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + satNtSttTm.substring(0,2)+":" + satNtSttTm.substring(2,4) + " ~ " + satNtEndTm.substring(0,2)+":" + satNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>토요일 : 휴진</li>';
+						}
+						
+						if(("" != sunAmSttTm && "" !=  sunAmEndTm) || ("" != sunPmSttTm && "" !=  sunPmEndTm) || ("" != sunNtSttTm && "" !=  sunNtEndTm)){
+							layerMdinViewDivHtml += '					<li>일요일<br>';
+							if("" != sunAmSttTm && "" !=  sunAmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오전 : ' + sunAmSttTm.substring(0,2)+":" + sunAmSttTm.substring(2,4) + " ~ " + sunAmEndTm.substring(0,2)+":" + sunAmEndTm.substring(2,4);
+								if(("" != sunPmSttTm && "" !=  sunPmEndTm) || ("" != sunNtSttTm && "" !=  sunNtEndTm)){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != sunPmSttTm && "" !=  sunPmEndTm){
+								layerMdinViewDivHtml += '					 	&nbsp;&nbsp;- 오후 : ' + sunPmSttTm.substring(0,2)+":" + sunPmSttTm.substring(2,4) + " ~ " + sunPmEndTm.substring(0,2)+":" + sunPmEndTm.substring(2,4);
+								if("" != sunNtSttTm && "" !=  sunNtEndTm){
+									layerMdinViewDivHtml +='<br>';
+								}
+							}
+							if("" != sunNtSttTm && "" !=  sunNtEndTm){
+								layerMdinViewDivHtml += '						&nbsp;&nbsp;- 야간 : ' + sunNtSttTm.substring(0,2)+":" + sunNtSttTm.substring(2,4) + " ~ " + sunNtEndTm.substring(0,2)+":" + sunNtEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '					</li>';
+						}else{
+							layerMdinViewDivHtml += '					<li>일요일 : 휴진</li>';
+						}
+						
+						layerMdinViewDivHtml += "</ul>";
+						
+					}else{
+						var monSttTm   = '';
+						var monEndTm   = '';
+						var tueSttTm   = '';
+						var tueEndTm   = '';
+						var wedSttTm   = '';
+						var wedEndTm   = '';
+						var thuSttTm   = '';
+						var thuEndTm   = '';
+						var friSttTm   = '';
+						var friEndTm   = '';
+						var satSttTm   = '';
+						var satEndTm   = '';
+						var sunSttTm   = '';
+						var sunEndTm   = '';
+						var lunchSttTm = '';
+						var lunchEndTm = '';
+						
+						var monLunchSttTm  = '';
+						var monLunchEndTm  = '';
+						var monDinnerSttTm = '';
+						var monDinnerEndTm = '';
+						var tueLunchSttTm  = '';
+						var tueLunchEndTm  = '';
+						var tueDinnerSttTm = '';
+						var tueDinnerEndTm = '';
+						var wedLunchSttTm  = '';
+						var wedLunchEndTm  = '';
+						var wedDinnerSttTm = '';
+						var wedDinnerEndTm = '';
+						var thuLunchSttTm  = '';
+						var thuLunchEndTm  = '';
+						var thuDinnerSttTm = '';
+						var thuDinnerEndTm = '';
+						var friLunchSttTm  = '';
+						var friLunchEndTm  = '';
+						var friDinnerSttTm = '';
+						var friDinnerEndTm = '';
+						var satLunchSttTm  = '';
+						var satLunchEndTm  = '';
+						var satDinnerSttTm = '';
+						var satDinnerEndTm = '';
+						var sunLunchSttTm  = '';
+						var sunLunchEndTm  = '';
+						var sunDinnerSttTm = '';
+						var sunDinnerEndTm = '';
+						
+						layerMdinViewDivHtml += "<ul>";
+						if("" != monSttTm && "" !=  monEndTm){
+							layerMdinViewDivHtml += '<li>월요일 : ' + monSttTm.substring(0,2)+":" + monSttTm.substring(2,4) + " ~ " + monEndTm.substring(0,2)+":" + monEndTm.substring(2,4);
+							if("" != monLunchSttTm && "" !=  monLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ monLunchSttTm.substring(0,2)+":" + monLunchSttTm.substring(2,4) + " ~ " + monLunchEndTm.substring(0,2)+":" + monLunchEndTm.substring(2,4);
+							}
+							if("" != monDinnerSttTm && "" !=  monDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ monDinnerSttTm.substring(0,2)+":" + monDinnerSttTm.substring(2,4) + " ~ " + monDinnerEndTm.substring(0,2)+":" + monDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>월요일 : 휴진</li>';
+						}
+						if("" != tueSttTm && "" !=  tueEndTm){
+							layerMdinViewDivHtml += '<li>화요일 : ' + tueSttTm.substring(0,2)+":" + tueSttTm.substring(2,4) + " ~ " + tueEndTm.substring(0,2)+":" + tueEndTm.substring(2,4);
+							if("" != tueLunchSttTm && "" !=  tueLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ tueLunchSttTm.substring(0,2)+":" + tueLunchSttTm.substring(2,4) + " ~ " + tueLunchEndTm.substring(0,2)+":" + tueLunchEndTm.substring(2,4);
+							}
+							if("" != tueDinnerSttTm && "" !=  tueDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ tueDinnerSttTm.substring(0,2)+":" + tueDinnerSttTm.substring(2,4) + " ~ " + tueDinnerEndTm.substring(0,2)+":" + tueDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>화요일 : 휴진</li>';
+						}
+						if("" != wedSttTm && "" !=  wedEndTm){
+							layerMdinViewDivHtml += '<li>수요일 : ' + wedSttTm.substring(0,2)+":" + wedSttTm.substring(2,4) + " ~ " + wedEndTm.substring(0,2)+":" + wedEndTm.substring(2,4);
+							if("" != wedLunchSttTm && "" !=  wedLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ wedLunchSttTm.substring(0,2)+":" + wedLunchSttTm.substring(2,4) + " ~ " + wedLunchEndTm.substring(0,2)+":" + wedLunchEndTm.substring(2,4);
+							}
+							if("" != wedDinnerSttTm && "" !=  wedDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ wedDinnerSttTm.substring(0,2)+":" + wedDinnerSttTm.substring(2,4) + " ~ " + wedDinnerEndTm.substring(0,2)+":" + wedDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>수요일 : 휴진</li>';
+						}
+						if("" != thuSttTm && "" !=  thuEndTm){
+							layerMdinViewDivHtml += '<li>목요일 : ' + thuSttTm.substring(0,2)+":" + thuSttTm.substring(2,4) + " ~ " + thuEndTm.substring(0,2)+":" + thuEndTm.substring(2,4);
+							if("" != thuLunchSttTm && "" !=  thuLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ thuLunchSttTm.substring(0,2)+":" + thuLunchSttTm.substring(2,4) + " ~ " + thuLunchEndTm.substring(0,2)+":" + thuLunchEndTm.substring(2,4);
+							}
+							if("" != thuDinnerSttTm && "" !=  thuDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ thuDinnerSttTm.substring(0,2)+":" + thuDinnerSttTm.substring(2,4) + " ~ " + thuDinnerEndTm.substring(0,2)+":" + thuDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>목요일 : 휴진</li>';
+						}
+						if("" != friSttTm && "" !=  friEndTm){
+							layerMdinViewDivHtml += '<li>금요일 : ' + friSttTm.substring(0,2)+":" + friSttTm.substring(2,4) + " ~ " + friEndTm.substring(0,2)+":" + friEndTm.substring(2,4);
+							if("" != friLunchSttTm && "" !=  friLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ friLunchSttTm.substring(0,2)+":" + friLunchSttTm.substring(2,4) + " ~ " + friLunchEndTm.substring(0,2)+":" + friLunchEndTm.substring(2,4);
+							}
+							if("" != friDinnerSttTm && "" !=  friDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ friDinnerSttTm.substring(0,2)+":" + friDinnerSttTm.substring(2,4) + " ~ " + friDinnerEndTm.substring(0,2)+":" + friDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>금요일 : 휴진</li>';
+						}
+						if("" != satSttTm && "" !=  satEndTm){
+							layerMdinViewDivHtml += '<li>토요일 : ' + satSttTm.substring(0,2)+":" + satSttTm.substring(2,4) + " ~ " + satEndTm.substring(0,2)+":" + satEndTm.substring(2,4);
+							if("" != satLunchSttTm && "" !=  satLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ satLunchSttTm.substring(0,2)+":" + satLunchSttTm.substring(2,4) + " ~ " + satLunchEndTm.substring(0,2)+":" + satLunchEndTm.substring(2,4);
+							}
+							if("" != satDinnerSttTm && "" !=  satDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ satDinnerSttTm.substring(0,2)+":" + satDinnerSttTm.substring(2,4) + " ~ " + satDinnerEndTm.substring(0,2)+":" + satDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>토요일 : 휴진</li>';
+						}
+						if("" != sunSttTm && "" !=  sunEndTm){
+							layerMdinViewDivHtml += '<li>일요일 : ' + sunSttTm.substring(0,2)+":" + sunSttTm.substring(2,4) + " ~ " + sunEndTm.substring(0,2)+":" + sunEndTm.substring(2,4);
+							if("" != sunLunchSttTm && "" !=  sunLunchEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 점심시간 : '+ sunLunchSttTm.substring(0,2)+":" + sunLunchSttTm.substring(2,4) + " ~ " + sunLunchEndTm.substring(0,2)+":" + sunLunchEndTm.substring(2,4);
+							}
+							if("" != sunDinnerSttTm && "" !=  sunDinnerEndTm){
+								layerMdinViewDivHtml += '<br/>';
+								layerMdinViewDivHtml += '&nbsp;&nbsp;- 저녁시간 : '+ sunDinnerSttTm.substring(0,2)+":" + sunDinnerSttTm.substring(2,4) + " ~ " + sunDinnerEndTm.substring(0,2)+":" + sunDinnerEndTm.substring(2,4);
+							}
+							layerMdinViewDivHtml += '</li>';
+						}else{
+							layerMdinViewDivHtml += '<li>일요일 : 휴진</li>';
+						}
+						
+						layerMdinViewDivHtml += '</ul>';
+					}
+					
+					layerMdinViewDivHtml += '			</td>';
+					layerMdinViewDivHtml += '		</tr>';
+					layerMdinViewDivHtml += '		<tr>';
+					layerMdinViewDivHtml += '			<th>장애인<br/>편의시설</th>';
+					layerMdinViewDivHtml += '			<td>';
+					
+					var cvntl001Yn = "X";
+	                var cvntl002Yn = "X";
+	                var cvntl003Yn = "X";
+	                var cvntl004Yn = "X";
+	                var cvntl005Yn = "X";
+	                var cvntl006Yn = "X";
+	                var cvntl007Yn = "X";
+	                var cvntl008Yn = "X";
+	                var cvntl009Yn = "X";
+	                var cvntl010Yn = "X";
+	                var cvntl011Yn = "X";
+	                
+	                if(null != ''){
+	                	cvntl001Yn = (''=="Y"?"O":"X");
+	                    cvntl002Yn = (''=="Y"?"O":"X");
+	                    cvntl003Yn = (''=="Y"?"O":"X");
+	                    cvntl004Yn = (''=="Y"?"O":"X");
+	                    cvntl005Yn = (''=="Y"?"O":"X");
+	                    cvntl006Yn = (''=="Y"?"O":"X");
+	                    cvntl007Yn = (''=="Y"?"O":"X");
+	                    cvntl008Yn = (''=="Y"?"O":"X");
+	                    cvntl009Yn = (''=="Y"?"O":"X");
+	                    cvntl010Yn = (''=="Y"?"O":"X");
+	                    cvntl011Yn = (''=="Y"?"O":"X");
+	           		}
+	                
+	     			layerMdinViewDivHtml += '            	<ul>';
+	     			layerMdinViewDivHtml += '                	<li>장애인 특별 교통수단·이송 지원체계 <span style="color:red;">(' + cvntl001Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인전용 주차구역 <span style="color:red;">(' + cvntl002Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>휠체어 이동가능 통로 폭(1.2m 이상) <span style="color:red;">(' + cvntl003Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인용승강기, 경사로, 휠체어 리프트 <span style="color:red;">(' + cvntl004Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>장애인 등의 이용이 가능한 화장실 <span style="color:red;">(' + cvntl005Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>QR코드 삽입된 서식 활용 <span style="color:red;">(' + cvntl006Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>시각 및 청각장애인 유도 안내 설비 <span style="color:red;">(' + cvntl007Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>의사소통 도움판 활용 <span style="color:red;">(' + cvntl008Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>수어통역사 배치 (또는 수어통역센터 안내) <span style="color:red;">(' + cvntl009Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>이상반응 등 관련 정보 제공 안내(1339 또는 손말이음센터 안내문 게시) <span style="color:red;">(' + cvntl010Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '                	<li>유도선 및 점자유도블록 설치 <span style="color:red;">(' + cvntl011Yn + ')</span></li>';
+	     			layerMdinViewDivHtml += '            	</ul>';
+					layerMdinViewDivHtml += '			</td>';
+					layerMdinViewDivHtml += '		</tr>';
+					layerMdinViewDivHtml += '	</tbody>';
+					layerMdinViewDivHtml += '</table>';
+					
+					$("#layerMdinViewDiv").html(layerMdinViewDivHtml);
+				}else{
+					customAlert("의료기관정보가 없습니다.");
+				}	
+			}
+			
+			$('.layer-find').fadeIn(300);
+			$('.layer-find').css('z-index', '100');
+			$('<div id="blind"></div>').css('opacity',0.6).appendTo('body');
+			$('#blind').css({'height' : $('html').prop("scrollHeight")+'px'});
+		});
+	});
+
+	
+</script>
+<div class="dim"></div>
+    <div class="sub-visual">
+      <h2>예방접종 예약하기<strong>예약이 완료되었습니다.</strong></h2>
+      <ul class="step-identity clearfix">
+        <li>본인인증</li>
+        <li>의료기관 선택</li>
+        <li class="active">예약완료</li>
+      </ul><!-- //step-identity -->
+    </div><!-- //sub-visual -->
+    <form action="">
+    <div class="content-box view-box">
+      <h3 class="info-title">예약자 정보</h3>
+      <table class="tbl-reservation">
+        <tbody>
+          <tr>
+            <th scope="row">예약자 이름</th>
+            <td>이름</td>
+          </tr>
+          <tr>
+            <th scope="row">예약자 주민등록번호</th>
+			<td>
+				
+                주민번호 앞 - 주민번호 뒤(1******)
+				
+			</td>
+          </tr>
+          <tr>
+            <th scope="row">예약자 휴대폰번호</th>
+            <td>핸드폰 번호</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3 class="info-title">예약 정보</h3>
+      
+	  
+	  
+				
+      <table class="tbl-reservation">
+        <tbody>
+          <tr>
+            <th scope="row">예약번호</th>
+		  	<td><span class="date-vaccin">예약번호 숫자</span></td>
+          </tr>
+			<tr>
+				<th scope="row">접종받는 분(피접종자) 이름</th>
+				<td>이름</td>
+			</tr>
+			<tr>
+				<th scope="row">접종받는 분(피접종자) 주민등록번호</th>
+				<td>주민번호 앞 - 주민번호 뒤(1******)</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					
+														
+					
+					
+					추가 접종 예약 백신
+				</th>
+				<td>
+					
+					
+						
+						
+							<span>백신 이름</span>
+						
+					
+					
+					
+				</td>
+			</tr>
+          <tr>
+            <th scope="row">추가 접종 예약 의료기관</th>
+            <td>의료기관명 : 
+				<button class="button-search small" id="mdinBtn1" onclick="return false;">의료기관 정보확인</button> <!--check-medi  -->
+			</td>
+          </tr>
+          <tr>
+			<th scope="row">추가 접종 예약 일시</th>
+			<td>
+			<span class="date-vaccin">
+				2021-12-29 / 10:00
+	        </span>
+			</td>
+		  </tr>
+		  
+        </tbody>
+      </table>
+      <ul class="warn-list">
+        <li>예약정보는 휴대폰 번호로 전송해드리오니, 확인 후 예약일시에 맞춰 의료기관에 방문해주세요.</li>
+        <li>예약사항에 대한 조회, 변경 및 취소는 &lsquo;예약 조회/변경/취소&rsquo; 메뉴를 통해 정보를 확인하신 후 진행해주시기 바랍니다.</li>
+      </ul><!-- //warn-list -->
+      <br/>
+	    <table class="tbl-reservation">
+			<thead>
+				<tr>	
+					<td>
+						<div class="wrap-support" style="background-color: #f4f6f8; padding: 15px; margin: 10px;">
+							<h3 class="h3"><span>국민비서 알림서비스</span>를 신청하면, 백신접종알림 이외에 생활정보알림(7종)도 추가로 받으실 수 있습니다.</h3>
+							<p>* 교통 범칙금 &middot; 과태료, 일반건강(암)검진일, 국가장학금, 운전면허갱신, 통학버스운전자 &middot; 고령운전자 교육</p>
+						</div>
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align:center;">
+						<button class="button-search small" id="ipsBtn" onclick="return false;">국민비서 서비스 신청하기</button>
+						<br/><br/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+    </div><!-- //content-box -->
+    <div class="bottom-wrap">
+      <div class="single-button">
+        <input type="button" class="button button-white homeBtn" onclick="return false;" value="홈으로" />
+      </div><!-- //single-button -->
+    </div><!-- //bottom-wrap -->
+				
+    <!-- 레이어 팝업 -->
+    <div class="layer-find check-medi">
+      <div class="layer-header">
+        <h2>의료기관 정보확인</h2>
+        <span class="close-layer close-find">닫기</span>
+      </div><!-- //layer-header -->
+      <div class="layer-body">
+        <div class="wrap-scroll">
+          <h5  id="layerOrgnm"></h5>
+          <div class="view-addr" id="layerAddr">
+            <span class="copy-addr"> 복사</span>
+          </div><!-- //view-addr -->
+          <div id="layerMdinViewDiv"></div>
+        </div><!-- //wrap-scroll -->
+      </div><!-- //layer-body -->
+      <div class="layer-footer search-foot">
+        <button class="btn wide orange close-layer" onclick="return false;">확인</button>
+      </div><!-- //layer-footer -->
+    </div><!-- //layer-find -->
+    <!--// 레이어 팝업 -->
+    </form>
+
+	<form id = "ipsForm" name = "ipsForm">
+		<input type="hidden" id="jsonParam" name="jsonParam"/>
+	</form>
+		</div>
+	</div>
+	
+	<!-- Footer -->
+	<div id="footer-warp">
+		<footer>
+			<div class="footer">
+	        <h5>코로나19 예방접종 사전예약 시스템</h5>
+	        <ul class="kdca-info">
+	          <li><a href="https://www.kdca.go.kr/menu.es?mid=a20810030000" target="_blank" >개인정보처리방침</a></li>
+	          <li><a href="https://www.kdca.go.kr/" target="_blank" title="새창열기">질병관리청 바로가기</a></li>
+	        </ul>
+	        <div class="nuri"><img src="https://ncvr.kdca.go.kr/cobk/images/egovframework/rte/rsrv/mbl/nuri.png" alt="OPEN/출처표시/상업용금지/변경금지/공공누리 공공저작물 자유이용허락" /></div>
+	        <address>(28159) 충북 청주시 흥덕구 오송읍 오송생명2로 187 오송보건의료행정타운내 질병관리청</address>
+	        <p class="copyright">COPYRIGHT © 2021 질병관리청 ALL RIGHTS RESERVED.</p>
+	      </div>
+		</footer><!-- //footer -->
+	</div>
+<!-- // Footer -->
+</div>
+<script>
+$(document).ready(function(){
+	
+});
+</script>
+</body>
+</html>
