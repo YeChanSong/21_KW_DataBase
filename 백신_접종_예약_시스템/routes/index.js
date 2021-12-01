@@ -12,10 +12,10 @@ router.get('/landing', function(req, res, next) {
   res.render('landing', {title: '예방접종 사전예약 시스템'});
 });
 
-router.post('/landing', function(req, res, next){
-  console.log("landing post");
-  console.log('req.body: ' + JSON.stringify(req.body));
-});
+// router.post('/landing', function(req, res, next){
+//   console.log("landing post");
+//   console.log('req.body: ' + JSON.stringify(req.body));
+// });
 
 
 /* 네이버 로그인 */
@@ -151,6 +151,13 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
 
     res.render('userdatainput', {logout: disconnect_api_url});
    });
+
+  // 접종자 정보를 입력받아 DB에 저장
+  router.post('/userdatainput', function(req, res, next){
+    console.log("userdatainput post");
+    console.log('req.body: ' + JSON.stringify(req.body));
+  });
+
 
 
 

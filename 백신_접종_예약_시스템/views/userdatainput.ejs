@@ -26,9 +26,6 @@
     <script type="text/javascript">
     
 	    var url = window.location.href;
-		 
-
-
 		if('0' > 0){
             if('' == 'ERR01'){
                 customAlert("사전예약 세션이 종료되었거나 잘못된 경로로 시도하였습니다.");
@@ -529,6 +526,9 @@
 			});
 		});
 		
+
+
+
 		//등록페이지_예약 벨리데이션
 		function fncValidation(num){
 			
@@ -641,18 +641,81 @@
 			
 			return true;
 		}
+
+
+
+
+
+		// 예약정보 작성여부 확인
+		function myValidation(str){
+			alert($("#patnam").val());
+			if(str == "Next"){
+				if("6" == $(":input:radio[name=pprlrCd]:checked").val()){
+					alert("대리 선택");
+	            	if("" == $("#apnmNm").val()){
+	                	customAlert("대리 예약자 이름을 입력해 주세요.");
+	                	$("#apnmNm").focus();
+	                	return false;
+	            	}else if(!chkPatten(document.getElementById("apnmNm"), 'regHangulEng', '대리 예약자 이름은 ')){
+	                	return false;
+	            	}else if("" == $("#apnmRrn1").val()){
+	                	customAlert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
+	                	$("#apnmRrn1").focus();
+	                	return false;
+	            	}else if("" == $("#apnmRrn2").val()){
+	                	customAlert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
+	                	$("#apnmRrn2").focus();
+	               		return false;
+	            	}
+            	}
+			
+				if("" == $("#patnam").val()){
+                	customAlert("접종받는 분 이름을 입력해 주세요.");
+                	$("#patnam").focus();
+                	return false;
+            	}else if(!chkPatten(document.getElementById("patnam"), 'regHangulEng', '접종받는 분 이름은 ')){
+                	return false;
+            	}else if("" == $("#ptntRrn1").val()){
+                	customAlert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
+                	$("#ptntRrn1").focus();
+                	return false;
+            	}else if("" == $("#ptntRrn2").val()){
+                	customAlert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
+                	$("#ptntRrn2").focus();
+                	return false;
+            	}else if(!chkPatten(document.getElementById("ptntRrn1"), 'regCustNo1')){
+                	return false;
+            	}else if(!chkPatten(document.getElementById("ptntRrn2"), 'regCustNo2')){
+                	return false;
+            	}else if("" == $("#apnmMtno1").val()){
+                	customAlert("휴대폰번호 중간자리를 입력해 주세요.");
+                	$("#apnmMtno1").focus();
+                	return false;
+            	}else if("" == $("#apnmMtno2").val()){
+                	customAlert("휴대폰번호 뒷자리를 입력해 주세요.");
+                	$("#apnmMtno2").focus();
+                	return false;
+            	}
+			}
+		}
+
+
 		
 		//다음으로 버튼
 		$("#searchMc").click(function(e){
-		    
+		    alert($(":input:radio[name=pprlrCd]:checked").val());
+			
 			//조건 확인
-			if (!fncValidation("1")) {
+			if(!myValidation("Next")){
+				alert("myVal false");
 				return;
 			}
 			
-			$("#rsrvRgstPage").hide();         //예방접종예약하기_본인인증페이지(현재)
-			$("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
-			window.scrollTo(0, 0);
+			// $("#rsrvRgstPage").hide();         //예방접종예약하기_본인인증페이지(현재)
+			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
+			// window.scrollTo(0, 0);
+			alert("myVal 성공");
+
 		});
 		
 		//뒤로버튼
