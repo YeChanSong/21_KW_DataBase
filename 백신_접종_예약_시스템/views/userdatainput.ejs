@@ -30,18 +30,18 @@
             if('' == 'ERR01'){
                 customAlert("사전예약 세션이 종료되었거나 잘못된 경로로 시도하였습니다.");
                 setTimeout(function(){
-	                window.top.location.replace("localhost:3000");
+	                window.top.location.replace("http://localhost:3000");
                 }, 500);
             }else if('' == 'ERR98'){
             	var message = "예약 등록할 수 있는 인원수는 " + "1"+"명으로 초과하였습니다.\n인증 및 대기열 화면으로 이동하시겠습니까?";
                 if( confirm(message) ){
-                    window.top.location.replace("localhost:3000");
+                    window.top.location.replace("http://localhost:3000");
                 }
             }
 		}
 		function cnfmRdrct() {
             if( confirm("예약하기 화면으로 이동하면 인증 및 대기열을 다시 진행하셔야 합니다. 이동하시겠습니까?"))
-                window.top.location.replace("localhost:3000");
+                window.top.location.replace("http://localhost:3000");
             else return;
         }
      </script>
@@ -54,7 +54,7 @@
 <!-- Header -->
 	<div class="wrapper">
 		<header id="header">
-	      <h1><a href="javascript:window.top.location.replace('localhost:3000');">질병관리청</a></h1>
+	      <h1><a href="javascript:window.top.location.replace('http://localhost:3000');">질병관리청</a></h1>
 	      <nav class="top-menu">
 	        <ul>
                 <!-- https://relay.kdca.go.kr 뒤에 href주소 추가시 페이지 연결-->
@@ -79,7 +79,7 @@
 
 
 
-<script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/form-validate.js"></script>
+<!-- <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/form-validate.js"></script> -->
 <script type="text/javascript" src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/netfunnel.js?ver=210722" charset="UTF-8"></script>
 
 <script>
@@ -508,12 +508,12 @@
 					}else{
 						if(data.msg == "ERR01"){
 							customAlert("사전예약 세션이 종료되었거나 잘못된 경로로 시도하였습니다.");
-							window.top.location.replace("https://ncvr.kdca.go.kr/");
+							window.top.location.replace("http://localhost:3000");
 							return;						
 						}else if(data.msg == "ERR02"){ // 본인인증CI != 접수화면 KeyIn된 정보의CI가 다를경우
                             confirm("본인인증한 정보와 최종 접수자 정보가 일치하지 않습니다.");
                             //customAlert("본인인증한 정보와 최종 접수자 정보가 일치하지 않습니다.");
-                            window.top.location.replace("https://ncvr.kdca.go.kr/");
+                            window.top.location.replace("http://localhost:3000");
                             return;
                         }else{
 							customAlert(data.msg);
@@ -648,54 +648,45 @@
 
 		// 예약정보 작성여부 확인
 		function myValidation(str){
-			alert($("#patnam").val());
+			
 			if(str == "Next"){
 				if("6" == $(":input:radio[name=pprlrCd]:checked").val()){
-					alert("대리 선택");
 	            	if("" == $("#apnmNm").val()){
-	                	customAlert("대리 예약자 이름을 입력해 주세요.");
+	                	alert("대리 예약자 이름을 입력해 주세요.");
 	                	$("#apnmNm").focus();
 	                	return false;
-	            	}else if(!chkPatten(document.getElementById("apnmNm"), 'regHangulEng', '대리 예약자 이름은 ')){
-	                	return false;
 	            	}else if("" == $("#apnmRrn1").val()){
-	                	customAlert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
+	                	alert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
 	                	$("#apnmRrn1").focus();
 	                	return false;
 	            	}else if("" == $("#apnmRrn2").val()){
-	                	customAlert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
+	                	alert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
 	                	$("#apnmRrn2").focus();
 	               		return false;
 	            	}
             	}
-			
 				if("" == $("#patnam").val()){
-                	customAlert("접종받는 분 이름을 입력해 주세요.");
+                	alert("접종받는 분 이름을 입력해 주세요.");
                 	$("#patnam").focus();
                 	return false;
-            	}else if(!chkPatten(document.getElementById("patnam"), 'regHangulEng', '접종받는 분 이름은 ')){
-                	return false;
             	}else if("" == $("#ptntRrn1").val()){
-                	customAlert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
+                	alert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
                 	$("#ptntRrn1").focus();
                 	return false;
             	}else if("" == $("#ptntRrn2").val()){
-                	customAlert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
+                	alert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
                 	$("#ptntRrn2").focus();
                 	return false;
-            	}else if(!chkPatten(document.getElementById("ptntRrn1"), 'regCustNo1')){
-                	return false;
-            	}else if(!chkPatten(document.getElementById("ptntRrn2"), 'regCustNo2')){
-                	return false;
             	}else if("" == $("#apnmMtno1").val()){
-                	customAlert("휴대폰번호 중간자리를 입력해 주세요.");
+                	alert("휴대폰번호 중간자리를 입력해 주세요.");
                 	$("#apnmMtno1").focus();
                 	return false;
             	}else if("" == $("#apnmMtno2").val()){
-                	customAlert("휴대폰번호 뒷자리를 입력해 주세요.");
+                	alert("휴대폰번호 뒷자리를 입력해 주세요.");
                 	$("#apnmMtno2").focus();
                 	return false;
             	}
+				return true;
 			}
 		}
 
@@ -703,11 +694,8 @@
 		
 		//다음으로 버튼
 		$("#searchMc").click(function(e){
-		    alert($(":input:radio[name=pprlrCd]:checked").val());
-			
 			//조건 확인
 			if(!myValidation("Next")){
-				alert("myVal false");
 				return;
 			}
 			
@@ -715,6 +703,9 @@
 			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
 			// window.scrollTo(0, 0);
 			alert("myVal 성공");
+
+			// 사용자가 등록한 정보를 폼데이터로 보내고 페이지 이동해야함.
+			window.top.location.replace("http://localhost:3000");
 
 		});
 		
