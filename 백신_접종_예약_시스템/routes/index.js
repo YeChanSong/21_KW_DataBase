@@ -166,18 +166,19 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     res.render('userdatainput', {logout: disconnect_api_url});
    });
 
+   
+
   // 접종자 정보를 입력받아 DB에 저장
-  router.post('/userdatainput', function(req, res, next){
+  router.post('/userdatainput', async function(req, res, next){
     console.log("userdatainput post\n\n");
     console.log('req.body: ' + JSON.stringify(req.body));
 
     var User_number = req.body.ptntRrn1+"-"+req.body.ptntRrn2;
     var Sublocation_id = 1;
     var User_name = req.body.patnam;
-    var vaccineated_num=0;
+    var vaccinated_num=0;
     var today = new Date();
     var birth;
-    
     if(req.body.ptntRrn1[0]>2){
       birth = 1900+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1]);
     }else{
@@ -185,29 +186,54 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     }
     var age = Number.parseInt(today.getFullYear()) - Number(birth);
     var PhoneNum = req.body.apnmMtnoTofmn+"-"+req.body.apnmMtno1+"-"+req.body.apnmMtno2;
-    
-    var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccineated_num];
-
-    pool.getConnection(function(err, connection){
-        var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
-        connection.query(sqlForInsertBoard, datas, function(err, rows){
-            if(err) console.error("err: "+ err);
-            console.log("rows : " + JSON.stringify(rows));
-
-
-            // 병원 예약 페이지로 연결하면 됨
-            res.redirect('/');
-            connection.release();
-        });
+    var isResult = await function poolcon(){
+    pool.getConnection(function(err,connection){
+        var sql = "select * from USERS where User_number = ? ";
+        connection.query(sql, [User_number], function(err, row){
+          if(err) console.error("error: "+err);
+          if(row.length>0){
+            console.log("already exist");
+            isResult = true;
+            console.log("isResult: "+isResult);
+            vaccinated_num=row[0].Vaccinated_Number+1;
+          }
+          connection.release();
+      });
     });
+  };
+
+    if(isResult === false){ // 사용자가 처음 예약을 진행하는 경우
+      var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccinated_num];
+      pool.getConnection(function(err, connection){
+          var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
+          connection.query(sqlForInsertBoard, datas, function(err, rows){
+              console.log("insert here");
+              if(err) console.error("err: "+ err);
+              console.log("rows : " + JSON.stringify(rows));
 
 
+              // 병원 예약 페이지로 연결하면 됨
+              res.redirect('/');
+              connection.release();
+          });
+      });
+    }else{
+      var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num, User_number];
+      pool.getConnection(function(err, connection){
+          var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
+          connection.query(sqlForInsertBoard, datas, function(err, rows){
+            console.log("update here");
+              if(err) console.error("err: "+ err);
+              console.log("rows : " + JSON.stringify(rows));
 
-    
+
+              // 병원 예약 페이지로 연결하면 됨
+              res.redirect('/');
+              connection.release();
+          });
+      });
+    }
     
   });
-
-
-
 
 module.exports = router;
