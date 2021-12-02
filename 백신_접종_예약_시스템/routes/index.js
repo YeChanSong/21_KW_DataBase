@@ -1,6 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
+var mysql = require('mysql');
+const { connect } = require('.');
+var pool = mysql.createPool({
+    connectionLimit: 5,
+    host: 'localhost',
+    user: 'root',
+    database: 'DBproject',
+    password: '1234'
+});
 
 
 /* GET home page. */
@@ -16,6 +25,19 @@ router.get('/landing', function(req, res, next) {
 //   console.log("landing post");
 //   console.log('req.body: ' + JSON.stringify(req.body));
 // });
+
+
+// // for logging
+// var fs = require('fs');
+// var util = require('util');
+// var logfileName = '/home/david/Desktop/log.txt';
+// var logfile = fs.createWriteStream(logfileName, {flags : 'a+'});
+// var log_stdout = process.stdout;
+
+// console.log = function(d) {
+//     logfile.write(util.format(d) + '\n\n\n');
+//     log_stdout.write(util.format(d) + '\n\n\n');
+// };
 
 
 /* 네이버 로그인 */
@@ -67,11 +89,6 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     });
   });
   
-  // app.listen(3000, function () {
-  //   console.log('http://127.0.0.1:3000/naverlogin app listening on port 3000!');
-  // });
-
-
   /* 회원 프로필 조회 */
   // 고유ID, 생년월일, 이름, 전화번호를 가져온다
   // 생년월일 --> 나이 계산 // 주민등록번호 대신 고유ID를 활용.. --> 고유ID의 길이가 20지을 넘으므로 USERS 테이블 수정해야 할 수 있다.
@@ -128,9 +145,6 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
        }
      });
    });
-  //  app.listen(3000, function () {
-  //    console.log('http://127.0.0.1:3000/member app listening on port 3000!');
-  //  });
   
   // 인증 도중 취소 및 기타 에러 처리 페이지
    router.get('/autherror', function(req,res){
@@ -154,8 +168,43 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
 
   // 접종자 정보를 입력받아 DB에 저장
   router.post('/userdatainput', function(req, res, next){
-    console.log("userdatainput post");
+    console.log("userdatainput post\n\n");
     console.log('req.body: ' + JSON.stringify(req.body));
+
+    var User_number = req.body.ptntRrn1+"-"+req.body.ptntRrn2;
+    var Sublocation_id = 1;
+    var User_name = req.body.patnam;
+    var vaccineated_num=0;
+    var today = new Date();
+    var birth;
+    
+    if(req.body.ptntRrn1[0]>2){
+      birth = 1900+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1]);
+    }else{
+      birth = 2000+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1]);
+    }
+    var age = Number.parseInt(today.getFullYear()) - Number(birth);
+    var PhoneNum = req.body.apnmMtnoTofmn+"-"+req.body.apnmMtno1+"-"+req.body.apnmMtno2;
+    
+    var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccineated_num];
+
+    pool.getConnection(function(err, connection){
+        var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
+        connection.query(sqlForInsertBoard, datas, function(err, rows){
+            if(err) console.error("err: "+ err);
+            console.log("rows : " + JSON.stringify(rows));
+
+
+            // 병원 예약 페이지로 연결하면 됨
+            res.redirect('/');
+            connection.release();
+        });
+    });
+
+
+
+    
+    
   });
 
 

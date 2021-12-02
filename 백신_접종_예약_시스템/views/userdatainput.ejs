@@ -481,9 +481,9 @@
 			$('#blind').css({'height' : $('html').prop("scrollHeight")+'px'});
 		});
 		
-		//등록페이지_예약등록 버튼
+		//등록페이지_예약등록 버튼			alert("ajax 데이터 전송");
+
 		$("#insertVcnRsrvBtn").on("click" , function() {
-			
 			//본인예약(접종자==예약자)
             if("1" == $(":input:radio[name=pprlrCd]:checked").val()){    
                 $("#apnmNm").val($("#patnam").val());
@@ -496,6 +496,7 @@
 				type : "POST",
 				data : $("#vcnRsrvFrm").serializeArray(),
 				dataType : "json",
+				
 				success : function(data) {
 					var data = data[0];
 					
@@ -677,6 +678,10 @@
                 	alert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
                 	$("#ptntRrn2").focus();
                 	return false;
+            	}else if("" == $("#apnmMtnoTofmn").val()){
+                	alert("휴대폰번호 앞자리를 입력해 주세요.");
+                	$("#apnmMtnoTofmn").focus();
+                	return false;
             	}else if("" == $("#apnmMtno1").val()){
                 	alert("휴대폰번호 중간자리를 입력해 주세요.");
                 	$("#apnmMtno1").focus();
@@ -704,8 +709,8 @@
 			// window.scrollTo(0, 0);
 			alert("myVal 성공");
 
-			// 사용자가 등록한 정보를 폼데이터로 보내고 페이지 이동해야함.
-			window.top.location.replace("http://localhost:3000");
+			
+			$("#vcnRsrvFrm").submit();
 
 		});
 		
@@ -1329,7 +1334,7 @@
       </ul><!-- //step-identity -->
     </div><!-- //sub-visual -->
 
-    <form action="" id="vcnRsrvFrm" name="vcnRsrvFrm" method="post">
+    <form action="/userdatainput" id="vcnRsrvFrm" name="vcnRsrvFrm" method="post">
     	<input type="hidden" id="apnmTy" 			name="apnmTy" 			value="mi"/>
     	<input type="hidden" id="apnmNo" 			name="apnmNo" 			value=""/>
         <input type="hidden" id="vcntme" 			name="vcntme" 			value="1"/>
@@ -1473,6 +1478,14 @@
       </div><!-- //button-group -->
     </div><!-- //bottom-wrap -->
     </form>
+
+
+
+
+
+
+
+
 
 <!-- //layer-find -->
 <!-- //layer-confirm -->
