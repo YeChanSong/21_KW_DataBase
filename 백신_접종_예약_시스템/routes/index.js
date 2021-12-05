@@ -186,22 +186,27 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     }
     var age = Number.parseInt(today.getFullYear()) - Number(birth);
     var PhoneNum = req.body.apnmMtnoTofmn+"-"+req.body.apnmMtno1+"-"+req.body.apnmMtno2;
-    var isResult = await function poolcon(){
-    pool.getConnection(function(err,connection){
+    
+    var isFirstVac = async () => {
+      var isUpdate = null;
+      pool.getConnection(function(err,connection){
         var sql = "select * from USERS where User_number = ? ";
         connection.query(sql, [User_number], function(err, row){
           if(err) console.error("error: "+err);
           if(row.length>0){
             console.log("already exist");
-            isResult = true;
-            console.log("isResult: "+isResult);
-            vaccinated_num=row[0].Vaccinated_Number+1;
+            isUpdate = true;
           }
           connection.release();
       });
     });
+    console.log("in isFirstVac conn: "+isUpdate);
+    return result;
   };
-
+  var DBconn = async function(isResult){
+    
+    console.log("isR: "+isResult);
+    // console.log("outer: "+result);
     if(isResult === false){ // 사용자가 처음 예약을 진행하는 경우
       var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccinated_num];
       pool.getConnection(function(err, connection){
@@ -218,7 +223,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
           });
       });
     }else{
-      var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num, User_number];
+      var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num+1, User_number];
       pool.getConnection(function(err, connection){
           var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
           connection.query(sqlForInsertBoard, datas, function(err, rows){
@@ -232,8 +237,11 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
               connection.release();
           });
       });
-    }
-    
+      }
+    };
+    var result = await isFirstVac();
+    await console.log("midd: "+result);
+    var dbc = await DBconn(result);
   });
 
 module.exports = router;
