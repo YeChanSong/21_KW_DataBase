@@ -1,7 +1,7 @@
-const e = require('express');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+const passport = require('passport');
 var pool = mysql.createPool({
   connectionLimit: 5,
   host: 'localhost',
@@ -10,8 +10,47 @@ var pool = mysql.createPool({
   database: 'dbproject'
 });
 
+// 권한없는 페이지 접근 처리 
+var checkAuth_page = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/admin/login');
+}
+
+// 권한없는 api 요청 처리 
+var checkAuth_api = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.status(401).json({message: '권한 없음'});
+}
+
+router.get('/', checkAuth_page, function(req, res, next) {
+    res.redirect('/admin/hospitals/individual-management');
+});
+
+router.get('/login', function(req, res, next) {
+    res.render('admin/login', {title: '예방접종 사전예약 시스템'});
+});
+
+router.post('/login', passport.authenticate('local-admin', {
+    failureRedirect: '/admin/login'
+}), function(req, res, next) {
+    req.session.save(function (err) {
+        res.redirect('/admin');
+    });
+});
+
+router.get('/logout', (req, res, next) => {
+    req.logout();
+    req.session.destroy(function (err) {
+        res.redirect('/admin/login');
+    });
+});
+
 /* 병원 1곳 단위의 백신 수량 관리 페이지 */
-router.get('/hospitals/individual-management', function(req, res, next) {
+router.get('/hospitals/individual-management', checkAuth_page, function(req, res, next) {
     res.render('admin/hospitals/individual_management', {title: '예방접종 사전예약 시스템'});
 });
 
@@ -48,7 +87,7 @@ router.get('/location-data', function(req, res, next) {
 });
 
 /* 병원 목록 dataTables 에 대한 server side processing */
-router.get('/hospitals/data-tables-source', function(req, res, next) {
+router.get('/hospitals/data-tables-source', checkAuth_api, function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if(err) next(err);
 
@@ -106,7 +145,7 @@ router.get('/hospitals/data-tables-source', function(req, res, next) {
 });
 
 /* 특정 병원의 백신 보유량 조회 */
-router.get('/hospitals/:id/vaccine-quantities', function(req, res, next) {    
+router.get('/hospitals/:id/vaccine-quantities', checkAuth_api, function(req, res, next) {    
     pool.getConnection(function(err, connection) {
         if(err) next(err);
         
@@ -134,7 +173,7 @@ router.get('/hospitals/:id/vaccine-quantities', function(req, res, next) {
 });
 
 /* 특정 병원의 백신 보유량 수정 */
-router.put('/hospitals/:id/vaccine-quantities', function(req, res, next) {    
+router.put('/hospitals/:id/vaccine-quantities', checkAuth_api, function(req, res, next) {    
     pool.getConnection(function(err, connection) {
         if(err) next(err);
 
@@ -165,7 +204,7 @@ router.put('/hospitals/:id/vaccine-quantities', function(req, res, next) {
 });
 
 /* 특정 병원의 모든 접종 예약 조회 */
-router.get('/hospitals/:id/vaccine-reservations', function(req, res, next) {    
+router.get('/hospitals/:id/vaccine-reservations', checkAuth_api, function(req, res, next) {    
     pool.getConnection(function(err, connection) {
         if(err) next(err);
         

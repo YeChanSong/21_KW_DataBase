@@ -116,7 +116,6 @@ router.post('/write', function(req, res, next) {
 
         connection.query(query, [req.body.review_content, req.body.vaccine_rating, req.body.hospital_rating, req.body.reservation_id], function(err, rows) {
             if (err) {
-                console.log(err);
                 next(err);
             }
             else {
