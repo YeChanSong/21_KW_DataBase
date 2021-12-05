@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var mysql = require('mysql');
+var mysql = require('mysql2/promise');
 const { connect } = require('.');
 var pool = mysql.createPool({
     connectionLimit: 5,
@@ -188,60 +188,107 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     var PhoneNum = req.body.apnmMtnoTofmn+"-"+req.body.apnmMtno1+"-"+req.body.apnmMtno2;
     
     var isFirstVac = async () => {
-      var isUpdate = null;
-      pool.getConnection(function(err,connection){
-        var sql = "select * from USERS where User_number = ? ";
-        connection.query(sql, [User_number], function(err, row){
-          if(err) console.error("error: "+err);
-          if(row.length>0){
-            console.log("already exist");
-            isUpdate = true;
-          }
-          connection.release();
-      });
-    });
-    console.log("in isFirstVac conn: "+isUpdate);
-    return result;
+      var connRes = false;
+    //   var isUpdate = 
+    //   await pool.getConnection(async function(err,connection){
+    //     var sql = "select * from USERS where User_number = ? ";
+        
+    //     await connection.query(sql, [User_number], function(err, row){
+    //       if(err) console.error("error: "+err);
+    //       if(row.length>0){
+    //         console.log("already exist");
+    //         connRes = true;
+    //       }
+    //       connection.release();
+    //   });
+    // });
+
+    var sql = "select * from USERS where User_number = ? ";
+    var connection = await pool.getConnection(async conn => conn);
+    try{
+      var [rows] = await connection.query(sql,[User_number]);
+      console.log("rows: "+JSON.stringify(rows));
+      if(row.length>0){
+        console.log("already exist");
+        connRes = true;
+      }
+      connection.release();
+    }catch (err){
+      console.error("err: "+ err);
+      connection.release();
+    }
+    console.log("in isFirstVac conn: "+connRes);
+    return connRes;
   };
   var DBconn = async function(isResult){
     
     console.log("isR: "+isResult);
-    // console.log("outer: "+result);
     if(isResult === false){ // 사용자가 처음 예약을 진행하는 경우
       var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccinated_num];
-      pool.getConnection(function(err, connection){
-          var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
-          connection.query(sqlForInsertBoard, datas, function(err, rows){
-              console.log("insert here");
-              if(err) console.error("err: "+ err);
-              console.log("rows : " + JSON.stringify(rows));
+      console.log("true case data: "+datas);
+      // await pool.getConnection(async function(err, connection){
+      //     var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
+      //     await connection.query(sqlForInsertBoard, datas, function(err, rows){
+      //         console.log("insert here");
+      //         if(err) console.error("err: "+ err);
+      //         console.log("rows : " + JSON.stringify(rows));
 
 
-              // 병원 예약 페이지로 연결하면 됨
-              res.redirect('/');
-              connection.release();
-          });
-      });
+      //         // 병원 예약 페이지로 연결하면 됨
+      //         // res.redirect('/');
+      //         connection.release();
+      //     });
+      // });
+      
+      var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
+      var connection = await pool.getConnection(async conn => conn);
+      try{
+        var [rows] = await connection.query(sqlForInsertBoard,datas);
+        console.log("rows: "+JSON.stringify(rows));
+        connection.release();
+        return true;
+      }catch (err){
+        console.error("err: "+ err);
+        connection.release();
+        return false;
+      }
+      
     }else{
       var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num+1, User_number];
-      pool.getConnection(function(err, connection){
-          var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
-          connection.query(sqlForInsertBoard, datas, function(err, rows){
-            console.log("update here");
-              if(err) console.error("err: "+ err);
-              console.log("rows : " + JSON.stringify(rows));
+      // await pool.getConnection(async function(err, connection){
+      //     var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
+      //     await connection.query(sqlForInsertBoard, datas, function(err, rows){
+      //       console.log("update here");
+      //         if(err) console.error("err: "+ err);
+      //         console.log("rows : " + JSON.stringify(rows));
 
 
-              // 병원 예약 페이지로 연결하면 됨
-              res.redirect('/');
-              connection.release();
-          });
-      });
+      //         // 병원 예약 페이지로 연결하면 됨
+      //         // res.redirect('/');
+      //         connection.release();
+      //     });
+      // });
+        var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
+        var connection = await pool.getConnection(async conn => conn);
+        try{
+          var [rows] = await connection.query(sqlForInsertBoard,datas);
+          console.log("rows: "+JSON.stringify(rows));
+          connection.release();
+          return true;
+        }catch (err){
+          console.error("err: "+ err);
+          connection.release();
+          return false;
+        }
       }
     };
     var result = await isFirstVac();
     await console.log("midd: "+result);
     var dbc = await DBconn(result);
+    await console.log(dbc);
+    if(dbc){
+      res.redirect('/');
+    }
   });
 
 module.exports = router;
