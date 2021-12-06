@@ -178,18 +178,42 @@
         
 		// 예약 중 나갈 시 네이버 로그인 취소
         $(".homeBtn").on("click", function(){
-            $.ajax({
-				url : "<%=logout%>",
-				type : "GET",
-				// data : { },
-				// dataType : "json",
-				success : function(data) {
-					alert("로그아웃 성공");
-				}
-			});
-            
+			if('<%=loginType%>' === 'naver'){
+            	$.ajax({
+					url : "<%=logoutNaver%>",
+					type : "GET",
+					// data : { },
+					// dataType : "json",
+					success : function(data) {
+						alert("로그아웃 성공");
+					}
+				});
+			}else if('<%=loginType%>' === 'kakao'){
+				alert("<%=logout.url%>\n<%=logout.headers.Authorization%>\n<%=logout.headers.Ctype%>");
+				$.ajax({
+					url : "<%=logout.url%>",
+					type : "POST",
+					headers:{
+						Authorization: "<%=logout.headers.Authorization%>",
+						"Content-Type" : "<%=logout.headers.Ctype%>"
+					},
+					success : function(data) {
+						alert("로그아웃 성공");
+					}
+				});
+			}else{
+				alert("else case;");
+			}
             window.top.location.replace("http://localhost:3000");
 		});
+
+
+
+
+
+
+
+
 		
 		//임신여부 선택시 출산예정일 출력 여부
         $("input[name=prgnYn]").on("change", function(){
