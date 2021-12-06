@@ -9,7 +9,37 @@ var pool = mysql.createPool({
     password: '1234',
     database: 'dbproject'
 });
-
+//백신 접종 완료 api
+/*
+*   hospital_id: 병원 id
+*   vaccinated_number: 접종 차수
+*   user_id: 유저의 id
+*  */
+router.post('/reservation/user/:userId', function(req, res, next){
+   //유저의 접종 차수 + 1
+    pool.getConnection(function(err, connection){
+       let query =
+           `
+                UPDATE users
+                SET Vaccinated_Number = ?
+                WHERE User_number = ?
+           `;
+       connection.query(query, [req.body.vaccinated_number + 1, req.params.userId], function(err, rows){
+           connection.release();
+       });
+   });
+    //예약 내역 지우기
+    pool.getConnection(function(err, connection){
+        let query =
+            `
+                DELETE FROM vaccine_reservation
+                WHERE user_number = ?
+           `;
+        connection.query(query, [req.params.userId], function(err, rows){
+            connection.release();
+        });
+    });
+});
 //병원에 예약된 내역
 router.get('/reservation/hospital/:id', function(req, res, next){
    pool.getConnection(function (err, connection){
@@ -59,7 +89,7 @@ router.post('/reservation', function(req, res, next){
            `;
        const b = req.body;
        //기존 차수에 1을 더하여 적용
-       connection.query(query, [b.inoculation_number + 1, b.hospital_id, b.user_number, b.vaccine_id],
+       connection.query(query, [b.inoculation_number, b.hospital_id, b.user_number, b.vaccine_id],
            function(err, rows){
            console.log(req.body);
            if(err) next(err);
