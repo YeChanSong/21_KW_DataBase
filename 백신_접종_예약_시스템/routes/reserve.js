@@ -9,13 +9,23 @@ var pool = mysql.createPool({
     password: '1234',
     database: 'dbproject'
 });
+
+let InjectPolicy = function(){
+    pool.getConnection((err, connection) => {
+       let query = `SELECT COUNT(*) vaccine_reservation WHERE reservation_date = ?`;
+       connection.query(query, (err, rows) => {
+           connection.release();
+           return rows[0] <= 10;
+       });
+    });
+};
 //백신 접종 완료 api
 /*
 *   hospital_id: 병원 id
 *   vaccinated_number: 접종 차수
 *   user_id: 유저의 id
 *  */
-router.post('/reservation/user/:userId', function(req, res, next){
+router.post('/reservation/user/:uid', function(req, res, next){
    //유저의 접종 차수 + 1
     pool.getConnection(function(err, connection){
        let query =
@@ -24,7 +34,7 @@ router.post('/reservation/user/:userId', function(req, res, next){
                 SET Vaccinated_Number = ?
                 WHERE User_number = ?
            `;
-       connection.query(query, [req.body.vaccinated_number + 1, req.params.userId], function(err, rows){
+       connection.query(query, [req.body.vaccinated_number + 1, req.params.uid], function(err, rows){
            connection.release();
        });
    });
@@ -35,7 +45,7 @@ router.post('/reservation/user/:userId', function(req, res, next){
                 DELETE FROM vaccine_reservation
                 WHERE user_number = ?
            `;
-        connection.query(query, [req.params.userId], function(err, rows){
+        connection.query(query, [req.params.uid], function(err, rows){
             connection.release();
         });
     });
@@ -60,7 +70,7 @@ router.get('/reservation/hospital/:id', function(req, res, next){
 });
 
 //유저의 예약 내역
-router.get('/reservation/user/:id', function(req, res, next){
+router.get('/reservation/user/:uid', function(req, res, next){
     pool.getConnection(function (err, connection){
         let query =
             `
@@ -68,7 +78,7 @@ router.get('/reservation/user/:id', function(req, res, next){
                 JOIN users u ON u.User_number = ?
                 JOIN hospital h ON h.hospital_id = u.hospital_id
             `;
-        connection.query(query, [req.params.id], function(err, rows){
+        connection.query(query, [req.params.uid], function(err, rows){
             if(err) next(err);
 
             else{
@@ -80,26 +90,53 @@ router.get('/reservation/user/:id', function(req, res, next){
 });
 
 //예약 API
+/*
+* hospital_id: 병원 ID
+* reservation_date: 예약 날짜 (yyyy:mm:dd)
+* vaccine_id: 백신 ID
+* inoculation_number: 접종 차수
+* user_number: 유저 식별 번호
+* NOTE: 10개를 초과하는 예약은 불가능하게 동작
+* */
 router.post('/reservation', function(req, res, next){
-   pool.getConnection(function(err, connection){
-       let query =
-           `
-           INSERT INTO vaccine_reservation(reservation_date, inoculation_number, hospital_id, user_number, vaccine_id)
-           VALUES(NOW(), ?, ?, ?, ?)
-           `;
-       const b = req.body;
-       //기존 차수에 1을 더하여 적용
-       connection.query(query, [b.inoculation_number, b.hospital_id, b.user_number, b.vaccine_id],
-           function(err, rows){
-           console.log(req.body);
-           if(err) next(err);
-
-           else{
-                res.redirect('/reservation/user/' + req.params.id);
-           }
-           connection.release();
-       });
+   if(!InjectPolicy()){
+       res.render('/reservation', {'message': '예약 개수가 초과되어 더 이상 예약할 수 없는 병원입니다.'});
+       return;
+   }
+    const b = req.body;
+    pool.getConnection((err, connection) => {
+      let query =
+      `
+        INSERT INTO vaccine_reservation (hospital_id, reservation_date, vaccine_id, inoculation_number, user_number)
+        VALUES(?, ?, ?, ?, ?)
+      `;
+      connection.query(query, [b.hospital_id, b.reservation_date, b.vaccine_id, b.inoculation_number, b.user_number],
+          (err, rows) => {
+            if(err) next(err);
+            else{
+                //등록 후에는 리다이렉트
+                res.redirect('/reservation');
+            }
+          });
    });
+});
+
+//예약 취소 API
+router.delete('/reservation/:rid', function(req, res, next){
+    pool.getConnection(function(err, connection){
+       let query =
+        `
+            DELETE FROM vaccine_reservation
+            WHERE id = ?
+        `;
+       connection.query(query, [req.params.rid], function(err, rows){
+            if(err) next(err);
+            else{
+                res.redirect('/reservation/')
+            }
+       });
+       connection.release();
+    });
 });
 
 module.exports = router;
