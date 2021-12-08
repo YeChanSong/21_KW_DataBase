@@ -15,6 +15,7 @@ var pool = mysql.createPool({
 const KakaoRestApiKey = '01b4a1c7c85b88974e0bd12deb284504';
 const KakaoClientSecret = 'RDyZZICeXk4VQvYRJmAZWam6KrIvhLKW';
 const KakaoRedirectUrl = 'http://localhost:3000/Kakao/Api/Oauth2ClientRedirect';
+const KakaoLogoutUrl = 'http://localhost:3000';
 let KakaoAuthToken = '';
 let KakaoAuthRefreshToken = '';
 let KakaoAuthCode = '';
@@ -152,7 +153,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         // 접종자 정보를 입력받는 페이지로 연결
         // res.redirect('/userdatainput');
         
-        res.redirect('/userdatainput/naver');
+        res.redirect('/naveruserinput');
         // res.render('userdatainput', {logoutNaver: disconnect_api_url, logout: dummy, loginType: 'naver'});
 
        } else {
@@ -175,25 +176,13 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
 
 
   //  // 접종자 정보 입력 페이지
-   router.get('/userdatainput/naver', function(req,res){
-    console.log("logout url: "+disconnect_api_url); 
-    var dummy = {
-      url: '',
-      headers: {
-        Authorization: '',
-        Ctype :''
-      }
-    }
+   router.get('/naveruserinput', function(req,res){
+    console.log("naveruserinput logout url: "+disconnect_api_url); 
+    
 
-    res.render('userdatainput', {logoutNaver: disconnect_api_url, logout: dummy, loginType: 'naver'});
+    res.render('naveruserinput', {logoutNaver: disconnect_api_url});
    });
 
-
-   router.get('/userdatainput/kakao', function(req,res){
-    console.log("logout url: "+KakaoLogout.url); 
-
-    res.render('userdatainput', {logoutNaver: disconnect_api_url, logout: KakaoLogout, loginType: 'kakao'});
-   });
    
 
   // 접종자 정보를 입력받아 DB에 저장
@@ -334,19 +323,35 @@ router.get('/Kakao/Api/Oauth2ClientRedirect', async function (req, res) {
       Authorization: 'Bearer '+KakaoAuthToken
     }
   });
-  // console.log(userDataRes.data);
-  KakaoLogout = {
-    url: 'https://kapi.kakao.com/v1/user/logout',
-    headers: {
-      Authorization: 'Bearer '+KakaoAuthToken,
-      Ctype :'application/x-www-form-urlencoded'
-    }
-  }
+
+  // 로그아웃 링크
+  KakaoLogout = 'https://kauth.kakao.com/oauth/logout?client_id='+KakaoRestApiKey+'&logout_redirect_uri='+KakaoLogoutUrl;
+  // unlink 링크
+  // KakaoLogout = {
+  //   url: 'https://kapi.kakao.com/v1/user/unlink',
+  //   headers:{
+  //     Ctype: 'application/x-www-form-urlencoded',
+  //     Authorization: 'Bearer '+ KakaoAuthToken
+  //   }
+  // }
 
   // res.render('userdatainput', {logout: KakaoLogout, loginType: 'kakao'});
-  res.redirect('/userdatainput/kakao');
+  res.redirect('/kakaouserinput');
 });
 
+router.get('/kakaouserinput', function (req, res) {
+  console.log("kakaouserinput Logout URL: "+KakaoLogout);
+  res.render('kakaouserinput', {logout: KakaoLogout});
+  return;
+ });
+
+ router.get('/kakaologoutredirect', async function (req, res) {
+  
+  console.log("\n\nkakaologoutredirect GET\n\n");
+  console.log("kakaologoutredirect URL: "+KakaoLogout);
+  res.redirect(KakaoLogout);
+  // redirect URI를 localhost:3000으로 Kakao Logout Redirect를 설정해서 메인으로 간다.
+ });
 
 
 module.exports = router;
