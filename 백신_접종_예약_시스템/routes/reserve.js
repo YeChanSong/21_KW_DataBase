@@ -49,7 +49,7 @@ router.post('/', function(req, res, next){
         `;
     pool.getConnection((err, connection)=>{
         const b = req.body;
-        const params = [b.hospital_id, b.reservation_date, b.vaccine_id, b.inoculation_number, b.id];
+        const params = [b.hospital_id, b.reservation_date, b.vaccine_id, 1, b.id];
        connection.query(query, params, (err, rows) => {
            if(err){
                console.log('[ERR] post /' + err);
