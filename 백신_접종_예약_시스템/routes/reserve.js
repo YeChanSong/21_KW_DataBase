@@ -6,6 +6,7 @@ var pool = mysql.createPool({
     connectionLimit: 5,
     host: 'localhost',
     user: 'root',
+    port: 33060,
     password: '1234',
     database: 'dbproject'
 });
@@ -19,13 +20,31 @@ let InjectPolicy = function(){
        });
     });
 };
+
+//접종 가능 병원 조회 API
+/*
+* DB에 저장된 모든 병원의 이름과 주소 조회
+* */
+router.get('/', function(req, res, next){
+    const query = `SELECT * FROM HOSPITALS`;
+    pool.getConnection((err, connection) => {
+       if(err){
+           console.log('Error: ' + err);
+       }
+       connection.query(query, (err, rows) => {
+          connection.release();
+          res.render('reservation/list', {rows: rows});
+       });
+    });
+});
+
 //백신 접종 완료 api
 /*
 *   hospital_id: 병원 id
 *   vaccinated_number: 접종 차수
 *   user_id: 유저의 id
 *  */
-router.post('/reservation/user/:uid', function(req, res, next){
+router.post('/user/:uid', function(req, res, next){
    //유저의 접종 차수 + 1
     pool.getConnection(function(err, connection){
        let query =
@@ -51,7 +70,7 @@ router.post('/reservation/user/:uid', function(req, res, next){
     });
 });
 //병원에 예약된 내역
-router.get('/reservation/hospital/:id', function(req, res, next){
+router.get('/hospital/:id', function(req, res, next){
    pool.getConnection(function (err, connection){
        let query =
            `
@@ -70,7 +89,7 @@ router.get('/reservation/hospital/:id', function(req, res, next){
 });
 
 //유저의 예약 내역
-router.get('/reservation/user/:uid', function(req, res, next){
+router.get('/user/:uid', function(req, res, next){
     pool.getConnection(function (err, connection){
         let query =
             `
@@ -82,7 +101,7 @@ router.get('/reservation/user/:uid', function(req, res, next){
             if(err) next(err);
 
             else{
-                res.render('/reservation/read_reservation', {rows});
+                res.render('/reservation/confirm', {rows});
             }
             connection.release();
         });
@@ -98,7 +117,7 @@ router.get('/reservation/user/:uid', function(req, res, next){
 * user_number: 유저 식별 번호
 * NOTE: 10개를 초과하는 예약은 불가능하게 동작
 * */
-router.post('/reservation', function(req, res, next){
+router.post('/', function(req, res, next){
    if(!InjectPolicy()){
        res.render('/reservation', {'message': '예약 개수가 초과되어 더 이상 예약할 수 없는 병원입니다.'});
        return;
@@ -122,7 +141,7 @@ router.post('/reservation', function(req, res, next){
 });
 
 //예약 취소 API
-router.delete('/reservation/:rid', function(req, res, next){
+router.delete('/:rid', function(req, res, next){
     pool.getConnection(function(err, connection){
        let query =
         `
