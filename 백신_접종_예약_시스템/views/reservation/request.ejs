@@ -364,7 +364,13 @@
                     <input type="text" name="id" placeholder="주민번호를 입력해주세요"><br>
                     <h6>접종 날짜 선택</h6><br>
                     <input type="date" id="reservation_date" name="reservation_date"><br>
-                    <input type="hidden" id="hospital_id" name="hospital_id" value="<%=stuff.hid%>">
+                    <h6>접종 차수 선택</h6>
+                    <select id="inoculation_number" name="inoculation_number">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <h6>백신 선택</h6>
                     <select id="vaccine_id" name="vaccine_id">
                         <option value="1">화이자</option>
                         <option value="2">모더나</option>
