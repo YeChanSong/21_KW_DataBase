@@ -354,4 +354,67 @@ router.get('/kakaouserinput', function (req, res) {
  });
 
 
+ var googleClient = require('../config/googleapi.json');
+ const {google} = require('googleapis');
+ const googleConfig = {
+   clientId: googleClient.web.client_id,
+   clientSecret: googleClient.web.client_secret,
+   redirect: googleClient.web.redirect_uris[0]
+ };
+ 
+ const scopes = ['profile'];
+
+const oauth2Client =new google.auth.OAuth2(
+  googleConfig.clientId,
+  googleConfig.clientSecret,
+  googleConfig.redirect
+);
+
+
+ 
+function getGooglePlusApi(auth) {
+  const service = google.people({version: 'v1', auth});
+  service.people.get({
+    resourceName: 'people/me',
+    personFields: 'names',
+  }, (err, res) => {
+    if (err) return console.error('The API returned an error: ' + err);
+    console.log("getGooglePlusAPI success: "+JSON.stringify(res.data));
+    console.log("displayName: "+JSON.stringify(res.data.names));
+  });
+  
+}
+ 
+async function googleLogin(code) {
+  const { tokens } = await oauth2Client.getToken(code);
+  
+  oauth2Client.setCredentials(tokens);
+ 
+  getGooglePlusApi(oauth2Client);
+  
+  console.log("after token");
+}
+
+router.get('/googlelogin',function (req, res) {
+  const googleOAuthUrl = oauth2Client.generateAuthUrl({
+ 
+    access_type:'offline',
+   
+    scope: scopes
+  });
+  console.log("url: "+googleOAuthUrl);
+  res.redirect(googleOAuthUrl);
+});
+ 
+router.get("/googleOAuthRedirect", async function (req, res) {
+  console.log("code?: "+req.query.code);
+  await googleLogin(req.query.code);
+  const displayName = req.params.name;
+  console.log("displayName: "+displayName);
+ 
+  res.redirect("/");
+});
+
+
+
 module.exports = router;

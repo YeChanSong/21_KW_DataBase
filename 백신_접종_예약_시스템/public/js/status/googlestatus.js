@@ -1,1 +1,1 @@
-google_status='{"status":"N"}'
+google_status='{"status":"G"}'
