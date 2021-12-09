@@ -27,10 +27,14 @@ router.post('/', (req, res, err) => {
             console.log("[ERR] post /mypage " + err);
          }
          else{
-            console.log(rows);
+            var arr = Object.values(JSON.parse(JSON.stringify(rows)));
+            console.log(arr);
+            for(var i = 0; i < arr.length; i++){
+               arr[i].reservation_date = arr[i].reservation_date.substr(0, 10);
+            }
          }
          connection.release();
-         res.render('reservation/mypage', {rows: rows});
+         res.render('reservation/mypage', {rows: arr});
       });
    });
 });
