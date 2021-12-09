@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <head>
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <title><%= title %></title>
+    <link rel = 'stylesheet' href='/stylesheets/style.css'>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['date','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows.length; i++){
+          var oneItem = rows[i];
+        %>
+
+        ["<%=oneItem.date%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '일별 접종 현황',
+          hAxis: {title: "접종 일자"},
+          vAxis :{title: "접종자", viewWindow:{min:0},gridlines:{interval:1},},
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_date_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+      
+    </script>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['age','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows2.length; i++){
+          var oneItem = rows2[i];
+        %>
+
+        ["<%=oneItem.age%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '나이 접종 현황',
+          hAxis: {title: "나이"},
+          vAxis :{title: "접종자수", viewWindow:{min:0},gridlines:{interval:1},},
+          
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_age_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+    </script>
+
+
+    <script>
+      (function local (){
+          // BOM의 navigator객체의 하위에 geolocation객체가 새로 추가되었음.
+          window.navigator.geolocation.getCurrentPosition( function(position){ //OK
+              var lat= position.coords.latitude;
+              var lng= position.coords.longitude;
+
+              document.getElementById('target').innerHTML=lng+" "+lat;
+         
+
+          } ,
+          function(error){ //error
+              switch(error.code){
+                  case error.PERMISSION_DENIED:
+                      str="사용자 거부";
+                      break;
+                  case error.POSITION_UNAVAILABLE:
+                      str="지리정보 없음";
+                      break;
+                  case error.TIMEOUT:
+                      str="시간 초과";
+                      break;
+                  case error.UNKNOWN_ERROR:
+                      str="알수없는 에러";
+                      break;
+              }
+              document.getElementById('target').innerHTML=str;
+          });
+      })();
+    </script>
+
+
+
+
+  </head>
+
+  <body>
+    <div id="v_date_chart" style="width: 900px; height: 500px"></div>
+    <div id="v_age_chart" style="width: 900px; height: 500px"></div>
+
+   
+
+    
+   
+      <h3 id="target">locatdddion</h3>
+
+ 
+  </body>
+
+
+</html>
