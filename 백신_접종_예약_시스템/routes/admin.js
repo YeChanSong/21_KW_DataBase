@@ -10,7 +10,7 @@ var pool = mysql.createPool({
   database: 'dbproject'
 });
 
-// 권한없는 페이지 접근 처리 
+// 권한없는 페이지 접근 처리 하는 middleware
 var checkAuth_page = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
@@ -18,7 +18,7 @@ var checkAuth_page = function(req, res, next) {
     res.redirect('/admin/login');
 }
 
-// 권한없는 api 요청 처리 
+// 권한없는 api 요청 처리 하는 middleware
 var checkAuth_api = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
