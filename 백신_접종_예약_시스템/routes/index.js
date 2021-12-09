@@ -384,7 +384,7 @@ function getGooglePlusApi(auth) {
   });
   
 }
- 
+
 async function googleLogin(code) {
   const { tokens } = await oauth2Client.getToken(code);
   
@@ -393,6 +393,7 @@ async function googleLogin(code) {
   getGooglePlusApi(oauth2Client);
   
   console.log("after token");
+  return tokens;
 }
 
 router.get('/googlelogin',function (req, res) {
@@ -408,11 +409,14 @@ router.get('/googlelogin',function (req, res) {
  
 router.get("/googleOAuthRedirect", async function (req, res) {
   console.log("code?: "+req.query.code);
-  await googleLogin(req.query.code);
-  const displayName = req.params.name;
-  console.log("displayName: "+displayName);
- 
-  res.redirect("/");
+  const token = await (await googleLogin(req.query.code)).access_token;
+  console.log("token: "+JSON.stringify(token));
+
+  let GoogleLogout = {
+    url: 'https://oauth2.googleapis.com/revoke?token='+token,
+    Ctype: 'application/x-www-form-urlencoded'
+  }
+  res.render('googleuserinput', {logout: GoogleLogout});
 });
 
 
