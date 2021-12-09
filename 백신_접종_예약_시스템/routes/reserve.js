@@ -62,16 +62,21 @@ router.post('/', function(req, res, next){
 
 //예약 취소 API
 router.delete('/:rid', function(req, res, next){
+    console.log('delete /' + req.params.rid);
     pool.getConnection(function(err, connection){
        let query =
         `
-            DELETE FROM vaccine_reservation
-            WHERE id = ?
+            DELETE FROM VACCINE_RESERVATION
+            WHERE reservation_id = ?
         `;
        connection.query(query, [req.params.rid], function(err, rows){
-            if(err) next(err);
+            if(err) {
+                console.log('[ERR] delete /:rid' + err);
+                res.json({message: "취소 실패"});
+                next(err);
+            }
             else{
-                res.redirect('/reservation/')
+                res.json({message: "취소 완료"});
             }
        });
        connection.release();
