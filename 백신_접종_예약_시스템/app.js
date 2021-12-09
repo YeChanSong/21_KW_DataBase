@@ -19,7 +19,7 @@ var mypageRouter = require('./routes/mypage');
 
 const admin_account = { id: 'admin', pw: '1234', isAdmin: true } // 관리자 페이지 계정 정보
 
-// admin 로그인 페이지에만 사용
+// admin 로그인 처리에만 사용
 passport.use('local-admin', new LocalStrategy(
   function(username, password, done) {
     if (username === admin_account.id && password === admin_account.pw) {
