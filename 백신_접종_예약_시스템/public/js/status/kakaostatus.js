@@ -1,1 +1,1 @@
-kakao_status='{"status": "N"}'
+kakao_status='{"status": "G"}'

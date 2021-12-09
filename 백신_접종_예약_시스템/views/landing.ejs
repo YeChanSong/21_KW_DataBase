@@ -221,11 +221,11 @@
 				alert("본인 인증 방법을 선택해주세요.");
 				return false;
 			}else{
-                if(params.server == 'naver'){
+                if(params.server === 'naver'){
                     window.location.assign('http://localhost:3000'+'/naverlogin');
-                }else if(params.server == 'kakao'){
-                    alert("카카오 선택");
-                }else if(params.server == 'google'){
+                }else if(params.server === 'kakao'){
+                    window.location.href ='http://localhost:3000'+'/kakaologin';
+                }else if(params.server === 'google'){
 					alert("구글 선택");
 				}
                 return false;

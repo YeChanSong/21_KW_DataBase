@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const url = require('url');
 var mysql = require('mysql2/promise');
 const { connect } = require('.');
 var pool = mysql.createPool({
@@ -11,6 +11,20 @@ var pool = mysql.createPool({
     password: '1234'
 });
 
+// Kakao 인증서버 정보
+const KakaoRestApiKey = '01b4a1c7c85b88974e0bd12deb284504';
+const KakaoClientSecret = 'RDyZZICeXk4VQvYRJmAZWam6KrIvhLKW';
+const KakaoRedirectUrl = 'http://localhost:3000/Kakao/Api/Oauth2ClientRedirect';
+const KakaoLogoutUrl = 'http://localhost:3000';
+let KakaoAuthToken = '';
+let KakaoAuthRefreshToken = '';
+let KakaoAuthCode = '';
+let KakaoState = 'G'; // G
+let KakaoResponse = '';
+let KakaoLogout;
+let KakaoAuthUrl = encodeURI(`https://kauth.kakao.com/oauth/authorize?client_id=${KakaoRestApiKey}&redirect_uri=${KakaoRedirectUrl}&response_type=code&state=G`);
+const axios = require('axios');
+const qs = require('qs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,7 +32,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/landing', function(req, res, next) {
-  res.render('landing', {title: '예방접종 사전예약 시스템'});
+  res.render('landing', {title: '예방접종 사전예약 시스템', kakao: KakaoAuthUrl});
 });
 
 // router.post('/landing', function(req, res, next){
@@ -41,14 +55,14 @@ router.get('/landing', function(req, res, next) {
 
 
 /* 네이버 로그인 */
-var client_id = 'v756K0uuRuF4UkL2YpOo';
-var client_secret = 'FWSYT96uK5';
-var state = "G";
-var redirectURI = encodeURI("http://localhost:3000/Api/Member/Oauth2ClientCallback");
-var api_url = "";
-var token = "";
-var tokenparser;
-var disconnect_api_url;
+let client_id = 'v756K0uuRuF4UkL2YpOo';
+let client_secret = 'FWSYT96uK5';
+let state = "G";
+let redirectURI = encodeURI("http://localhost:3000/Api/Member/Oauth2ClientCallback");
+let api_url = "";
+let token = "";
+let tokenparser;
+let disconnect_api_url;
 router.post('/naverlogin', function(req,res,next){
   api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirectURI + '&state=' + state;
   res.redirect(api_url);
@@ -128,12 +142,19 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         * 이후 페이지를 추가하여 접종자 정보를 입력받아 인증을 진행
         * 접종자 정보를 USERS 테이블에 저장
         * 예약자 정보는 이름, 이메일, 연령대, 성별만 제공받는다.
+        * 
+        * --> 12.06 수정사항
+        * 네이버/카카오 로그인 종류에 대한 정보를 userdatainput페이지에 넘겨서 로그아웃을 할 때
+        * 각 플랫폼에 알맞게 로그아웃 할 수 있도록 지원
+        * 
         */
 
         
         // 접종자 정보를 입력받는 페이지로 연결
-        res.redirect('/userdatainput');
-
+        // res.redirect('/userdatainput');
+        
+        res.redirect('/naveruserinput');
+        // res.render('userdatainput', {logoutNaver: disconnect_api_url, logout: dummy, loginType: 'naver'});
 
        } else {
         res.redirect('/autherror');
@@ -152,18 +173,14 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     res.render('autherror');
    });
 
-   // 로그인/로그아웃 테스트 페이지
-   router.get('/iotest', function(req,res){
-    console.log("logout url: "+disconnect_api_url); 
 
-    res.render('in_out_testpage', {login: api_url, logout: disconnect_api_url});
-   });
 
-   // 접종자 정보 입력 페이지
-   router.get('/userdatainput', function(req,res){
-    console.log("logout url: "+disconnect_api_url); 
+  //  // 접종자 정보 입력 페이지
+   router.get('/naveruserinput', function(req,res){
+    console.log("naveruserinput logout url: "+disconnect_api_url); 
+    
 
-    res.render('userdatainput', {logout: disconnect_api_url});
+    res.render('naveruserinput', {logoutNaver: disconnect_api_url});
    });
 
    
@@ -222,23 +239,9 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
   };
   var DBconn = async function(isResult){
     
-    console.log("isR: "+isResult);
     if(isResult === false){ // 사용자가 처음 예약을 진행하는 경우
       var datas = [User_number, Sublocation_id, User_name, age, PhoneNum, vaccinated_num];
       console.log("true case data: "+datas);
-      // await pool.getConnection(async function(err, connection){
-      //     var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
-      //     await connection.query(sqlForInsertBoard, datas, function(err, rows){
-      //         console.log("insert here");
-      //         if(err) console.error("err: "+ err);
-      //         console.log("rows : " + JSON.stringify(rows));
-
-
-      //         // 병원 예약 페이지로 연결하면 됨
-      //         // res.redirect('/');
-      //         connection.release();
-      //     });
-      // });
       
       var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
       var connection = await pool.getConnection(async conn => conn);
@@ -255,19 +258,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
       
     }else{
       var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num+1, User_number];
-      // await pool.getConnection(async function(err, connection){
-      //     var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
-      //     await connection.query(sqlForInsertBoard, datas, function(err, rows){
-      //       console.log("update here");
-      //         if(err) console.error("err: "+ err);
-      //         console.log("rows : " + JSON.stringify(rows));
-
-
-      //         // 병원 예약 페이지로 연결하면 됨
-      //         // res.redirect('/');
-      //         connection.release();
-      //     });
-      // });
+      
         var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
         var connection = await pool.getConnection(async conn => conn);
         try{
@@ -290,5 +281,77 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
       res.redirect('/');
     }
   });
+
+
+
+// 로그인/로그아웃 테스트 페이지
+router.get('/iotest', function(req,res){
+  
+//  console.log("Kakao url: "+KakaoAuthUrl);
+ res.render('in_out_testpage', {login: KakaoAuthUrl, logout: ''});
+});
+
+router.get('/kakaologin', function (req, res) {
+  res.redirect(KakaoAuthUrl);
+ });
+
+router.get('/Kakao/Api/Oauth2ClientRedirect', async function (req, res) {
+  KakaoAuthCode = req.query.code;
+  console.log("KakaoAuthCode: "+KakaoAuthCode);
+  KakaoResponse = await axios({
+    method: 'POST',
+    url: 'https://kauth.kakao.com/oauth/token',
+    headers:{
+      'content-type':'application/x-www-form-urlencoded'
+    },
+    data: qs.stringify({
+      grant_type: 'authorization_code',
+      client_id: KakaoRestApiKey,
+      client_secret: KakaoClientSecret,
+      redirect_uri: KakaoRedirectUrl,
+      code: KakaoAuthCode
+    })
+  });
+  // console.log(KakaoResponse.data);
+  KakaoAuthToken = KakaoResponse.data.access_token;
+  KakaoAuthRefreshToken = KakaoResponse.data.refresh_token;
+
+  let userDataRes = await axios({
+    method: 'GET',
+    url: 'https://kapi.kakao.com/v2/user/me',
+    headers:{
+      Authorization: 'Bearer '+KakaoAuthToken
+    }
+  });
+
+  // 로그아웃 링크
+  KakaoLogout = 'https://kauth.kakao.com/oauth/logout?client_id='+KakaoRestApiKey+'&logout_redirect_uri='+KakaoLogoutUrl;
+  // unlink 링크
+  // KakaoLogout = {
+  //   url: 'https://kapi.kakao.com/v1/user/unlink',
+  //   headers:{
+  //     Ctype: 'application/x-www-form-urlencoded',
+  //     Authorization: 'Bearer '+ KakaoAuthToken
+  //   }
+  // }
+
+  // res.render('userdatainput', {logout: KakaoLogout, loginType: 'kakao'});
+  res.redirect('/kakaouserinput');
+});
+
+router.get('/kakaouserinput', function (req, res) {
+  console.log("kakaouserinput Logout URL: "+KakaoLogout);
+  res.render('kakaouserinput', {logout: KakaoLogout});
+  return;
+ });
+
+ router.get('/kakaologoutredirect', async function (req, res) {
+  
+  console.log("\n\nkakaologoutredirect GET\n\n");
+  console.log("kakaologoutredirect URL: "+KakaoLogout);
+  res.redirect(KakaoLogout);
+  // redirect URI를 localhost:3000으로 Kakao Logout Redirect를 설정해서 메인으로 간다.
+ });
+
 
 module.exports = router;

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Xss-Protection" content="1; mode=block" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+
+    <title>코로나19 예방접종 사전예약 시스템</title>
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/com/font.css" />
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/rsrv/mbl/mobile.css?version=21080912" />
+    <link rel="stylesheet" href="https://ncvr.kdca.go.kr/cobk/css/egovframework/rte/com/jquery-ui.css" />
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/mbl/jquery-1.12.4.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/mbl/mobile.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/common.js"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/rsrv/kdca.js?version=21080912"></script>
+    <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/URLInfo.js"></script>
+    
+    <script type="text/javascript">
+
+		function cnfmRdrct() {
+            if( confirm("예약하기 화면으로 이동하면 인증 및 대기열을 다시 진행하셔야 합니다. 이동하시겠습니까?"))
+                window.top.location.replace("http://localhost:3000");
+            else return;
+        }
+     </script>
+	<!-- #FAVICONS -->
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+
+<div id="wrap"> 
+<!-- Header -->
+	<div class="wrapper">
+		<header id="header">
+	      <h1><a href="javascript:window.top.location.replace('http://localhost:3000');">질병관리청</a></h1>
+	      <nav class="top-menu">
+	        <ul>
+                <!-- https://relay.kdca.go.kr 뒤에 href주소 추가시 페이지 연결-->
+<!-- 	          <li><a href="javascript:customAlert('지금은 사전예약기간이 아닙니다.');">예약하기</a></li> -->
+	          <!-- <li><a href="/cobk/rsrv/mbl/getVcnRsrvRgst2.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">예약하기</a></li> -->
+<!--                     <li><a href="javascript:cnfmRdrct();">예약하기</a></li> -->
+	          <!-- <li><a href="/cobk/rsrv/mbl/getVcnRsrvCnfm.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">예약 조회/변경/취소</a></li>
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvMdinLst.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">의료기관 찾기</a></li>
+	          <li><a href="/cobk/rsrv/mbl/getVcnRsrvOnlineCtnt.do?tokKey=564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62">알림마당</a></li> -->
+	        </ul>
+	      </nav>
+	      <div class="open-menu">
+	        <a href="#menu">menu</a>
+	      </div>
+	    </header>
+    </div><!-- //wrapper -->
+	
+	<div id="container">
+		<div id="contents_wrap">
+			<meta name="decorator" content="rsrvMbl.layout">
+
+
+
+
+<!-- <script src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/form-validate.js"></script> -->
+<script type="text/javascript" src="https://ncvr.kdca.go.kr/cobk/js/egovframework/rte/com/netfunnel.js?ver=210722" charset="UTF-8"></script>
+
+<script>
+
+	$.datepicker.setDefaults($.datepicker.regional['ko']); //한국어 설정
+
+	var mdinListArray = null;
+	var apnmHhArr = ["08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21" ];
+	var disabledDays = [];
+	var dataArr = [];
+	
+	// 특정일 선택막기
+	function disableAllTheseDays(date) {
+	    var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+	    for (i = 0; i < disabledDays.length; i++) {
+	        if($.inArray(y + '-' +(m+1) + '-' + d,disabledDays) != -1) {
+	            return [false];
+	        }
+	    }
+	    return [true];
+	}
+	
+	function leadingZeros(n, digits) {
+	    var zero = '';
+	    n = n.toString();
+
+	    if (n.length < digits) {
+	        for (i = 0; i < digits - n.length; i++)
+	            zero += '0';
+	    }
+	    return zero + n;
+	}
+	
+	$(document).ready(function() {
+	    
+         NetFunnel_Complete();
+		
+	    $(".selResion").click(function(){
+	        $('.find-area').fadeIn(300);
+	        $('.find-area').css('z-index', '100');
+	        $('.choice-medi').hide();
+	        $(".find-medi").hide();
+	        /* $('<div id="blind"></div>').css('opacity',0.6).appendTo('body');
+	        $('#blind').css({'height' : $('html').prop("scrollHeight")+'px'}); */
+	    });
+
+	    $(".selHspl").click(function(){
+	        $('.find-area').hide();
+	        $(".find-medi").hide();
+	        $('.choice-medi').fadeIn(300);
+	        $('.choice-medi').css('z-index', '100');
+	    });
+
+	    $(".selTime").click(function(){
+	        $('.find-area').hide();
+	        $('.choice-medi').hide();
+	        $(".find-medi").fadeIn(300);
+	        $('.find-medi').css('z-index', '100');
+	    });
+	    
+	    $('#layerApnmYmd').datepicker({    // #input 태그 아이디와 동일해야 함. 여러개 구분사용 가능
+			dateFormat:"yy-mm-dd",    // 날짜 출력폼 설정
+		    prevText: '이전 달',
+	        nextText: '다음 달',
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	        showMonthAfterYear: true,
+	        yearSuffix: '년',
+		    minDate: new Date("2021-1-2"),
+		    maxDate: new Date("2021-1-1"),
+		    beforeShowDay: disableAllTheseDays
+		});
+		
+		$('#dueYmd').datepicker({
+            dateFormat:"yy-mm-dd",    // 날짜 출력폼 설정
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+            showMonthAfterYear: true,
+            yearSuffix: '년',
+            minDate: new Date()
+        });
+		
+		$("#rsrvKindDtlSel").on("change", function(){
+        	var selDtlVal =  $(this).val();
+        	if("0" == selDtlVal || "" == selDtlVal){
+        		$("#rsrvKindDtl").val("");
+        	}else{
+	        	$("#rsrvKindDtl").val($("#rsrvKindDtlSel option:selected").text());
+        	}
+        });
+		
+		//등록페이지_취소버튼
+		$(".homeMsgBtn").on("click", function(){
+			$('#calcle02').fadeIn(300);
+			$('#calcle02').css('z-index', '100');
+			$('<div id="blind"></div>').css('opacity',0.6).appendTo('body');
+			$('#blind').css({'height' : $('html').prop("scrollHeight")+'px'});
+			
+		});
+        
+		// 예약 중 나갈 시 네이버 로그인 취소
+        $(".homeBtn").on("click", function(){
+            alert("<%=logoutNaver%>");
+            $.ajax({
+				url : "<%=logoutNaver%>",
+				type : "GET",
+				success : function(data) {
+					alert("로그아웃 성공");
+				}
+			});
+            window.top.location.replace("http://localhost:3000");
+		});
+
+        
+        /*등록페이지_의료기관 찾기*/
+		$('#mdinSearchBtn').click(function(e){
+		    e.preventDefault();
+		    
+		    if("" == $("#cnfmType").val()){
+				customAlert("대상자 확인 후 의료기관 찾기를 진행해주세요.");
+                $("#ptntRrn2").focus();
+				return false;
+			}
+		    
+		});//레이어 띄우기_js로 이동
+        
+        $("#tgtSearchBtn").on("click" , function() {    
+        	if("1" != $(":input:radio[name=pprlrCd]:checked").val()){    
+	            if("" == $("#apnmNm").val()){
+	                customAlert("대리 예약자 이름을 입력해 주세요.");
+	                $("#apnmNm").focus();
+	                return;
+	            }else if(!chkPatten(document.getElementById("apnmNm"), 'regHangulEng', '대리 예약자 이름은 ')){
+	                return;
+	            }else if("" == $("#apnmRrn1").val()){
+	                customAlert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
+	                $("#apnmRrn1").focus();
+	                return;
+	            }else if("" == $("#apnmRrn2").val()){
+	                customAlert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
+	                $("#apnmRrn2").focus();
+	                return;
+	            }else if(!chkPatten(document.getElementById("apnmRrn1"), 'regCustNo1')){
+	                return;
+	            }else if(!chkPatten(document.getElementById("apnmRrn2"), 'regCustNo2')){
+	                return;
+	            }
+            }
+        	
+        	if("" == $("#patnam").val()){
+                customAlert("접종받는 분 이름을 입력해 주세요.");
+                $("#patnam").focus();
+                return;
+            }else if(!chkPatten(document.getElementById("patnam"), 'regHangulEng', '접종받는 분 이름은 ')){
+                return;
+            }else if("" == $("#ptntRrn1").val()){
+                customAlert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
+                $("#ptntRrn1").focus();
+                return;
+            }else if("" == $("#ptntRrn2").val()){
+                customAlert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
+                $("#ptntRrn2").focus();
+                return;
+            }else if(!chkPatten(document.getElementById("ptntRrn1"), 'regCustNo1')){
+                return;
+            }else if(!chkPatten(document.getElementById("ptntRrn2"), 'regCustNo2')){
+                return;
+            }
+            
+            
+        });
+        
+		//등록페이지_예약 벨리데이션
+		function fncValidation(num){
+			
+			if("1" != $(":input:radio[name=pprlrCd]:checked").val()){  
+	            if("" == $("#apnmNm").val()){
+	                customAlert("대리 예약자 이름을 입력해 주세요.");
+	                $("#apnmNm").focus();
+	                return false;
+	            }else if(!chkPatten(document.getElementById("apnmNm"), 'regHangulEng', '대리 예약자 이름은 ')){
+	                return false;
+	            }else if("" == $("#apnmRrn1").val()){
+	                customAlert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
+	                $("#apnmRrn1").focus();
+	                return false;
+	            }else if("" == $("#apnmRrn2").val()){
+	                customAlert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
+	                $("#apnmRrn2").focus();
+	                return false;
+	            }else if(!chkPatten(document.getElementById("apnmRrn1"), 'regCustNo1')){
+	                return false;
+	            }else if(!chkPatten(document.getElementById("apnmRrn2"), 'regCustNo2')){
+	                return false;
+	            }
+            }
+			
+			if("" == $("#patnam").val()){
+                customAlert("접종받는 분 이름을 입력해 주세요.");
+                $("#patnam").focus();
+                return false;
+            }else if(!chkPatten(document.getElementById("patnam"), 'regHangulEng', '접종받는 분 이름은 ')){
+                return false;
+            }else if("" == $("#ptntRrn1").val()){
+                customAlert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
+                $("#ptntRrn1").focus();
+                return false;
+            }else if("" == $("#ptntRrn2").val()){
+                customAlert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
+                $("#ptntRrn2").focus();
+                return false;
+            }else if(!chkPatten(document.getElementById("ptntRrn1"), 'regCustNo1')){
+                return false;
+            }else if(!chkPatten(document.getElementById("ptntRrn2"), 'regCustNo2')){
+                return false;
+            }else if("" == $("#cnfmType").val()){
+                customAlert("대상자 확인 후 진행해주세요.");
+                $("#ptntRrn2").focus();
+                return false;
+            }else if("R07" == $("#rsrvKind").val() && "N" == $("input[name=prgnYn]:checked").val()){
+            	customAlert("임신 중인 대상자만 예약이 가능합니다.");
+                $("#prgnYn2").focus();
+                return false;
+            }else if("R07" == $("#rsrvKind").val() && "Y" == $("input[name=prgnYn]:checked").val() && "" == $("#dueYmd").val()){
+            	customAlert("출산예정일을 입력해 주세요.");
+                $("#dueYmd").focus();
+                return false;
+                
+            }else if("Q13" == $("#rsrvKind").val() && "N" == $("input[name=prgnYn]:checked").val()){
+            	customAlert("임신 중인 대상자만 예약이 가능합니다.");
+                $("#prgnYn2").focus();
+                return false;
+            }else if("Q13" == $("#rsrvKind").val() && "Y" == $("input[name=prgnYn]:checked").val() && "" == $("#dueYmd").val()){
+            	customAlert("출산예정일을 입력해 주세요.");
+                $("#dueYmd").focus();
+                return false;
+            }else if("Q14" == $("#rsrvKind").val() && "Y" == $("input[name=prgnYn]:checked").val() && "" == $("#dueYmd").val()){
+            	customAlert("임신 중이시면 출산예정일을 입력해 주세요.");
+                $("#dueYmd").focus();
+                return false;
+                
+            }else if("BT01" == $("#rsrvKind").val() && "" == $("#rsrvKindDtl").val() && "0" == $("#rsrvKindDtlSel option:selected").val()){
+            	customAlert("예약대상자 구분을 선택해 주세요.");
+                $("#rsrvKindDtlSel").focus();
+                return false;   
+            }else if("BT02" == $("#rsrvKind").val() && "" == $("#rsrvKindDtl").val() && "0" == $("#rsrvKindDtlSel option:selected").val()){
+            	customAlert("예약대상자 구분을 선택해 주세요.");
+                $("#rsrvKindDtlSel").focus();
+                return false;   
+                
+        	}else if("" == $("#apnmMtnoTofmn").val()){
+                customAlert("휴대폰번호 앞자리를 입력해 주세요.");
+                $("#apnmMtnoTofmn").focus();
+                return false;
+            }else if("" == $("#apnmMtno1").val()){
+                customAlert("휴대폰번호 중간자리를 입력해 주세요.");
+                $("#apnmMtno1").focus();
+                return false;
+            }else if("" == $("#apnmMtno2").val()){
+                customAlert("휴대폰번호 뒷자리를 입력해 주세요.");
+                $("#apnmMtno2").focus();
+                return false;
+            }else if(!chkPatten(document.getElementById("apnmMtnoTofmn"), 'regHdPhone1')){
+                return false;
+            }else if(!chkPatten(document.getElementById("apnmMtno1"), 'regHdPhone2')){
+                return false;
+            }else if(!chkPatten(document.getElementById("apnmMtno2"), 'regHdPhone3')){
+                return false;
+            }else if(!$('input:radio[name=smsRcptAgrmYn]').is(':checked')){
+                customAlert("국민비서 알림 수신받을 방법을 선택해 주세요.");
+                $("#smsRcptAgrmYn1").focus();
+                return false;
+            }
+			
+			if("2" == num){
+				if("" == $("#orgcd").val() || "" == $("#apnmYmd").val() || "" == $("#apnmHh").val()){
+					customAlert("의료기관 및 예약일시를 선택해 주세요.");
+					$("#mdinSearchBtn").focus();
+					return false;
+				}
+			}
+			
+			return true;
+		}
+
+
+
+
+
+		// 예약정보 작성여부 확인
+		function myValidation(str){
+			
+			if(str == "Next"){
+				if("6" == $(":input:radio[name=pprlrCd]:checked").val()){
+	            	if("" == $("#apnmNm").val()){
+	                	alert("대리 예약자 이름을 입력해 주세요.");
+	                	$("#apnmNm").focus();
+	                	return false;
+	            	}else if("" == $("#apnmRrn1").val()){
+	                	alert("대리 예약자 주민등록번호 앞자리를 입력해 주세요.");
+	                	$("#apnmRrn1").focus();
+	                	return false;
+	            	}else if("" == $("#apnmRrn2").val()){
+	                	alert("대리 예약자 주민등록번호 뒷자리를 입력해 주세요.");
+	                	$("#apnmRrn2").focus();
+	               		return false;
+	            	}
+            	}
+				if("" == $("#patnam").val()){
+                	alert("접종받는 분 이름을 입력해 주세요.");
+                	$("#patnam").focus();
+                	return false;
+            	}else if("" == $("#ptntRrn1").val()){
+                	alert("접종받는 분 주민등록번호 앞자리를 입력해 주세요.");
+                	$("#ptntRrn1").focus();
+                	return false;
+            	}else if("" == $("#ptntRrn2").val()){
+                	alert("접종받는 분 주민등록번호 뒷자리를 입력해 주세요.");
+                	$("#ptntRrn2").focus();
+                	return false;
+            	}else if("" == $("#apnmMtnoTofmn").val()){
+                	alert("휴대폰번호 앞자리를 입력해 주세요.");
+                	$("#apnmMtnoTofmn").focus();
+                	return false;
+            	}else if("" == $("#apnmMtno1").val()){
+                	alert("휴대폰번호 중간자리를 입력해 주세요.");
+                	$("#apnmMtno1").focus();
+                	return false;
+            	}else if("" == $("#apnmMtno2").val()){
+                	alert("휴대폰번호 뒷자리를 입력해 주세요.");
+                	$("#apnmMtno2").focus();
+                	return false;
+            	}
+				return true;
+			}
+		}
+
+
+		
+		//다음으로 버튼
+		$("#searchMc").click(function(e){
+			//조건 확인
+			if(!myValidation("Next")){
+				return;
+			}
+			
+			// $("#rsrvRgstPage").hide();         //예방접종예약하기_본인인증페이지(현재)
+			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
+			// window.scrollTo(0, 0);
+			alert("myVal 성공");
+
+			
+			$("#vcnRsrvFrm").submit();
+
+		});
+		
+		//뒤로버튼
+		$("#backRsrvRgst").click(function(e){
+			$("#rsrvRgstPage").show(); 		    //예방접종예약하기_본인인증페이지(현재)
+			$("#rsrvRgstSearchMcPage").hide();  //의료기관 찾기 레이어
+		});
+		
+      	//등록페이지_본인/대리 예약 구분
+		$(":input:radio[name=pprlrCd]").on("change", function(){
+// 	        $("#pprlrCd option").eq(0).prop("selected", true);
+			
+			if("1" == $(this).val()){
+				$("#selfRsrvTr1").hide();
+				$("#selfRsrvTr2").hide();
+			}else{
+				
+				$("#selfRsrvTr1").show();
+				$("#selfRsrvTr2").show();
+			}
+			
+		});
+		
+	});
+	
+	
+	
+	function onlyNumber(obj) {
+	    $(obj).keyup(function(){
+	        $(this).val($(this).val().replace(/[^0-9]/g,""));
+	        if($(this).attr("id") == "apnmRrn1" && $(this).val().length == 6){
+	        	$("#apnmRrn2").focus();
+	        }else if($(this).attr("id") == "apnmMtnoTofmn" && $(this).val().length == 3){
+	        	$("#apnmMtno1").focus();
+	        }else if($(this).attr("id") == "apnmMtno1" && $(this).val().length == 4){
+	        	$("#apnmMtno2").focus();
+	        }else if($(this).attr("id") == "ptntRrn1" && $(this).val().length == 6){
+	        	$("#ptntRrn2").focus();
+	        }
+	    });
+	}
+	
+</script>
+<div id = "rsrvRgstPage">
+<div class="dim" ></div>
+    <div class="sub-visual">
+      <h2>예방접종 예약하기<strong>본인 인증 단계</strong></h2>
+      <ul class="step-identity clearfix">
+        <li class="active">대상자 확인</li>
+        <li>의료기관 선택</li>
+        <li>예약완료</li>
+      </ul><!-- //step-identity -->
+    </div><!-- //sub-visual -->
+
+    <form action="/userdatainput" id="vcnRsrvFrm" name="vcnRsrvFrm" method="post">
+    	<input type="hidden" id="apnmTy" 			name="apnmTy" 			value="mi"/>
+    	<input type="hidden" id="apnmNo" 			name="apnmNo" 			value=""/>
+        <input type="hidden" id="vcntme" 			name="vcntme" 			value="1"/>
+    	<input type="hidden" id="orgcd" 			name="orgcd" 			value=""/>
+		<input type="hidden" id="cnfmType" 			name="cnfmType" 		value=""/>
+		<input type="hidden" id="apnmYmd" 			name="apnmYmd" 			value=""/>
+		<input type="hidden" id="apnmHh" 			name="apnmHh" 			value=""/>
+		<input type="hidden" id="entrTpcd" 			name="entrTpcd" 		value="M"/><!-- N:대국민예약, M:모바일예약 -->
+		<input type="hidden" id="rsrvKind" 			name="rsrvKind" 		value=""/>
+		<input type="hidden" id="rsrvKindDtl" 		name="rsrvKindDtl" 		value=""/>
+		<input type="hidden" id="selfCrtfInfmCi" 	name="selfCrtfInfmCi" 	value=""/>
+		<input type="hidden" id="selfCrtfInfmCiEnc" name="selfCrtfInfmCiEnc" value="kG4oqgtTRaHdt9ZunAHBOoXhna+FqFc6/t1rxNahgH7/OkNC4XmZr+Brigfb6uJj1OrFygxQCYECl5f2hvi2OuP5P0cPd/Ku7iiUoPHxsCwHsTuimTAxzLCOkPQMeQDJWIEKksoeLiK3zChr7vXRIw=="/>
+		<input type="hidden" id="selfCrtfInfmDi" 	name="selfCrtfInfmDi" 	value=""/>
+		<input type="hidden" id="nhisYn" 			name="nhisYn" 			value=""/>
+		<input type="hidden" id="nhisPassYn" 		name="nhisPassYn" 		value=""/>
+		<input type="hidden" id="uprOrgcd" 			name="uprOrgcd" 		value=""/>
+		<input type="hidden" id="vacMkrCd" 			name="vacMkrCd" value=""/>
+		<input type="hidden" id="rsrvType" 			name="rsrvType" value=""/>
+		
+		
+		<input type="hidden" id="tokKey" name="tokKey" value="564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62"/>
+		
+    <div class="content-box">
+      <div class="box-use">
+        <h3>개인정보 수집 및 이용에 대한 안내</h3>
+        <p>「감염병의 예방 및 관리에 관한 법률」 <br />제33조의 4 및 같은 법 시행령 제32조의 3에 따라 코로나19 예방접종 예약신청을 위하여 다음의 개인정보를 수집합니다.</p>
+      </div>
+	      <div style="padding-left: 20px;">
+	          <ul class="warn-list">
+	              <li>본인 인증된 사용자를 변경하거나, 이전화면으로 돌아가면 인증 및 대기열을 다시 진행하셔야 합니다.</li>
+	          </ul>
+	       </div>   
+	      <br/>
+	  <div class="form-row">
+        <h4>본인/대리 예약 구분<i class="reqire">*</i></h4>
+        <label for="pprlrCd">본인/대리 예약 구분</label>
+		<span class="radio-wrap"><input type="radio" name="pprlrCd" id="pprlrCd1" value="1" checked="checked"/><label for="pprlrCd1">본인예약</label></span>
+		<span class="radio-wrap"><input type="radio" name="pprlrCd" id="pprlrCd2" value="6"/><label for="pprlrCd2">대리예약</label></span>
+      </div><!-- //form-row -->    
+      
+      <div class="form-row" id="selfRsrvTr1" style="display:none;">
+        <h4>대리 예약자 이름<i class="reqire">*</i></h4>
+        <label for="apnmNm">대리 예약자 이름</label>
+        <input type="text" name="apnmNm" id="apnmNm" value="" class="korean" maxlength="80"/>
+      </div><!-- //form-row -->
+      <div class="form-row" id="selfRsrvTr2" style="display:none;">
+        <h4>대리 예약자 주민등록번호<i class="reqire">*</i></h4>
+        <label for="apnmRrn1">대리 예약자 주민등록번호 앞자리</label>
+	        <input type="text" id="apnmRrn1" name="apnmRrn1" maxlength="6" value="" class="double" onkeyup="onlyNumber(this);" />
+	        <span>-</span>
+    	    <label for="apnmRrn2">대리 예약자 주민등록번호 뒷자리</label>
+        	<input type="password" autocomplete="off" id="apnmRrn2" name="apnmRrn2" maxlength="7" value="" class="double" onkeyup="onlyNumber(this);" />
+      </div><!-- //form-row -->
+      
+      <div class="form-row" >
+        <h4>접종받는 분(피접종자) 이름<i class="reqire">*</i></h4>
+        <label for="patnam">접종받는 분(피접종자) 이름</label>
+        <input type="text" name="patnam" id="patnam" value="" class="korean" maxlength="80"/>
+      </div><!-- //form-row -->
+      <div class="form-row">
+        <h4>접종받는 분(피접종자) 주민등록번호<i class="reqire">*</i></h4>
+        <label for="ptntRrn1">접종받는 분(피접종자) 주민등록번호 앞자리</label>
+	        <input type="text" id="ptntRrn1" name="ptntRrn1" maxlength="6" value="" class="double" onkeyup="onlyNumber(this);" />
+	        <span>-</span>
+    	    <label for="apnmRrn2">접종받는 분(피접종자) 주민등록번호 뒷자리</label>
+        	<input type="password" autocomplete="off" id="ptntRrn2" name="ptntRrn2" maxlength="7" value="" class="double" onkeyup="onlyNumber(this);" />
+	       <input type="button" class="button-search wide2 orange" id = "tgtSearchBtn" value="대상자 확인" />
+      </div><!-- //form-row -->
+
+		<div class="form-row">
+		 <div class="vcnMsg">
+        	<h4>예약대상 백신</h4>
+        	<p id="vcnMsg">-</p>
+         </div>
+         </div>
+         <div class="form-row">
+          <div class="rsrvKindMsg">
+        	<h4>예약대상자 구분</h4>
+        	<p id="rsrvKindMsg">-</p>
+        	
+			
+        	<select id='rsrvKindDtlSel' style='width:100%; display:none;'>
+	        	<option value='0'>대상군 선택</option>
+	        	<option value='1'>우선접종 직업군</option>
+	        	<option value='2'>기저질환자</option>
+	        	<option value='3'>의료기관 종사자(의원 등)</option>
+	       	</select>
+	       	<ul class="warn-list" id="rsrvKindDtlUl" style='display:none;'>
+	        	<li>우선접종 직업군 : 1차대응요원, 사회필수인력(경찰,소방,군인 등), 특수교육.보육, 보건교사 및 어린이집 간호인력, 돌봄 종사자, 사회취약 돌봄 종사자, 보건의료인</li>
+				<li>기저질환자 : 내분비 장애, 심혈관 질환, 만성 신장 질환, 만성 호흡기 질환, 신경계 질환, 소화기 질환</li>
+            </ul>
+         </div>
+         </div>
+
+         <div class="form-row" id="prgnYnTr" style="display:none;">
+        	<h4>임신여부<i class="reqire">*</i></h4>
+			<label for="prgnYn">임신여부</label>
+	        	<span class="radio-wrap"><input type="radio" name="prgnYn" id="prgnYn1" value="N" checked="checked"/><label for="prgnYn1">임신 중 아님</label></span>
+				<span class="radio-wrap"><input type="radio" name="prgnYn" id="prgnYn2" value="Y"/><label for="prgnYn2">임신 중</label></span>
+         </div>
+
+         <div class="form-row" id="dueYmdTr" style="display:none;">
+        	<h4>출산예정일<i class="reqire">*</i></h4>
+        	<label for="dueYmd">출산예정일</label>
+        		<input type="text" class="datepicker" id="dueYmd" name="dueYmd" placeholder="날짜선택" readonly="readonly" />
+         </div>
+						
+      <div class="form-row">
+        <h4>휴대폰 번호<i class="reqire">*</i></h4>
+        <label for="apnmMtnoTofmn">휴대폰 번호 앞자리</label>
+		<input type="text" name="apnmMtnoTofmn" id="apnmMtnoTofmn" class="input-number triple" maxlength="3" value="" onkeyup="onlyNumber(this);"/><span>-</span><input type="text" name="apnmMtno1" id="apnmMtno1" class="input-number triple" maxlength="4" value="" onkeyup="onlyNumber(this)"/><span>-</span><input type="text" name="apnmMtno2" id="apnmMtno2" class="input-number triple" maxlength="4" value="" onkeyup="onlyNumber(this);"/>
+        <ul class="warn-list">
+          <li>예약정보는 휴대폰 번호로 전송해드리오니, 확인 후 예약일시에 맞춰 의료기관에 방문해주세요.</li>
+        </ul><!-- //warn-list -->
+      </div><!-- //form-row -->
+      <div class="form-row">
+        <h4>국민비서 알림 선택<i class="reqire">*</i></h4>
+        <p class="strong">백신접종 일시 장소 주의사항 등을 휴대전화로 알려드립니다.</p>
+      </div><!-- //form-row -->
+      <div class="form-row">
+        <table class="tbl-reservation">
+			<tbody>
+				<tr>
+					<th scope="row" rowspan="" style="width:110px">국민비서<br/>&nbsp;&nbsp;&nbsp;알림선택<i class="reqire">*</i></th>
+					<td colspan="">
+							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn1" value="B"/><label for="smsRcptAgrmYn1">네이버앱</label></span><br/>
+							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn2" value="A"/><label for="smsRcptAgrmYn2">카톡(카카오톡)</label></span><br/>
+							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn3" value="C"/><label for="smsRcptAgrmYn3">토스(toss)</label></span><br/>
+							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn4" value="Y"/><label for="smsRcptAgrmYn4" style="width:90px;">문자메시지</label></span><br/>
+							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn5" value="N"/><label for="smsRcptAgrmYn5">수신받지 않음</label></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+      </div><!-- //form-row -->
+    </div><!-- //content-box -->
+    <div class="bottom-wrap">
+      <div class="button-group">
+        <input type="button" class="button button-white homeMsgBtn" value="취소" />
+        <input type="button" class="button button-blue" id = "searchMc" value="다음으로" />
+      </div><!-- //button-group -->
+    </div><!-- //bottom-wrap -->
+    </form>
+
+
+
+
+
+
+
+
+
+<!-- //layer-find -->
+<!-- //layer-confirm -->
+<div id="calcle02" class="layer-confirm">
+	<div class="layer-header">
+		<h2>홈으로</h2>
+		<span class="close-confirm vcnRsrvCnfmBtn">닫기</span>
+	</div>
+	<!-- //layer-header -->
+	<div class="body-confirm">
+		입력한 정보가 초기화 됩니다. 홈화면으로 돌아가시겠습니까?
+	</div>
+	<!-- //body-confirm -->
+	<div class="layer-footer">
+		<button class="btn white close-confirm" onclick="return false;">아니오</button>
+		<button class="btn blue homeBtn" onclick="return false;">예</button>
+	</div>
+	<!-- //layer-footer -->
+</div>
+
+<div id="calcle03" class="layer-confirm" style="height: auto;">
+	<div class="layer-header">
+		<h2>이름 변경</h2>
+		<span class="close-confirm vcnRsrvCnfmBtn">닫기</span>
+	</div>
+	<!-- //layer-header -->
+	<div class="body-confirm" id="nameMsgDiv" style="height: auto">
+	</div>
+	<!-- //body-confirm -->
+	<div class="layer-footer">
+		<button class="btn white close-confirm"  id="nameNoChgBtn" onclick="return false;">취소</button>
+		<button class="btn blue close-confirm" id="nameChgBtn" onclick="return false;">확인</button>
+	</div>
+	<!-- //layer-footer -->
+</div>
+</div>
+<div id = "rsrvRgstSearchMcPage" style="display:none">
+ 
+      <div class="dim"></div>
+    <div class="sub-visual">
+      <h2>예방접종 예약하기<strong>의료기관 선택 단계</strong></h2>
+      <ul class="step-identity clearfix">
+        <li>본인인증</li>
+        <li class="active">의료기관 선택</li>
+        <li>예약완료</li>
+      </ul><!-- //step-identity -->
+    </div><!-- //sub-visual -->
+    <form action="">
+    <div class="content-box">
+      <div class="form-row" style="padding:20px 20px 10px 20px">
+        <h4>예약일시 선택 및 의료기관 찾기<i class="reqire">*</i></h4>
+        <button class="button-search wide2 orange" id="mdinSearchBtn">의료기관 찾기</button>
+        <ul class="list-center" id="apnmDiv">
+        </ul>
+      </div><!-- //form-row -->
+      <div class="bottom-wrap" style="padding: 10px 20px 0px 20px">
+      <div class="button-group" style="padding: 20px 0px 20px 0px ">
+        <input type="button" class="button button-white" id = "backRsrvRgst" value="이전" />
+        <input type="button" class="button button-blue" id = "insertVcnRsrvMsgBtn" onclick="return false;" value="예약하기" />
+      </div><!-- //button-group -->
+    </div><!-- //bottom-wrap --> 
+      <div class="form-row">
+        <ul class="warn-list">
+          <li>부득이한 사정으로 인하여 예약일시에 백신접종을 진행하지 못한 경우, 접종 미완료가 확인될 때까지 예약이 불가능하오니 신중하게 선택해주세요.</li>
+        </ul><!-- //warn-list -->
+      </div><!-- //form-row -->
+    </div><!-- //content-box -->
+    <!-- 레이어 팝업 -->
+    <!-- 지역 입력 -->
+    <div class="layer-find find-area" style="height:600px">
+      <div class="layer-header long-header">
+        <h2>의료기관 찾기</h2>
+        <span class="close-layer">닫기</span>
+        <ul class="step-identity clearfix">
+          <li class="active">지역 입력</li>
+          <li class="">의료기관 선택</li>
+          <li class="">선택 완료</li>
+        </ul><!-- //step-identity -->
+      </div><!-- //layer-header -->
+      <div class="layer-body">
+        <div class="find-date clearfix">
+          <input type="text" class="datepicker" id="layerApnmYmd" name="layerApnmYmd" placeholder="날짜선택" readonly="readonly" />
+        </div><!-- //find-date -->
+        <div class="find-form">
+        <select name="sidocd" id="sidocd">
+            <option value=''>광역시도</option>
+            
+                <option value="11">서울특별시</option>
+            
+                <option value="26">부산광역시</option>
+            
+                <option value="27">대구광역시</option>
+            
+                <option value="28">인천광역시</option>
+            
+                <option value="29">광주광역시</option>
+            
+                <option value="30">대전광역시</option>
+            
+                <option value="31">울산광역시</option>
+            
+                <option value="36">세종특별자치시</option>
+            
+                <option value="41">경기도</option>
+            
+                <option value="42">강원도</option>
+            
+                <option value="43">충청북도</option>
+            
+                <option value="44">충청남도</option>
+            
+                <option value="45">전라북도</option>
+            
+                <option value="46">전라남도</option>
+            
+                <option value="47">경상북도</option>
+            
+                <option value="48">경상남도</option>
+            
+                <option value="50">제주특별자치도</option>
+            
+        </select>
+        <select name="sggcd" id="sggcd">
+            <option value=''>시군구</option>
+        </select>
+        <select name="emdcd" id="emdcd">
+            <option value=''>읍면동</option>
+        </select>
+                <input type="text" id="orgnmTxt" name="orgnmTxt" placeholder="의료기관명 입력" style="display:none"/>
+        </div>
+      </div><!-- //layer-body -->
+      <div class="layer-footer foot-top" style="margin-top:40px;">
+        <button class="btn wide blue" onclick="return false;" id="choice-medi">의료기관 찾기</button>
+      </div><!-- //layer-footer -->
+    </div><!-- //layer-find -->
+    
+    
+    <!-- 의료기관 선택 -->
+    <div class="layer-find choice-medi">
+      <div class="layer-header long-header">
+        <h2>의료기관 찾기</h2>
+        <span class="close-layer">닫기</span>
+        <ul class="step-identity clearfix">
+          <li class="selResion">지역 입력</li>
+          <li class="active">의료기관 선택</li>
+          <li class="">선택 완료</li>
+        </ul><!-- //step-identity -->
+      </div><!-- //layer-header -->
+      <div class="layer-body">
+        <div class="view-address">
+          <ul class="clearfix" id="searchCtnt">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <div style="display:none">오송생명2로 187 오송보건의료행정타운</div>
+        </div><!-- //view-address -->
+        <div class="view-medi">
+          <p class="result-txt" id="listCnt">검색결과 총 0개</p>
+          <div class="wrap-result mdinListDiv">
+            <div id="mdinListDiv"></div>
+          </div><!-- //wrap-result -->
+        </div><!-- //view-medi -->
+      </div><!-- //layer-body -->
+    </div><!-- //layer-find -->
+    <!-- 선택 완료 -->
+    
+    
+    <div class="layer-find find-medi">
+      <div class="layer-header long-header">
+        <h2>의료기관 찾기</h2>
+        <span class="close-layer">닫기</span>
+        <ul class="step-identity clearfix">
+          <li class="selResion">지역 입력</li>
+          <li class="selHspl">의료기관 선택</li>
+          <li class="active">선택 완료</li>
+        </ul><!-- //step-identity -->
+      </div><!-- //layer-header -->
+      <div class="layer-body mdinViewDiv">
+        <div id="mdinViewDiv"></div>
+      </div><!-- //layer-body -->
+        <div class="layer-footer" id="mdinSelDiv">
+            <button class="btn wide orange" onclick="return false;" id="mdinSelBtn">선택</button>
+            <input type="hidden" id="layerOrgcd" name="layerOrgcd" value="" />
+            <input type="hidden" id="layerOrgnm" name="layerOrgnm" value="" />
+            <input type="hidden" id="layerApnmHhTy" name="layerApnmHhTy" value="" />
+      </div><!-- //layer-footer -->
+    </div><!-- //layer-find -->
+    <!--// 레이어 팝업 -->
+    </form>
+</div>
+
+<div id="calcle01" class="layer-confirm">
+    <div class="layer-header">
+        <h2>예약 확인</h2>
+        <span class="close-confirm">닫기</span>
+    </div>
+    <!-- //layer-header -->
+    <div class="body-confirm">코로나19 예방접종을 예약하시겠습니까?</div>
+    <!-- //body-confirm -->
+    <div class="layer-footer">
+        <button class="btn white close-confirm">아니오</button>
+        <button class="btn blue" id="insertVcnRsrvBtn" onclick="return false;">예</button>
+    </div>
+    <!-- //layer-footer -->
+</div>
+		</div>
+	</div>
+	
+	<!-- Footer -->
+	<div id="footer-warp">
+		<footer>
+			<div class="footer">
+	        <h5>코로나19 예방접종 사전예약 시스템</h5>
+	        <ul class="kdca-info">
+	          <li><a href="https://www.kdca.go.kr/menu.es?mid=a20810030000" target="_blank" >개인정보처리방침</a></li>
+	          <li><a href="https://www.kdca.go.kr/" target="_blank" title="새창열기">질병관리청 바로가기</a></li>
+	        </ul>
+	        <div class="nuri"><img src="https://ncvr.kdca.go.kr/cobk/images/egovframework/rte/rsrv/mbl/nuri.png" alt="OPEN/출처표시/상업용금지/변경금지/공공누리 공공저작물 자유이용허락" /></div>
+	        <address>(28159) 충북 청주시 흥덕구 오송읍 오송생명2로 187 오송보건의료행정타운내 질병관리청</address>
+	        <p class="copyright">COPYRIGHT © 2021 질병관리청 ALL RIGHTS RESERVED.</p>
+	      </div>
+		</footer><!-- //footer -->
+	</div>
+<!-- // Footer -->
+</div>
+<script>
+$(document).ready(function(){
+	
+});
+</script>
+</body>
+</html>
