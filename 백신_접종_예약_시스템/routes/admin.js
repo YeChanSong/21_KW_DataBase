@@ -210,13 +210,13 @@ router.get('/hospitals/:id/vaccine-reservations', checkAuth_api, function(req, r
         
         let query =
         `
-            SELECT r.reservation_date, v.vaccine_name, r.inoculation_number, u.user_name, u.age
+            SELECT r.reservation_date, v.vaccine_name, r.inoculation_number, u.user_name, u.age, (u.Vaccinated_Number >= r.inoculation_number) as is_finished, r.reservation_id
             FROM vaccine_reservation r
                 inner join users u
                     on u.User_number = r.user_number
                 natural join vaccine v
             WHERE r.hospital_id = ?
-            ORDER BY r.reservation_date asc
+            ORDER BY r.reservation_date desc
         `;
 
         connection.query(query, [req.params.id], function(err, rows) {
@@ -234,6 +234,50 @@ router.get('/hospitals/:id/vaccine-reservations', checkAuth_api, function(req, r
     });
 });
 
+/* 접종완료 처리 */
+router.post('/hospitals/:id/vaccine-reservations/finish-innoculations', checkAuth_api, function(req, res, next) {    
+    pool.getConnection(function(err, connection) {
+        if(err) next(err);
+
+        connection.query('SELECT * FROM hospitals WHERE hospital_id = ? and admin_password = ?', [req.params.id, req.body.admin_password], function(err, rows) {
+            if (err) {
+                next(err);
+                connection.release();
+            }
+            else if (!rows.length) {
+                res.status(401).json({
+                    message: '병원 비밀번호 인증에 실패했습니다!'
+                });
+                connection.release();
+            }
+            else {
+                let query =
+                `
+                    UPDATE vaccine_reservation r
+                        inner join users u
+                            on u.User_number = r.user_number
+                    SET u.Vaccinated_Number = u.Vaccinated_Number + 1
+                    WHERE r.hospital_id = ? 
+                        and r.reservation_id in (${Array(req.body.reservationIds.length).fill('?').join(',')}) 
+                        and u.Vaccinated_Number = r.inoculation_number - 1
+                `;
+
+                connection.query(query, [req.params.id, req.body.reservationIds].flat(), function(err, rows) {
+                    if(err) {
+                        console.log(err);
+                        next(err);
+                    }
+                    else {
+                        res.status(200).json({
+                            message: '접종완료처리 성공'
+                        });
+                    }
+                    connection.release();
+                });
+            }
+        });
+    });
+});
 
 
 module.exports = router; 

@@ -238,16 +238,16 @@
                                             </thead>
                                         </table>
                                     </div>
-                                    <button class="btn btn-sm btn-primary float-right" id="saveVaccineQuantity" disabled>저장</button>
+                                    <button class="btn btn-sm btn-primary float-right mt-1" id="saveVaccineQuantity" disabled>저장</button>
                                 </div>
                             </div>
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary" id="reservationCardHeader">예약 정보</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" id="reservationCardHeader">예약 관리</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-sm table-bordered" id="reservationsTable" width="100%" cellspacing="0">
+                                        <table class="table table-sm table-bordered table-hover" id="reservationsTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
                                                     <th>날짜</th>
@@ -255,10 +255,26 @@
                                                     <th>차수</th>
                                                     <th>예약자명</th>
                                                     <th>나이</th>
+                                                    <th>접종 상태</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
+
+                                    <div class="btn-toolbar justify-content-between" role="toolbar">
+                                        <div class="btn-group mr-2" role="group">
+                                            <button class="btn btn-sm btn-secondary" id="reservationsTable_selectAll">전체선택</button>
+                                            <button class="btn btn-sm btn-secondary" id="reservationsTable_unselectAll">선택해제</button>
+                                        </div>
+    
+                                        <div class="input-group input-group-sm">
+                                            <input type="password" class="form-control" id="hospitalPassword" placeholder="비밀번호">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" id="finishInnoculation" disabled>접종완료처리</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -207,6 +207,23 @@ $(document).ready(function() {
             },
             {
                 data: "age"
+            },
+            {
+                data: "is_finished",
+                render: function(data, type) {
+                    if (type === 'display') {
+                        if (data) {
+                            return "접종 완료";
+                        } else {
+                            return "접종 전";
+                        }
+                    }
+                    return data;
+                }
+            },
+            {
+                data: "reservation_id",
+                visible: false
             }
         ],
         
@@ -249,14 +266,86 @@ $(document).ready(function() {
 
         /* 백신 보유량 테이블과 예약 테이블 카드 제목에 병원 이름 표시 */
         document.getElementById("vaccineCardHeader").textContent = "백신 보유량 관리 - [" + selectedRowData.hospital_name + "]";
-        document.getElementById("reservationCardHeader").textContent = "예약 정보 - [" + selectedRowData.hospital_name + "]";
+        document.getElementById("reservationCardHeader").textContent = "예약 관리 - [" + selectedRowData.hospital_name + "]";
 
         /* 클릭한 행에 해당하는 병원의 백신 보유량 테이블과 예약 테이블 채우기 */
         document.getElementById("saveVaccineQuantity").setAttribute("data-hospitalId", selectedRowData.hospital_id);
         document.getElementById("saveVaccineQuantity").disabled = false;
         vaccinesTable.ajax.url(selectedRowData.hospital_id + '/vaccine-quantities').load();
 
+        document.getElementById("finishInnoculation").setAttribute("data-hospitalId", selectedRowData.hospital_id);
+        document.getElementById("hospitalPassword").value = "";
         reservationsTable.ajax.url(selectedRowData.hospital_id + '/vaccine-reservations').load();
+
+    });
+
+    /* 접종완료처리 버튼 활성화 여부 업데이트 함수 */
+    function setDisabledState_finishInnoculationBtn() {
+        if (reservationsTable.$('tr.table-primary').length) {
+            document.getElementById("finishInnoculation").disabled = false;
+        } else {
+            document.getElementById("finishInnoculation").disabled = true;
+        }
+    }
+
+    /* 예약 관리 테이블의 각 행 클릭 이벤트 처리*/
+    $('#reservationsTable tbody').on('click', 'tr', function () {
+        /* 클릭한 행 색깔 전환 */
+        if ($(this).hasClass('table-primary')) {
+            $(this).removeClass('table-primary');
+        } else {
+            $(this).addClass('table-primary');
+        }
+
+        setDisabledState_finishInnoculationBtn();
+    });
+
+    /* 예약 테이블 툴바 버튼 */
+    document.getElementById("reservationsTable_selectAll").addEventListener("click", (event) => {
+        reservationsTable.$('tbody tr').addClass('table-primary');
+        setDisabledState_finishInnoculationBtn();
+    });
+    document.getElementById("reservationsTable_unselectAll").addEventListener("click", (event) => {
+        reservationsTable.$('tbody tr').removeClass('table-primary');
+        setDisabledState_finishInnoculationBtn();
+    });
+
+    /* 접종완료처리 버튼 클릭시 */
+    document.getElementById("finishInnoculation").addEventListener("click", (event) => {
+        let hospitalPassword = document.getElementById("hospitalPassword").value;
+        if (!hospitalPassword) {
+            return alert("병원 비밀번호를 입력하세요.");
+        }
+        else if (!reservationsTable.$('tr').hasClass('table-primary')) {
+            return alert("접종완료처리할 예약을 선택하세요.");
+        }
+
+        let reservations_tableData = reservationsTable.rows().data();
+        let trEls = reservationsTable.$('tr');
+
+        let put_data = {
+            admin_password: hospitalPassword,
+            reservationIds: [] // 선택된 예약들의 ID
+        };
+        for (let i = 0; i < reservations_tableData.length; ++i) {
+            if (trEls.eq(i).hasClass('table-primary')) {
+                put_data.reservationIds.push(reservations_tableData[i].reservation_id);
+            }
+        }
+
+        axios({
+            method: 'post',
+            url: event.target.getAttribute("data-hospitalId") + '/vaccine-reservations/finish-innoculations',
+            data: put_data
+        })
+        .then((response) => {
+            reservationsTable.ajax.reload(); // 접종완료처리 성공시, 예약 관리 테이블 새로고침
+            document.getElementById("finishInnoculation").disabled = true;
+            alert(response.data.message);
+        })
+        .catch((err) => {
+            alert(err.response.data.message);
+        });
     });
     
 });
