@@ -16,6 +16,7 @@ var reviewsRouter = require('./routes/reviews');
 var adminRouter = require('./routes/admin');
 var reservationRouter = require('./routes/reserve');
 var mypageRouter = require('./routes/mypage');
+var visual = require('./routes/visualization');
 
 const admin_account = { id: 'admin', pw: '1234', isAdmin: true } // 관리자 페이지 계정 정보
 
@@ -79,6 +80,7 @@ app.use('/reviews', reviewsRouter);
 app.use('/admin', adminRouter);
 app.use('/reservation', reservationRouter);
 app.use('/mypage', mypageRouter);
+app.use('/visual',visual);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

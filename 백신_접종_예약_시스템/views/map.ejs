@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <head>
+    <script src="/javascripts/jquery-3.6.0.min.js"></script>
+    <title><%= title %></title>
+    <link rel = 'stylesheet' href='/stylesheets/style.css'>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89dbaab661f3a3d4a28b627cf293fe0"></script>
+
+    <style>
+      /* 너비와 높이가 지정되어 있지 않으면 지도가 읽어지지 않음(에러는 안남, 안보임) */
+      #map{
+          width: 100%;
+          height: 800px;
+      }
+  </style>
+
+     <!-- Google 지도 api 사용 스크립트 추가 -->
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaWVge29Sw0Mw995nDAd68xTzMcTZ5UFs"async defer></script>
+ 
+     <script>
+
+         function showMarker(){
+             
+          <% 
+          var lng = lng_lat[0];
+          var lat = lng_lat[1];
+        %>
+
+
+             //지도가 보여질 요소 찾아오기
+             var e= document.getElementById('map');
+  
+             // Goolgle지도 객체 생성 및 e요소 보여주기!!
+             new google.maps.Map(e, {center:{lat:parseFloat("<%=lat%>"), lng:parseFloat("<%=lng%>")}, zoom:14});
+
+             // 지도가 보여질 요소
+             var e= document.getElementById('map');
+  
+             // 원하는 좌표 객체
+             var mrhi= new google.maps.LatLng(parseFloat("<%=lat%>"), parseFloat("<%=lng%>"));
+  
+             // 표시되는 지도의 옵션 객체
+             var opts= {
+                 center: mrhi,
+                 zoom: 13
+             };
+  
+             // 지도 보이기
+             var map=new google.maps.Map( e , opts );
+  
+             // 지도에 붙일 마커객체 생성
+             var marker= new google.maps.Marker( {
+                 position: mrhi,
+                 title:"현재 ip위치" // 마커에 마우스를 놓고 있으면 보이는 tootip(말풍선)
+             } );
+  
+             // 지도 객체에 마커 추가하기
+             marker.setMap(map);
+  
+             // 마커 클릭 이벤트 반응하기
+             marker.addListener('click', function(){
+                 open('', '_blank');
+             });
+             
+       
+             // 마커가 보여질 때 애니메이션 처리도 가능함..(여러개 마커들에 동시에)
+  
+              //왕십리역 약국들...구글지도에서 좌표값들 얻어왔음.
+              var pharmacys=[
+              <% 
+        for(var i=0; i<rows.length; i++){
+          var oneItem = rows[i];
+        %>
+
+        ["<%=oneItem.hospital_name%>",parseFloat("<%=oneItem.y%>"),parseFloat("<%=oneItem.x%>")],
+        
+        <%
+        }     
+        %>
+                 ];
+  
+                 for(var i=0; i<pharmacys.length; i++){
+                     var title= pharmacys[i][0];
+                     var pos= new google.maps.LatLng(pharmacys[i][1], pharmacys[i][2]);
+  
+                     var m= new google.maps.Marker({
+                         position: pos,
+                         title: title,
+                    
+                         map: map,
+                         animation: google.maps.Animation.DROP,
+                     });
+  
+                     m.addListener('click', function(){
+                         alert(this.getTitle());
+                     })
+  
+             }//for..
+  
+         }
+     </script>
+  
+ </head>
+ <body onload="showMarker()" >
+
+    
+  
+     <!-- 지도 타일 이미지들을 보여줄 영역 div요소 -->
+     <div id="map"></div>   
+     
+ </body>
+ </html>
