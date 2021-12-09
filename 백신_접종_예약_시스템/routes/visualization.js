@@ -53,7 +53,7 @@ router.get('/map', function(req, res, next) {
       if(err) console.error("err : " + err);
       console.log("row: " + JSON.stringify(rows));
       
-  res.render('map',{title : '근처 병원',rows:rows,lng_lat:lng_lat});
+  res.render('map',{title : '근처 병원',rows:rows,lng_lat:lng_lat,meter:meter});
   connection.release();
 
     });

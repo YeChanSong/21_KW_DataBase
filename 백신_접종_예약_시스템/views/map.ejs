@@ -25,6 +25,7 @@
           <% 
           var lng = lng_lat[0];
           var lat = lng_lat[1];
+          var meter = meter;
         %>
 
 
@@ -38,42 +39,72 @@
              var e= document.getElementById('map');
   
              // 원하는 좌표 객체
-             var mrhi= new google.maps.LatLng(parseFloat("<%=lat%>"), parseFloat("<%=lng%>"));
+             var center_pin = new google.maps.LatLng(parseFloat("<%=lat%>"), parseFloat("<%=lng%>"));
   
              // 표시되는 지도의 옵션 객체
              var opts= {
-                 center: mrhi,
-                 zoom: 13
+                 center: center_pin,
+                 zoom: 14
              };
+
+             
+
   
              // 지도 보이기
              var map=new google.maps.Map( e , opts );
+
+
+             var myCity = new google.maps.Circle({
+
+center: center_pin,
+
+radius: parseInt("<%=meter%>"),
+
+strokeColor: "GREEN",
+
+strokeOpacity: 0.8,
+
+strokeWeight: 2,
+
+fillColor: "GREEN",
+
+fillOpacity: 0.4
+
+});
+myCity.setMap(map);
+
+
+
   
              // 지도에 붙일 마커객체 생성
              var marker= new google.maps.Marker( {
-                 position: mrhi,
-                 title:"현재 ip위치" // 마커에 마우스를 놓고 있으면 보이는 tootip(말풍선)
-             } );
+                 position: center_pin,
+                 title:"현재 ip위치", // 마커에 마우스를 놓고 있으면 보이는 tootip(말풍선)
+                 icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8.5,
+        fillColor: "#F00",
+        fillOpacity: 0.4,
+        strokeWeight: 0.4
+    }
+           
+                } );
   
-             // 지도 객체에 마커 추가하기
              marker.setMap(map);
   
-             // 마커 클릭 이벤트 반응하기
              marker.addListener('click', function(){
-                 open('', '_blank');
+                 alert(this.getTitle());
              });
              
        
-             // 마커가 보여질 때 애니메이션 처리도 가능함..(여러개 마커들에 동시에)
   
-              //왕십리역 약국들...구글지도에서 좌표값들 얻어왔음.
               var pharmacys=[
               <% 
         for(var i=0; i<rows.length; i++){
           var oneItem = rows[i];
         %>
 
-        ["<%=oneItem.hospital_name%>",parseFloat("<%=oneItem.y%>"),parseFloat("<%=oneItem.x%>")],
+        ["<%=oneItem.hospital_name%>",parseFloat("<%=oneItem.y%>"),parseFloat("<%=oneItem.x%>"),parseInt("<%=oneItem.hospital_id%>")],
         
         <%
         }     
@@ -91,14 +122,20 @@
                          map: map,
                          animation: google.maps.Animation.DROP,
                      });
-  
+                    var url = 'http://127.0.0.1:3000/reservation/' + pharmacys[i][3];
                      m.addListener('click', function(){
-                         alert(this.getTitle());
+                        window.location.href= url;
+                       
                      })
   
              }//for..
   
          }
+
+
+
+            
+         
      </script>
   
  </head>
