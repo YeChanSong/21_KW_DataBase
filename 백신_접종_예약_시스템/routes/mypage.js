@@ -29,8 +29,6 @@ router.post('/', (req, res, err) => {
          WHERE v.User_number = ? AND h.hospital_id = v.hospital_id
         `;
    pool.getConnection((err, connection) => {
-      console.log(connection);
-      console.log(err);
       connection.query(query, [b.user_number], (err, rows) => {
          if(err){
             console.log("[ERR] post /mypage " + err);
@@ -43,7 +41,7 @@ router.post('/', (req, res, err) => {
             }
          }
          connection.release();
-         res.render('reservation/mypage', {rows: arr});
+         res.render('reservation/mypage', {rows: arr, data_length: arr == undefined ? 0 : arr.length});
       });
    });
 });
