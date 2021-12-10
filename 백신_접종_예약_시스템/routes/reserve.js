@@ -27,7 +27,19 @@ router.get('/:hid', (req, res, next) => {
     res.locals.stuff={
         hid: req.params.hid
     }
-    res.render('reservation/request');
+    const query = `SELECT * FROM HOSPITALS WHERE hospital_id = ?`;
+    pool.getConnection((err, connection) => {
+       connection.query(query, [req.params.hid], (err, rows)=>{
+           if(err){
+               console.log(err);
+               next(err);
+           }
+           else{
+               console.log(rows);
+               res.render('reservation/request', {rows: rows});
+           }
+       }) ;
+    });
 });
 
 //예약 API
