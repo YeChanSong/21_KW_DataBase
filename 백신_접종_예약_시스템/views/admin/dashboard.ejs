@@ -25,6 +25,87 @@
 
 
 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['date','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows.length; i++){
+          var oneItem = rows[i];
+        %>
+
+        ["<%=oneItem.date%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '일별 접종 현황',
+          hAxis: {title: "접종 일자"},
+          vAxis :{title: "접종자", viewWindow:{min:0},gridlines:{interval:1},},
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_date_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+      
+    </script>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['age','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows2.length; i++){
+          var oneItem = rows2[i];
+        %>
+
+        ["<%=oneItem.age%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '나이 접종 현황',
+          hAxis: {title: "나이"},
+          vAxis :{title: "접종자수", viewWindow:{min:0},gridlines:{interval:1},},
+          
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_age_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+    </script>
+
+
+
 
 
 </head>
@@ -49,7 +130,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/admin/dashboard">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>대시보드</span></a>
@@ -64,7 +145,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/admin/hospitals/individual-management">
                     <i class="fas fa-fw fa-table"></i>
                     <span>병원 관리</span></a>
@@ -129,90 +210,11 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <h1 class="h3 mb-2 text-gray-800">접종 현황</h1>
+
+                    <div id="v_date_chart" style="width: 1200px; height: 300px"></div>
+                    <div id="v_age_chart" style="width: 1200px; height: 300px"></div>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">병원 관리</h1>
-                    
-                    <div class="row">
-                        <div class="col-xl-5">
-                            <div class="card shadow mb-4" >
-                                <div class="card-header py-3" >
-                                    <h6 class="m-0 font-weight-bold text-primary">병원 목록</h6>
-                                </div>
-                                <div class="card-body"> 
-                                    
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered table-hover" id="hospitalsTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>병원 이름</th>
-                                                    <th>주소</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-7">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary" id="vaccineCardHeader">백신 보유량 관리</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered" id="vaccinesTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>백신 이름</th>
-                                                    <th>백신 제조사</th>
-                                                    <th>보유량</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <button class="btn btn-sm btn-primary float-right mt-1" id="saveVaccineQuantity" disabled>저장</button>
-                                </div>
-                            </div>
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary" id="reservationCardHeader">예약 관리</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered table-hover" id="reservationsTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>날짜</th>
-                                                    <th>백신</th>
-                                                    <th>차수</th>
-                                                    <th>예약자명</th>
-                                                    <th>나이</th>
-                                                    <th>접종 상태</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                    <div class="btn-toolbar justify-content-between mt-1" role="toolbar">
-                                        <div class="btn-group mr-2" role="group">
-                                            <button class="btn btn-sm btn-secondary" id="reservationsTable_selectAll">전체선택</button>
-                                            <button class="btn btn-sm btn-secondary" id="reservationsTable_unselectAll">선택해제</button>
-                                        </div>
-    
-                                        <div class="input-group input-group-sm">
-                                            <input type="password" class="form-control" id="hospitalPassword" placeholder="비밀번호">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary" id="finishInnoculation" disabled>접종완료처리</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
 
                 </div>
                 <!-- /.container-fluid -->
