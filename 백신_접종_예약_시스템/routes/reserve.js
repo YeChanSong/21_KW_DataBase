@@ -55,7 +55,7 @@ router.post('/', function(req, res, next){
                console.log('[ERR] post /' + err);
            }
            connection.release();
-           res.redirect('/reservation');
+           res.redirect('/mypage');
        }) ;
     });
 });
