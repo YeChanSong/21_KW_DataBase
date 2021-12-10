@@ -49,7 +49,7 @@ router.get('/logout', (req, res, next) => {
     });
 });
 
-/* 병원 1곳 단위의 백신 수량 관리 페이지 */
+/* 병원 1곳 단위의 백신 수량 및 예약 관리 페이지 */
 router.get('/hospitals/individual-management', checkAuth_page, function(req, res, next) {
     res.render('admin/hospitals/individual_management', {title: '예방접종 사전예약 시스템'});
 });
@@ -234,11 +234,12 @@ router.get('/hospitals/:id/vaccine-reservations', checkAuth_api, function(req, r
     });
 });
 
-/* 접종완료 처리 */
+/* 여러개의 예약건에 대한 접종완료 처리 */
 router.post('/hospitals/:id/vaccine-reservations/finish-innoculations', checkAuth_api, function(req, res, next) {    
     pool.getConnection(function(err, connection) {
         if(err) next(err);
 
+        // 병원 관리 비밀번호 일치여부 확인
         connection.query('SELECT * FROM hospitals WHERE hospital_id = ? and admin_password = ?', [req.params.id, req.body.admin_password], function(err, rows) {
             if (err) {
                 next(err);
@@ -260,7 +261,7 @@ router.post('/hospitals/:id/vaccine-reservations/finish-innoculations', checkAut
                     WHERE r.hospital_id = ? 
                         and r.reservation_id in (${Array(req.body.reservationIds.length).fill('?').join(',')}) 
                         and u.Vaccinated_Number = r.inoculation_number - 1
-                `;
+                `; // 예약차수보다 유저의 접종차수가 1 적은 경우만 유저의 접종차수 1 증가시킴 (1, 2차를 둘다 예약만하고 접종하지 않았는데 2차에 대해 접종완료처리를 하는 경우에 대한 예외처리)
 
                 connection.query(query, [req.params.id, req.body.reservationIds].flat(), function(err, rows) {
                     if(err) {

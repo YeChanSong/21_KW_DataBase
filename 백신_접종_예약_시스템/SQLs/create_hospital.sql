@@ -26,6 +26,7 @@ create table HOSPITALS (
     hospital_name varchar(100) not null UNIQUE,
     hospital_location varchar(100) not null,
     hospital_point point not null,
+    admin_password varchar(100) not null default '0000'
     
     FOREIGN KEY (SL_id) REFERENCES SUBLOCATION(sublocation_id)
 	);

@@ -161,7 +161,18 @@
                             <div class="card-header py-3">
                                 <h6><%=rows[i].hospital_name%></h6>
                                 <h6><%=rows[i].reservation_date%></h6>
-                                <button onclick="reservation_cancel('<%=rows[i].reservation_id%>')">예약 취소</button>
+
+                                <!-- 접종완료한 예약들에 대해서 후기 작성 버튼 또는 수정/삭제 버튼 표시 -->
+                                <!-- 접종미완료 예약들에 대해서 예약 취소 버튼 표시 -->
+                                <%if (rows[i].Vaccinated_Number >= rows[i].inoculation_number) {%>
+                                    <form action="<%= (rows[i].comment_id) ? '/reviews/' + rows[i].comment_id : '/reviews/write'%>" method="post" target="_blank">
+                                        <input type="hidden" name="reservation_id" value="<%=rows[i].reservation_id%>">
+                                        <input type="hidden" name="user_number" value="<%=rows[i].User_number%>">
+                                        <button type="submit"><%= (rows[i].comment_id) ? '후기 수정 및 삭제' : '후기 작성' %></button>
+                                    </form>
+                                <%} else {%>
+                                    <button onclick="reservation_cancel('<%=rows[i].reservation_id%>')">예약 취소</button>
+                                <%}%>
                             </div>
                         </div>
                     </div>
@@ -200,6 +211,8 @@
             }
         });
     }
+
+
 </script>
 
 <!-- Bootstrap core JavaScript-->

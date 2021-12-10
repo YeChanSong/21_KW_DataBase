@@ -71,64 +71,90 @@ router.get('/data-tables-source', function(req, res, next) {
 });
 
 
-/* 접종 후기 작성 화면 */
-/* reservation_id 마다 리뷰 작성 가능 */
 router.get('/write', function(req, res, next) {
+    res.redirect('/reviews');
+});
+
+var checkWriteAuth = function(req, res, next) {
     pool.getConnection(function(err, connection) {
-        if(err) next(err);
-        
-        let query =
-        `
-            SELECT v.vaccine_name, h.hospital_name, r.inoculation_number
-            FROM vaccine_reservation r
-                natural join vaccine v
-                natural join hospitals h
-            WHERE r.reservation_id = ?
-        `;
-
-        connection.query(query, [req.query.reservation_id], function(err, rows) {
-            if(err)  {
-                next(err);
+        connection.query('SELECT * FROM vaccine_reservation WHERE reservation_id = ? AND user_number = ? ', [req.body.reservation_id, req.body.user_number], function(err, rows) {
+            if(err || !rows.length)  {
+                console.log('hello')
+                res.redirect('/reviews');
+            } else {
+                console.log(rows);
+                next();
             }
-            else {
-                res.render('write_review', {title: '예방접종 사전예약 시스템', data: rows[0], reservation_id: req.query.reservation_id})
-            }
-
             connection.release();
         });
     });
-});
+}
 
-/* 접종 후기 작성 */
-router.post('/write', function(req, res, next) {
+/* 접종 후기 작성 화면 또는 후기 작성*/
+router.post('/write', checkWriteAuth, function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) next(err);
 
-        console.log(req.body);
+        if (req.body.review_content && req.body.vaccine_rating && req.body.hospital_rating) {
+            let query =
+            `
+                INSERT INTO vaccine_comment(content, vaccine_id, User_number, hospital_id, vaccine_rating, hospital_rating, reservation_id)
+                SELECT ?, vaccine_id, user_number, hospital_id, ?, ?, reservation_id
+                FROM vaccine_reservation
+                WHERE reservation_id = ?
+            `;
 
-        let query =
-        `
-            INSERT INTO vaccine_comment(content, vaccine_id, User_number, hospital_id, vaccine_rating, hospital_rating)
-            SELECT ?, vaccine_id, user_number, hospital_id, ?, ?
-            FROM vaccine_reservation
-            WHERE reservation_id = ?
-        `;
+            connection.query(query, [req.body.review_content, req.body.vaccine_rating, req.body.hospital_rating, req.body.reservation_id], function(err, rows) {
+                if (err) {
+                    next(err);
+                }
+                else {
+                    res.redirect('/reviews');
+                }
+                
+                connection.release();
+            });
+        }
+        else {
+            let query =
+            `
+                SELECT v.vaccine_name, h.hospital_name, r.inoculation_number
+                FROM vaccine_reservation r
+                    natural join vaccine v
+                    natural join hospitals h
+                WHERE r.reservation_id = ?
+            `;
 
-        connection.query(query, [req.body.review_content, req.body.vaccine_rating, req.body.hospital_rating, req.body.reservation_id], function(err, rows) {
-            if (err) {
-                next(err);
-            }
-            else {
-                res.redirect('/reviews');
-            }
-            
-            connection.release();
-        });
+            connection.query(query, [req.body.reservation_id], function(err, rows) {
+                if(err)  {
+                    next(err);
+                }
+                else {
+                    res.render('write_review', {title: '예방접종 사전예약 시스템', data: rows[0], reservation_id: req.body.reservation_id, user_number: req.body.user_number})
+                }
+
+                connection.release();
+            });
+        }
     });
 });
 
+
+var checkModifyAuth = function(req, res, next) {
+    pool.getConnection(function(err, connection) {
+        connection.query('SELECT * FROM vaccine_reservation r natural join vaccine_comment c WHERE r.user_number = ? AND c.comment_id = ? ', [req.body.user_number, req.params.id], function(err, rows) {
+            if(err || !rows.length)  {
+                res.redirect('/reviews');
+            } else {
+                next();
+            }
+            connection.release();
+        });
+    });
+}
+
 /* 자신이 작성한 단일 접종 후기 조회 화면 */
-router.get('/:id', function(req, res, next) {
+router.post('/:id', checkModifyAuth, function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if(err) next(err);
         
@@ -146,7 +172,7 @@ router.get('/:id', function(req, res, next) {
                 next(err);
             }
             else {
-                res.render('read_review', {title: '예방접종 사전예약 시스템', data: rows[0], comment_id: req.params.id})
+                res.render('read_review', {title: '예방접종 사전예약 시스템', data: rows[0], comment_id: req.params.id, user_number: req.body.user_number})
             }
 
             connection.release();
@@ -155,7 +181,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 /* 자신이 작성한 단일 접종 후기 수정 */
-router.put('/:id', function(req, res, next) {
+router.put('/:id', checkModifyAuth, function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) next(err);
 
@@ -171,7 +197,7 @@ router.put('/:id', function(req, res, next) {
                 next(err);
             }
             else {
-                res.redirect('/reviews'); // 임시
+                res.redirect('/reviews'); 
             }
             
             connection.release();
@@ -180,7 +206,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 /* 자신이 작성한 단일 접종 후기 삭제 */
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', checkModifyAuth, function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) next(err);
 
@@ -195,7 +221,7 @@ router.delete('/:id', function(req, res, next) {
                 next(err);
             }
             else {
-                res.redirect('/reviews'); // 임시
+                res.redirect('/reviews'); 
             }
             
             connection.release();

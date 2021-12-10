@@ -18,8 +18,14 @@ router.get('/', (req, res, err) => {
 router.post('/', (req, res, err) => {
    const b = req.body;
    const query =
-       `SELECT * FROM VACCINE_RESERVATION as 
-        v JOIN HOSPITALS as h WHERE v.User_number = ? AND h.hospital_id = v.hospital_id
+       `SELECT v.reservation_id, v.reservation_date, v.inoculation_number, c.comment_id, h.hospital_name, u.Vaccinated_Number, u.User_number
+        FROM VACCINE_RESERVATION as v 
+            JOIN HOSPITALS as h 
+            JOIN USERS as u 
+               on v.user_number = u.User_number
+            LEFT OUTER JOIN VACCINE_COMMENT as c 
+               on v.reservation_id = c.reservation_id 
+         WHERE v.User_number = ? AND h.hospital_id = v.hospital_id
         `;
    pool.getConnection((err, connection) => {
       connection.query(query, [b.user_number], (err, rows) => {

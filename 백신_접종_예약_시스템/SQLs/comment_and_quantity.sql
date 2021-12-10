@@ -6,15 +6,17 @@ use testDB;
 CREATE TABLE VACCINE_COMMENT (
 	comment_id int unsigned not null primary key auto_increment,
     content text not null,
-    vaccine_id bigint not null,
-    User_number varchar(20) not null,
-    hospital_id int unsigned not null,
-    vaccine_rating int unsigned not null,
-    hospital_rating int unsigned not null,
+    vaccine_id bigint,
+    User_number varchar(20),
+    hospital_id int unsigned,
+    vaccine_rating int not null,
+    hospital_rating int not null,
+    reservation_id bigint not null unique
     
-    FOREIGN KEY (vaccine_id) REFERENCES VACCINE(vaccine_id),
-    FOREIGN KEY (User_number) REFERENCES USER(User_number),
-    FOREIGN KEY (hospital_id) REFERENCES HOSPITALS(hospital_id)
+    FOREIGN KEY (vaccine_id) REFERENCES VACCINE(vaccine_id)  on update cascade  on delete set null,
+    FOREIGN KEY (User_number) REFERENCES USER(User_number)  on update cascade  on delete set null,
+    FOREIGN KEY (hospital_id) REFERENCES HOSPITALS(hospital_id)  on update cascade  on delete set null,
+    FOREIGN KEY (reservation_id) REFERENCES VACCINE_RESERVATION(reservation_id)  on update cascade  on delete set null
 );
 
 # 백신 후기 임의 데이터 삽입 (comment_id는 auto increment라 생략)
