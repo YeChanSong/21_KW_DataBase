@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 <head>
 
     <meta charset="utf-8">
@@ -22,6 +22,91 @@
 
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['date','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows.length; i++){
+          var oneItem = rows[i];
+        %>
+
+        ["<%=oneItem.date%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '일별 접종 현황',
+          hAxis: {title: "접종 일자"},
+          vAxis :{title: "접종자", viewWindow:{min:0},gridlines:{interval:1},},
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_date_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+      
+    </script>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['age','1차 접종자','2차 접종자'],
+        <% 
+        for(var i=0; i<rows2.length; i++){
+          var oneItem = rows2[i];
+        %>
+
+        ["<%=oneItem.age%>",parseInt("<%=oneItem.count_1%>"),parseInt("<%=oneItem.count_2%>")],
+        
+        <%
+        }     
+        %>
+        
+      ]);
+
+        var options = {
+          title: '나이 접종 현황',
+          hAxis: {title: "나이"},
+          vAxis :{title: "접종자수", viewWindow:{min:0},gridlines:{interval:1},},
+          
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('v_age_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+      
+
+    </script>
+
+
+
+
 
 </head>
 
@@ -196,10 +281,11 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
+                    <div id="v_date_chart" style="width: 1200px; height: 300px"></div>
+                    <div id="v_age_chart" style="width: 1200px; height: 300px"></div>
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">병원 관리</h1>
-
+                    
                     <div class="row">
                         <div class="col-xl-5">
                             <div class="card shadow mb-4" >

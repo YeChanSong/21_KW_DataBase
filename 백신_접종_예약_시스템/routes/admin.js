@@ -51,7 +51,31 @@ router.get('/logout', (req, res, next) => {
 
 /* 병원 1곳 단위의 백신 수량 및 예약 관리 페이지 */
 router.get('/hospitals/individual-management', checkAuth_page, function(req, res, next) {
-    res.render('admin/hospitals/individual_management', {title: '예방접종 사전예약 시스템'});
+    pool.getConnection(function(err,connection){    
+        
+        var sql_date = "SELECT * FROM vaccine_date;";
+        var sql_age = "SELECT * FROM vaccine_age;";
+    
+        connection.query(sql_date,function(err,rows){
+              if(err) console.error("err : " + err);
+    
+              console.log("row: " + JSON.stringify(rows));
+              
+              connection.query(sql_age,function(err,rows2){
+                if(err) console.error("err : " + err);
+      
+                console.log("row2: " + JSON.stringify(rows2));
+                          
+                res.render('admin/hospitals/individual_management',{title : '예방접종 사전예약 시스템',rows: rows,rows2: rows2});
+                connection.release();
+                
+      
+              })
+    
+    
+            })
+          })
+
 });
 
 /* 모든 구, 동 목록 조회 */
