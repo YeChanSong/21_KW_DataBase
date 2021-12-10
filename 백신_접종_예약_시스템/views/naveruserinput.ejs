@@ -35,9 +35,39 @@
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-	 
+	
+    <script>
+		function local (){
+			// BOM의 navigator객체의 하위에 geolocation객체가 새로 추가되었음.
+			window.navigator.geolocation.getCurrentPosition( function(position){ //OK
+				var lat= position.coords.latitude;
+				var lng= position.coords.longitude;
+  
+				window.location.href= "http://127.0.0.1:3000/visual/map/?target="+lat+"%"+lng+"&" +"meter=3000"
+  
+			} ,
+			function(error){ //error
+				switch(error.code){
+					case error.PERMISSION_DENIED:
+						str="사용자 거부";
+						break;
+					case error.POSITION_UNAVAILABLE:
+						str="지리정보 없음";
+						break;
+					case error.TIMEOUT:
+						str="시간 초과";
+						break;
+					case error.UNKNOWN_ERROR:
+						str="알수없는 에러";
+						break;
+				}
+				document.getElementById('target').innerHTML=str;
 
+			});
+		}
+	  </script>
 
+ 
 </head>
 <body>
 
@@ -364,33 +394,6 @@
 			return true;
 		}
 
-// 지리정보
-		(function local (){
-		// BOM의 navigator객체의 하위에 geolocation객체가 새로 추가되었음.
-		window.navigator.geolocation.getCurrentPosition( function(position){ //OK
-			var lat= position.coords.latitude;
-			var lng= position.coords.longitude;
-
-			document.getElementById('target').innerHTML=lng+" "+lat;
-		} ,
-		function(error){ //error
-			switch(error.code){
-				case error.PERMISSION_DENIED:
-					str="사용자 거부";
-					break;
-				case error.POSITION_UNAVAILABLE:
-					str="지리정보 없음";
-					break;
-				case error.TIMEOUT:
-					str="시간 초과";
-					break;
-				case error.UNKNOWN_ERROR:
-					str="알수없는 에러";
-					break;
-			}
-			document.getElementById('target').innerHTML=str;
-		});
-	})();
 
 
 
@@ -455,8 +458,8 @@
 			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
 			// window.scrollTo(0, 0);
 			alert("myVal 성공");
-			$("#vcnRsrvFrm").appendTo('<input type="hidden" id="target" name="target" value='+target+'/>');
 			$("#vcnRsrvFrm").submit();
+			local();
 
 		});
 		

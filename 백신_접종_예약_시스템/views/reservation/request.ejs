@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>백신 예약</title>
 
     <!-- Custom fonts for this template -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">대시 보드<sup></sup></div>
         </a>
 
         <!-- Divider -->
@@ -152,7 +152,7 @@
             <!-- Begin Page Content -->
             <div class="container-fluid p-5">
                 <!-- Page Heading -->
-                <h1 id="title" class="h3 mb-2 text-gray-800">예약하기</h1>
+                <h1 id="title" class="h3 mb-2 text-gray-800"><%=rows[0].hospital_name%> 예약하기</h1>
                 <form class="user" action="/reservation" method="post">
                     <div class="form-group">
                         <input type="text" id="user_number" name="id" placeholder="주민번호를 입력해주세요"><br>
