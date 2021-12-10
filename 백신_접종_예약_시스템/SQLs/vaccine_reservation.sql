@@ -13,7 +13,9 @@ CREATE TABLE vaccine_reservation(
 
 	FOREIGN KEY(hospital_id) REFERENCES hospitals(hospital_id),
 	FOREIGN KEY(user_number) REFERENCES users(user_number),
-	FOREIGN KEY(vaccine_id) REFERENCES vaccine(vaccine_id)
+	FOREIGN KEY(vaccine_id) REFERENCES vaccine(vaccine_id),
+
+	UNIQUE(user_number, inoculation_number)
 );
 
 INSERT INTO vaccine_reservation(reservation_date, inoculation_number, hospital_id, user_number, vaccine_id) VALUES
