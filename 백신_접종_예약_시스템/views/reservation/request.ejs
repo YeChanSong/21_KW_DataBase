@@ -154,24 +154,39 @@
                 <!-- Page Heading -->
                 <h1 id="title" class="h3 mb-2 text-gray-800"><%=rows[0].hospital_name%> 예약하기</h1>
                 <form class="user" action="/reservation" method="post">
-                    <div class="form-group">
-                        <input type="text" id="user_number" name="id" placeholder="주민번호를 입력해주세요"><br>
-                        <button onclick="checkInoNum(); return false;" >확인</button>
-                    </div>
+                    <input type="hidden" id="hospital_id" name="hospital_id" value="<%=locals.stuff.hid%>">
 
-                    <div id="inputWrap" style="display:none;">
-                        <h6>접종 날짜 선택</h6>
-                        <input type="date" id="reservation_date" name="reservation_date"><br>
-                        <input type="hidden" id="hospital_id" name="hospital_id" value="<%=locals.stuff.hid%>"> <br>
-                        <h6>백신 선택</h6>
-                        <select id="vaccine_id" name="vaccine_id">
-                            <option value="1">화이자</option>
-                            <option value="2">모더나</option>
-                            <option value="3">얀센</option>
-                            <option value="4">아스트라제네카</option>
-                        </select> <br>
-                        <input type="submit" value="예약하기">
-                    </div>
+                    <div class="input-group col-xl-4 col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="user_number" name="id" placeholder="주민번호를 입력해주세요">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" onclick="checkInoNum(); return false;" >확인</button>
+                            </div>
+                        </div>
+    
+                        <div id="inputWrap" class="input-group mt-3" style="display:none;">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >접종 날짜 선택</span>
+                                </div>
+                                <input type="date" class="form-control" id="reservation_date" name="reservation_date">
+                            </div>
+                            <div class="input-group mt-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >백신 선택</span>
+                                </div>
+                                <select id="vaccine_id" class="form-control" name="vaccine_id">
+                                    <option value="1">화이자</option>
+                                    <option value="2">모더나</option>
+                                    <option value="3">얀센</option>
+                                    <option value="4">아스트라제네카</option>
+                                </select>
+                            </div>
+                            <input type="submit" class="btn btn-primary mt-2" value="예약하기">
+                        </div>
+                    </div> 
+
+
                 </form>
             </div>
             <!-- /.container-fluid -->
