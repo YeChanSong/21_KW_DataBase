@@ -44,10 +44,13 @@ router.get('/map', function(req, res, next) {
   var meter = req.query.meter;
   var datas = [target,meter];
   var lng_lat = target.split(' ');
+  console.log("target: "+target);
+  console.log("meter: "+ meter);
   pool.getConnection(function(err,connection){    
     var sql = "SELECT hospital_id, hospital_name,  ST_X(hospital_point) as x, ST_Y(hospital_point)as y FROM hospitals WHERE ST_Distance_Sphere(hospital_point, ST_GeomFromText('POINT(" + target + ")')) <= "+ meter+";";
+    
     connection.query(sql,function(err,rows){
-      console.log(sql);      
+      console.log(sql);
       if(err) console.error("err : " + err);
       console.log("row: " + JSON.stringify(rows));
       

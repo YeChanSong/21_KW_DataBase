@@ -43,7 +43,8 @@
 				var lat= position.coords.latitude;
 				var lng= position.coords.longitude;
   
-				window.location.href= "http://127.0.0.1:3000/visual/map/?target="+lat+"%"+lng+"&" +"meter=3000"
+				window.location.href= "http://127.0.0.1:3000/visual/map/?target="+lng+" "+lat+"&" +"meter=500000"
+
   
 			} ,
 			function(error){ //error
@@ -211,7 +212,6 @@
         
 		// 예약 중 나갈 시 네이버 로그인 취소
         $(".homeBtn").on("click", function(){
-            alert("<%=logoutNaver%>");
             $.ajax({
 				url : "<%=logoutNaver%>",
 				type : "GET",
@@ -457,7 +457,6 @@
 			// $("#rsrvRgstPage").hide();         //예방접종예약하기_본인인증페이지(현재)
 			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
 			// window.scrollTo(0, 0);
-			alert("myVal 성공");
 			$("#vcnRsrvFrm").submit();
 			local();
 
@@ -508,11 +507,7 @@
 <div class="dim" ></div>
     <div class="sub-visual">
       <h2>예방접종 예약하기<strong>본인 인증 단계</strong></h2>
-      <ul class="step-identity clearfix">
-        <li class="active">대상자 확인</li>
-        <li>의료기관 선택</li>
-        <li>예약완료</li>
-      </ul><!-- //step-identity -->
+      
     </div><!-- //sub-visual -->
 
     <form action="/userdatainput" id="vcnRsrvFrm" name="vcnRsrvFrm" method="post">
@@ -582,7 +577,7 @@
 	        <span>-</span>
     	    <label for="apnmRrn2">접종받는 분(피접종자) 주민등록번호 뒷자리</label>
         	<input type="password" autocomplete="off" id="ptntRrn2" name="ptntRrn2" maxlength="7" value="" class="double" onkeyup="onlyNumber(this);" />
-	       <input type="button" class="button-search wide2 orange" id = "tgtSearchBtn" value="대상자 확인" />
+	       <!-- <input type="button" class="button-search wide2 orange" id = "tgtSearchBtn" value="대상자 확인" /> -->
       </div><!-- //form-row -->
 
 		<div class="form-row">
@@ -631,26 +626,7 @@
           <li>예약정보는 휴대폰 번호로 전송해드리오니, 확인 후 예약일시에 맞춰 의료기관에 방문해주세요.</li>
         </ul><!-- //warn-list -->
       </div><!-- //form-row -->
-      <div class="form-row">
-        <h4>국민비서 알림 선택<i class="reqire">*</i></h4>
-        <p class="strong">백신접종 일시 장소 주의사항 등을 휴대전화로 알려드립니다.</p>
-      </div><!-- //form-row -->
-      <div class="form-row">
-        <table class="tbl-reservation">
-			<tbody>
-				<tr>
-					<th scope="row" rowspan="" style="width:110px">국민비서<br/>&nbsp;&nbsp;&nbsp;알림선택<i class="reqire">*</i></th>
-					<td colspan="">
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn1" value="B"/><label for="smsRcptAgrmYn1">네이버앱</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn2" value="A"/><label for="smsRcptAgrmYn2">카톡(카카오톡)</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn3" value="C"/><label for="smsRcptAgrmYn3">토스(toss)</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn4" value="Y"/><label for="smsRcptAgrmYn4" style="width:90px;">문자메시지</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn5" value="N"/><label for="smsRcptAgrmYn5">수신받지 않음</label></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-      </div><!-- //form-row -->
+      
     </div><!-- //content-box -->
     <div class="bottom-wrap">
       <div class="button-group">

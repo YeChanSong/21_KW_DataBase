@@ -282,7 +282,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     // if(dbc){
     //   res.redirect('/');
     // }
-    res.redirect('/visual/map/:target/:') // 맵으로 링크
+    // res.redirect('/visual/map') // 맵으로 링크
   });
 
 

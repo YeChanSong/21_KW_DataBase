@@ -35,6 +35,38 @@
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
+	<script>
+		function local (){
+			// BOM의 navigator객체의 하위에 geolocation객체가 새로 추가되었음.
+			window.navigator.geolocation.getCurrentPosition( function(position){ //OK
+				var lat= position.coords.latitude;
+				var lng= position.coords.longitude;
+  
+				window.location.href= "http://127.0.0.1:3000/visual/map/?target="+lng+" "+lat+"&" +"meter=500000"
+
+  
+			} ,
+			function(error){ //error
+				switch(error.code){
+					case error.PERMISSION_DENIED:
+						str="사용자 거부";
+						break;
+					case error.POSITION_UNAVAILABLE:
+						str="지리정보 없음";
+						break;
+					case error.TIMEOUT:
+						str="시간 초과";
+						break;
+					case error.UNKNOWN_ERROR:
+						str="알수없는 에러";
+						break;
+				}
+				document.getElementById('target').innerHTML=str;
+
+			});
+		}
+	  </script>
+
 </head>
 <body>
 
@@ -176,7 +208,7 @@
 			
 		});
         
-		// 예약 중 나갈 시 네이버 로그인 취소
+		// 예약 중 나갈 시 구글 로그인 취소
         $(".homeBtn").on("click", function(){
             
             $.ajax({
@@ -428,11 +460,9 @@
 			// $("#rsrvRgstPage").hide();         //예방접종예약하기_본인인증페이지(현재)
 			// $("#rsrvRgstSearchMcPage").show(); //의료기관 찾기 레이어
 			// window.scrollTo(0, 0);
-			alert("myVal 성공");
 
-			
 			$("#vcnRsrvFrm").submit();
-
+			local();
 		});
 		
 		//뒤로버튼
@@ -507,7 +537,6 @@
 		<input type="hidden" id="vacMkrCd" 			name="vacMkrCd" value=""/>
 		<input type="hidden" id="rsrvType" 			name="rsrvType" value=""/>
 		
-		
 		<input type="hidden" id="tokKey" name="tokKey" value="564acffa98d76c65dc5db147da3e65af4df02321e623063fc1c84ca775c8e7a13c706ae8cd2ffc7c2d2c9bf3ac29fa23565ad225c19c599677efb6ff1264f47ac39ea4c9362be8cd69ea48f17b152f8725a21a8af745a99aa2af563f899b0254bce9f2f8180d3a12f837a1d0fe62"/>
 		
     <div class="content-box">
@@ -554,7 +583,7 @@
 	        <span>-</span>
     	    <label for="apnmRrn2">접종받는 분(피접종자) 주민등록번호 뒷자리</label>
         	<input type="password" autocomplete="off" id="ptntRrn2" name="ptntRrn2" maxlength="7" value="" class="double" onkeyup="onlyNumber(this);" />
-	       <input type="button" class="button-search wide2 orange" id = "tgtSearchBtn" value="대상자 확인" />
+	       <!-- <input type="button" class="button-search wide2 orange" id = "tgtSearchBtn" value="대상자 확인" /> -->
       </div><!-- //form-row -->
 
 		<div class="form-row">
@@ -603,26 +632,7 @@
           <li>예약정보는 휴대폰 번호로 전송해드리오니, 확인 후 예약일시에 맞춰 의료기관에 방문해주세요.</li>
         </ul><!-- //warn-list -->
       </div><!-- //form-row -->
-      <div class="form-row">
-        <h4>국민비서 알림 선택<i class="reqire">*</i></h4>
-        <p class="strong">백신접종 일시 장소 주의사항 등을 휴대전화로 알려드립니다.</p>
-      </div><!-- //form-row -->
-      <div class="form-row">
-        <table class="tbl-reservation">
-			<tbody>
-				<tr>
-					<th scope="row" rowspan="" style="width:110px">국민비서<br/>&nbsp;&nbsp;&nbsp;알림선택<i class="reqire">*</i></th>
-					<td colspan="">
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn1" value="B"/><label for="smsRcptAgrmYn1">네이버앱</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn2" value="A"/><label for="smsRcptAgrmYn2">카톡(카카오톡)</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn3" value="C"/><label for="smsRcptAgrmYn3">토스(toss)</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn4" value="Y"/><label for="smsRcptAgrmYn4" style="width:90px;">문자메시지</label></span><br/>
-							<span class="radio-wrap"><input type="radio" class="smsRcptAgrmYn" name="smsRcptAgrmYn" id="smsRcptAgrmYn5" value="N"/><label for="smsRcptAgrmYn5">수신받지 않음</label></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-      </div><!-- //form-row -->
+      
     </div><!-- //content-box -->
     <div class="bottom-wrap">
       <div class="button-group">
