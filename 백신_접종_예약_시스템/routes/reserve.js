@@ -30,6 +30,42 @@ router.get('/:hid', (req, res, next) => {
     res.render('reservation/request');
 });
 
+/* 예약할 접종차수 확인하는 API (접종하지 않은 예약건이 있거나, 등록되지 않은 유저이면 에러 메시지) */
+router.post('/check-inoculation-number', function(req, res, next){
+    const query =
+        `
+        SELECT r.reservation_id, u.Vaccinated_Number + 1 as new_ino_num
+        FROM VACCINE_RESERVATION r 
+            RIGHT OUTER JOIN USERS u 
+                ON r.user_number = u.User_number AND r.inoculation_number = u.Vaccinated_Number + 1
+        WHERE u.User_number = ?
+        `;
+    pool.getConnection((err, connection)=>{
+        const b = req.body;
+        const params = [b.user_number];
+        connection.query(query, params, (err, rows) => {
+            if(err){
+                console.log('[ERR] post /' + err);
+            } else if (!rows.length) { // 등록되지 않은 유저
+                res.json({
+                    message: "등록되지 않은 사용자입니다!"
+                });
+            } else if (rows[0].reservation_id) { // 접종하지 않은 예약건 이미 존재
+                res.json({
+                    message: "접종하지 않은 예약건이 이미 존재합니다 (" + rows[0].new_ino_num + "차)"
+                });
+            } else {
+                res.json({
+                    inoculation_number: rows[0].new_ino_num
+                });
+            }
+
+            connection.release();
+            
+       }) ;
+    });
+});
+
 //예약 API
 /*
 * hospital_id: 병원 ID
@@ -45,11 +81,11 @@ router.post('/', function(req, res, next){
         `
         INSERT INTO VACCINE_RESERVATION 
         (hospital_id, reservation_date, vaccine_id, inoculation_number, user_number) 
-        VALUES(?, ?, ?, ?, ?)
+        VALUES(?, ?, ?, (SELECT Vaccinated_Number + 1 FROM USERS WHERE User_number=?), ?)
         `;
     pool.getConnection((err, connection)=>{
         const b = req.body;
-        const params = [b.hospital_id, b.reservation_date, b.vaccine_id, 1, b.id];
+        const params = [b.hospital_id, b.reservation_date, b.vaccine_id, b.id, b.id];
        connection.query(query, params, (err, rows) => {
            if(err){
                console.log('[ERR] post /' + err);
