@@ -153,9 +153,11 @@
             <div class="container-fluid p-5">
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">예약내역을 보기 위해 주민번호를 입력해주세요</h1>
-                <form action="/mypage" method="post">
-                    <input type="text" placeholder="주민번호를 입력해주세요" id="user_number" name="user_number">
-                    <input type="submit" value="입력완료">
+                <form class="user" action="/mypage" method="post">
+                    <div class="input-group col-xl-4 col-md-6">
+                        <input class="form-control" type="text" placeholder="주민번호를 입력해주세요" id="user_number" name="user_number">
+                        <input class="btn btn-primary" type="submit" value="입력완료">
+                    </div>
                 </form>
             </div>
             <!-- /.container-fluid -->

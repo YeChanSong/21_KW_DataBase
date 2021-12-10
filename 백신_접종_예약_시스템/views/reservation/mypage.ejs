@@ -168,10 +168,10 @@
                                     <form action="<%= (rows[i].comment_id) ? '/reviews/' + rows[i].comment_id : '/reviews/write'%>" method="post" target="_blank">
                                         <input type="hidden" name="reservation_id" value="<%=rows[i].reservation_id%>">
                                         <input type="hidden" name="user_number" value="<%=rows[i].User_number%>">
-                                        <button type="submit"><%= (rows[i].comment_id) ? '후기 수정 및 삭제' : '후기 작성' %></button>
+                                        <button class="btn btn-primary" type="submit"><%= (rows[i].comment_id) ? '후기 수정 및 삭제' : '후기 작성' %></button>
                                     </form>
                                 <%} else {%>
-                                    <button onclick="reservation_cancel('<%=rows[i].reservation_id%>')">예약 취소</button>
+                                    <button class="btn btn-primary" onclick="reservation_cancel('<%=rows[i].reservation_id%>')">예약 취소</button>
                                 <%}%>
                             </div>
                         </div>
