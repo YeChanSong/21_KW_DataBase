@@ -160,7 +160,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="user_number" name="id" placeholder="주민번호를 입력해주세요">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" onclick="checkInoNum(); return false;" >확인</button>
+                                <button class="btn btn-primary" onclick="checkInoNum('<%=rows[0].hospital_name%>'); return false;" >확인</button>
                             </div>
                         </div>
     
@@ -231,7 +231,7 @@
 <script src="../js/demo/datatables-demo.js"></script>
 
 <script>
-    function checkInoNum() {
+    function checkInoNum(hospital_name) {
         let user_number = document.getElementById("user_number").value
         if (!user_number) {
             return;
@@ -244,11 +244,12 @@
         })
         .then((res) => {
             if (res.data.message) {
+                document.getElementById("title").textContent = hospital_name + ' 예약하기';
                 document.getElementById("inputWrap").style.display = 'none';
                 alert(res.data.message);
             }
             else {
-                document.getElementById("title").textContent = res.data.inoculation_number + '차 접종 예약히기';
+                document.getElementById("title").textContent = hospital_name + ' ' + res.data.inoculation_number + '차 접종 예약하기';
                 document.getElementById("inputWrap").style.display = '';
             }
         });
