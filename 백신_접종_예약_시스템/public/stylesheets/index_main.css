@@ -184,3 +184,10 @@ header .title-logo p{line-height:45px;}
 	.main-visual-wrap{display:block;}
 	.visual-itembox.item-01{margin-bottom:30px;}
 }
+
+.admin-page-link {
+    position: absolute;
+    right: 15px;
+    font-size: 14px;
+    color: gray
+}
