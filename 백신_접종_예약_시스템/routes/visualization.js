@@ -6,23 +6,21 @@ var pool = mysql.createPool({
   connectionLimit: 5,
   host: 'localhost',
   user: 'root',
-  password: '1234',
-  database: 'dbproject'
+  database: 'DBproject',
+  password: '1234'
 });
-
 
 
 router.get('/', function(req, res, next) {
   pool.getConnection(function(err,connection){    
         
-    var sql_date = "SELECT * FROM dbproject.vaccine_date;";
-    var sql_age = "SELECT * FROM dbproject.vaccine_age;";
+    var sql_date = "SELECT * FROM vaccine_date;";
+    var sql_age = "SELECT * FROM vaccine_age;";
 
     connection.query(sql_date,function(err,rows){
           if(err) console.error("err : " + err);
 
           console.log("row: " + JSON.stringify(rows));
-          
           
           connection.query(sql_age,function(err,rows2){
             if(err) console.error("err : " + err);

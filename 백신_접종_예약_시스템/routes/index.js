@@ -197,9 +197,9 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
     var today = new Date();
     var birth;
     if(req.body.ptntRrn1[0]>2){
-      birth = 1900+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1]);
+      birth = 1900+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1])+1;
     }else{
-      birth = 2000+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1]);
+      birth = 2000+Number(req.body.ptntRrn1[0])*10+Number(req.body.ptntRrn1[1])+1;
     }
     var age = Number.parseInt(today.getFullYear()) - Number(birth);
     var PhoneNum = req.body.apnmMtnoTofmn+"-"+req.body.apnmMtno1+"-"+req.body.apnmMtno2;
@@ -245,6 +245,7 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
       
       var sqlForInsertBoard = "insert into USERS(User_number, sublocation_id, User_name, age, Phone_num, Vaccinated_Number) values(?,?,?,?,?,?)";
       var connection = await pool.getConnection(async conn => conn);
+      
       try{
         var [rows] = await connection.query(sqlForInsertBoard,datas);
         console.log("rows: "+JSON.stringify(rows));
@@ -256,30 +257,32 @@ router.get('/Api/Member/Oauth2ClientCallback', function (req, res) {
         return false;
       }
       
-    }else{
-      var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num+1, User_number];
+    }
+    // else{
+    //   var datas = [Sublocation_id, User_name, age, PhoneNum, vaccinated_num+1, User_number];
       
-        var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
-        var connection = await pool.getConnection(async conn => conn);
-        try{
-          var [rows] = await connection.query(sqlForInsertBoard,datas);
-          console.log("rows: "+JSON.stringify(rows));
-          connection.release();
-          return true;
-        }catch (err){
-          console.error("err: "+ err);
-          connection.release();
-          return false;
-        }
-      }
+    //     var sqlForInsertBoard = "update USERS set sublocation_id=?, User_name=?, age=?, Phone_num=?, Vaccinated_Number=? where User_number = ?";
+    //     var connection = await pool.getConnection(async conn => conn);
+    //     try{
+    //       var [rows] = await connection.query(sqlForInsertBoard,datas);
+    //       console.log("rows: "+JSON.stringify(rows));
+    //       connection.release();
+    //       return true;
+    //     }catch (err){
+    //       console.error("err: "+ err);
+    //       connection.release();
+    //       return false;
+    //     }
+    //   }
     };
     var result = await isFirstVac();
     await console.log("midd: "+result);
     var dbc = await DBconn(result);
     await console.log(dbc);
-    if(dbc){
-      res.redirect('/');
-    }
+    // if(dbc){
+    //   res.redirect('/');
+    // }
+    res.redirect('/mypage')
   });
 
 

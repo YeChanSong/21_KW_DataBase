@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const passport = require('passport');
-var pool = require('./db')
+var mysql = require('mysql');
+var pool = require('./db');
 
 router.get('/', (req, res, err) => {
    res.render('reservation/uid_input');
@@ -28,6 +29,8 @@ router.post('/', (req, res, err) => {
          WHERE v.User_number = ? AND h.hospital_id = v.hospital_id
         `;
    pool.getConnection((err, connection) => {
+      console.log(connection);
+      console.log(err);
       connection.query(query, [b.user_number], (err, rows) => {
          if(err){
             console.log("[ERR] post /mypage " + err);
